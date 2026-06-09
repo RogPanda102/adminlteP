@@ -62,7 +62,33 @@ class CotizacionesController extends BaseController
 
         }
 
+        // MODELO
+        $modelo = new Cotizacion();
+
+        // DATOS GENERALES
         $datos = $this->cargar_datos();
+        
+        $datos['nombre_pagina'] = 'Cotizaciones 2025';
+
+        $breadcrumb = [
+            [
+                'tarea' => 'Cotizaciones',
+                'href' => '#'
+            ],
+            [
+                'tarea' => '2025',
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        // COTIZACIONES
+        $datos['cotizaciones'] =
+            $modelo->obtenerPorAnio(2025);
 
         $this->render(
             'operaciones/cotizaciones/2025',

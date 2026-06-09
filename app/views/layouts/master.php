@@ -390,7 +390,7 @@ $nombre_usuario = $nombre_usuario ?? '';
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./mailbox/read.html" class="nav-link">
+                    <a href="<?= BASE_URL ?>cotizaciones/2025" class="nav-link">
                       <i class="nav-icon bi bi-calendar3"></i>
                       <p>2025</p>
                     </a>

@@ -8,13 +8,13 @@ $router = new Router();
 |--------------------------------------------------------------------------
 */
 
-$router->get('/', 'Auth\AuthController@login');
+$router->get('/', 'auth\AuthController@login');
 
-$router->get('/login', 'Auth\AuthController@login');
+$router->get('/login', 'auth\AuthController@login');
 
-$router->post('/login', 'Auth\AuthController@autenticar');
+$router->post('/login', 'auth\AuthController@autenticar');
 
-$router->get('/logout', 'Auth\AuthController@logout');
+$router->get('/logout', 'auth\AuthController@logout');
 
 /*
 |--------------------------------------------------------------------------
