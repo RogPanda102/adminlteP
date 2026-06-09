@@ -1,17 +1,49 @@
 <?php
     $total_cotizaciones = $total_cotizaciones ?? '';
-    $total_enviadas = $total_enviadas ?? '';
-    $total_respaldo = $total_respaldo ?? '';
-    $total_reenviar = $total_reenviar ?? '';
+    $total_enviadas     = $total_enviadas ?? '';
+    $total_respaldo     = $total_respaldo ?? '';
+    $total_reenviar     = $total_reenviar ?? '';
+    $anio_actual        = $anio_actual ?? date('Y');
+    $anios              = $anios ?? [];
 ?>
 <div class="row mb-3">
     <div class="col-12">
-        <h4 class="fw-bold">
-            Resumen de Cotizaciones 2026
-        </h4>
-        <p class="text-muted">
-            Estadísticas generales del año 2026.
+
+        <div class="d-flex align-items-center gap-2">
+
+            <h4 class="fw-bold mb-0">
+                Resumen de Cotizaciones
+            </h4>
+
+            <div class="dropdown">
+
+                <button
+                    id="btn-anio"
+                    class="btn btn-sm dropdown-toggle border fw-bold text-dark"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    <?= $anio_actual ?>
+                </button>
+
+                <ul class="dropdown-menu">
+                    <?php foreach ($anios as $item):?>
+                        <li>
+                            <a class="dropdown-item anio-selector" data-anio="<?= $item['anio'] ?>">
+                                <?= $item['anio'] ?>
+                            </a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+
+        </div>
+
+        <p id="descripcion-anio" class="text-muted">
+            Estadísticas generales del año <?= $anio_actual ?>.
         </p>
+
     </div>
 </div>
 
@@ -21,7 +53,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box text-bg-primary">
             <div class="inner">
-                <h3><?= $total_cotizaciones ?></h3>
+                <h3 id="total_cotizaciones"><?= $total_cotizaciones ?></h3>
                 <p>Total de cotizaciones</p>
             </div>
             <div class="icon">
@@ -38,7 +70,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box text-bg-success">
             <div class="inner">
-                <h3><?= $total_enviadas ?></h3>
+                <h3 id="total_enviadas"><?= $total_enviadas ?></h3>
                 <p>Cotizaciones enviadas</p>
             </div>
             <div class="icon">
@@ -57,7 +89,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box text-bg-warning">
             <div class="inner">
-                <h3><?= $total_respaldo ?></h3>
+                <h3 id="total_respaldo"><?= $total_respaldo ?></h3>
                 <p>Cotizaciones de respaldo</p>
             </div>
             <div class="icon">
@@ -76,7 +108,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box text-bg-danger">
             <div class="inner">
-                <h3><?= $total_reenviar ?></h3>
+                <h3 id="total_reenviar"><?= $total_reenviar ?></h3>
                 <p>Pendientes de reenviar</p>
             </div>
             <div class="icon">
@@ -93,4 +125,8 @@
 
 </div>
 
+<script>
+    const BASE_URL = '<?= BASE_URL ?>';
+</script>
+<script src="<?= BASE_URL ?>assets/js/especificos/home/dashboard.js"></script>
 

@@ -40,17 +40,65 @@ class HomeController extends BaseController
     public function index()
     {
         $modelo = new Cotizacion();
+
         if (!$this->permitido) {
+
             header('Location: ' . BASE_URL . 'login');
             exit;
+
         }
+
         $datos = $this->cargar_datos();
-        $datos['total_cotizaciones'] = $modelo->contarTotal();
-        $datos['total_enviadas'] = $modelo->contarPorEstatus('enviado');
-        $datos['total_respaldo'] = $modelo->contarPorEstatus('respaldo');
-        $datos['total_reenviar'] = $modelo->contarReenviar();
-        $this->render('home/index', $datos);
-        
+
+        // Año actual
+        $anioActual = date('Y');
+
+        // Años disponibles
+        $datos['anios'] =
+            $modelo->obtenerAnios();
+
+        $datos['anio_actual'] =
+            $anioActual;
+
+        // Estadísticas
+        $estadisticas =
+            $modelo->obtenerEstadisticasPorAnio($anioActual);
+
+        $datos['total_cotizaciones'] =
+            $estadisticas['total_cotizaciones'];
+
+        $datos['total_enviadas'] =
+            $estadisticas['total_enviadas'];
+
+        $datos['total_respaldo'] =
+            $estadisticas['total_respaldo'];
+
+        $datos['total_reenviar'] =
+            $estadisticas['total_reenviar'];
+
+        $this->render(
+            'home/index',
+            $datos
+        );
+    }
+    // ========================
+    //  DATOS DE AJAX
+    // ========================
+
+    public function estadisticas()
+    {
+        $modelo = new Cotizacion();
+
+        $anio = $_GET['anio'] ?? date('Y');
+
+        $estadisticas =
+            $modelo->obtenerEstadisticasPorAnio($anio);
+
+        header('Content-Type: application/json');
+
+        echo json_encode($estadisticas);
+
+        exit;
     }
 
     // =========================
