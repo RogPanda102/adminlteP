@@ -134,11 +134,86 @@ class CotizacionesController extends BaseController
     // =========================
     public function nueva()
     {
+        // DATOS GENERALES
         $datos = $this->cargar_datos();
+        
+        $datos['nombre_pagina'] = 'Cotizaciones 2025';
+
+        $breadcrumb = [
+            [
+                'tarea' => 'Cotizaciones',
+                'href' => '#'
+            ],
+            [
+                'tarea' => 'Agregar nueva cotizacion',
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
 
         $this->render(
             'operaciones/cotizaciones/nueva',
             $datos
         );
     }
+
+    // =========================
+    // Guardar cotización
+    // =========================
+    public function guardar()
+    {
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            header('Location: ' . BASE_URL . 'cotizaciones/2026');
+            exit;
+
+        }
+
+        $modelo = new Cotizacion();
+
+        $datos = [
+
+            'fecha'      => $_POST['fecha'] ?? null,
+            'anio'       => $_POST['anio'] ?? null,
+            'req'        => trim($_POST['req'] ?? ''),
+            'numero'     => trim($_POST['numero'] ?? ''),
+            'elaboro'    => trim($_POST['elaboro'] ?? ''),
+            'partida'    => trim($_POST['partida'] ?? ''),
+            'proveedor'  => trim($_POST['proveedor'] ?? ''),
+            'analista'   => trim($_POST['analista'] ?? ''),
+            'estatus'    => $_POST['estatus'] ?? 'enviado',
+            'reenviar'   => isset($_POST['reenviar']) ? 1 : 0,
+
+            // usuario logueado
+            'creado_por' => $_SESSION['usuario_id']
+
+        ];
+
+        $modelo->guardar($datos);
+
+        mensaje(
+            'Cotización registrada correctamente',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        header(
+            'Location: ' . BASE_URL .
+            'cotizaciones/' . $datos['anio']
+        );
+
+        exit;
+    }
+
 }

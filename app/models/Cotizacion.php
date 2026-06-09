@@ -103,4 +103,59 @@ class Cotizacion
             'total_reenviar'     => $resultado['total_reenviar'] ?? 0
         ];
     }
+
+    // =========================
+    // Guardar cotización
+    // =========================
+    public function guardar($datos)
+    {
+        $sql = "
+            INSERT INTO cotizaciones
+            (
+                fecha,
+                req,
+                numero,
+                elaboro,
+                partida,
+                proveedor,
+                analista,
+                estatus,
+                reenviar,
+                anio,
+                creado_por
+            )
+            VALUES
+            (
+                :fecha,
+                :req,
+                :numero,
+                :elaboro,
+                :partida,
+                :proveedor,
+                :analista,
+                :estatus,
+                :reenviar,
+                :anio,
+                :creado_por
+            )
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+
+            ':fecha'      => $datos['fecha'],
+            ':req'        => $datos['req'],
+            ':numero'     => $datos['numero'],
+            ':elaboro'    => $datos['elaboro'],
+            ':partida'    => $datos['partida'],
+            ':proveedor'  => $datos['proveedor'],
+            ':analista'   => $datos['analista'],
+            ':estatus'    => $datos['estatus'],
+            ':reenviar'   => $datos['reenviar'],
+            ':anio'       => $datos['anio'],
+            ':creado_por' => $datos['creado_por']
+
+        ]);
+    }
 }
