@@ -3,7 +3,7 @@
 class Database
 {
     private static $host = 'localhost';
-    private static $database = 'DataPandasoft';
+    private static $database = 'datapandasoft';
     private static $username = 'root';
     private static $password = '';
     private static $charset = 'utf8mb4';
