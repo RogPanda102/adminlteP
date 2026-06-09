@@ -1,14 +1,15 @@
 <?php
 
-require_once '../app/core/View.php';
-require_once '../app/config/database.php';
-require_once '../app/helpers/funciones_globales.php';
-require_once __DIR__ . '/../helpers/permisos.php';
+require_once CORE_PATH . '/view.php';
+require_once CONFIG_PATH . '/database.php';
+require_once APP_PATH . '/helpers/funciones_globales.php';
+require_once APP_PATH . '/helpers/permisos.php';
 
 class BaseController
 {
     protected $conexion;
     protected $permitido = true;
+
     public function __construct()
     {
         // Conexion BD
@@ -19,6 +20,7 @@ class BaseController
             session_start();
         }
     }
+
     // Renderizar vistas
     protected function render($vista, $datos = [])
     {

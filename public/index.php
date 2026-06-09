@@ -11,7 +11,7 @@ session_start();
 |--------------------------------------------------------------------------
 */
 
-require_once '../app/config/app.php';
+require_once dirname(__DIR__) . '/app/config/app.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +19,7 @@ require_once '../app/config/app.php';
 |--------------------------------------------------------------------------
 */
 
-require_once '../app/core/Router.php';
+require_once CORE_PATH . '/router.php';
 
 
 /*
@@ -29,7 +29,7 @@ require_once '../app/core/Router.php';
 */
 
 
-require_once '../app/config/constantes.php';
+require_once CONFIG_PATH . '/constantes.php';
 
 
 /*
@@ -38,4 +38,4 @@ require_once '../app/config/constantes.php';
 |--------------------------------------------------------------------------
 */
 
-require_once '../routes.php';
+require_once ROOT_PATH . '/routes.php';

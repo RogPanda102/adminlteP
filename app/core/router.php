@@ -31,6 +31,7 @@ class Router
         $url = $_GET['url'] ?? '/';
 
         $url = '/' . trim($url, '/');
+        
 
         // Ruta no encontrada
         if (!isset($this->routes[$metodo][$url])) {
@@ -56,6 +57,7 @@ class Router
         $controladorRuta = str_replace('\\', '/', $controladorCompleto);
 
         $controllerFile = CONTROLLERS_PATH . $controladorRuta . '.php';
+        
 
         // =========================
         // Validar existencia

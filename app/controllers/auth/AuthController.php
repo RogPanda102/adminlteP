@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__ . '/../../core/View.php';
-require_once __DIR__ . '/../BaseController.php';
-require_once __DIR__ . '/../../helpers/funciones_globales.php';
-require_once __DIR__ . '/../../models/Usuario.php';
+require_once CORE_PATH . '/view.php';
+require_once CONTROLLERS_PATH . 'BaseController.php';
+require_once APP_PATH . '/helpers/funciones_globales.php';
+require_once MODELS_PATH . 'Usuario.php';
 
 class AuthController extends BaseController
 {
