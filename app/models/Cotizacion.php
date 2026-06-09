@@ -4,14 +4,11 @@ require_once __DIR__ . '/../config/database.php';
 
 class Cotizacion
 {
-
     private $db;
 
     public function __construct()
     {
-
         $this->db = Database::connect();
-
     }
 
     // =========================
@@ -19,7 +16,6 @@ class Cotizacion
     // =========================
     public function obtenerPorAnio($anio)
     {
-
         $sql = "
             SELECT *
             FROM cotizaciones
@@ -33,40 +29,78 @@ class Cotizacion
         $stmt->execute([$anio]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    }
-    public function contarTotal()
-    {
-        $sql = "SELECT COUNT(*) total
-                FROM cotizaciones
-                WHERE eliminado = 0";
-
-        return $this->db->query($sql)->fetch()['total'];
     }
 
-    public function contarPorEstatus($estatus)
+    // =========================
+    // Obtener años disponibles
+    // =========================
+    public function obtenerAnios()
     {
-        $sql = "SELECT COUNT(*) total
-                FROM cotizaciones
-                WHERE eliminado = 0
-                AND estatus = :estatus";
+        $sql = "
+            SELECT DISTINCT anio
+            FROM cotizaciones
+            WHERE eliminado = 0
+            ORDER BY anio DESC
+        ";
+
+        return $this->db
+            ->query($sql)
+            ->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // =========================
+    // Estadísticas por año
+    // =========================
+    public function obtenerEstadisticasPorAnio($anio)
+    {
+        $sql = "
+            SELECT
+
+                COUNT(*) AS total_cotizaciones,
+
+                SUM(
+                    CASE
+                        WHEN estatus = 'enviado'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS total_enviadas,
+
+                SUM(
+                    CASE
+                        WHEN estatus = 'respaldo'
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS total_respaldo,
+
+                SUM(
+                    CASE
+                        WHEN reenviar = 1
+                        THEN 1
+                        ELSE 0
+                    END
+                ) AS total_reenviar
+
+            FROM cotizaciones
+
+            WHERE anio = :anio
+            AND eliminado = 0
+        ";
 
         $stmt = $this->db->prepare($sql);
+
         $stmt->execute([
-            ':estatus' => $estatus
+            ':anio' => $anio
         ]);
 
-        return $stmt->fetch()['total'];
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'total_cotizaciones' => $resultado['total_cotizaciones'] ?? 0,
+            'total_enviadas'     => $resultado['total_enviadas'] ?? 0,
+            'total_respaldo'     => $resultado['total_respaldo'] ?? 0,
+            'total_reenviar'     => $resultado['total_reenviar'] ?? 0
+        ];
     }
-
-    public function contarReenviar()
-    {
-        $sql = "SELECT COUNT(*) total
-                FROM cotizaciones
-                WHERE eliminado = 0
-                AND reenviar = 1";
-
-        return $this->db->query($sql)->fetch()['total'];
-    }
-
 }
