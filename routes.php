@@ -56,6 +56,17 @@ $router->post(
     'operaciones\CotizacionesController@guardar'
 );
 
+/*
+|------------------------------------------------------------------
+| OPERACIONES - ADJUDICADOS 2026 - 2025
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/adjudicados/2026',
+    'operaciones\AdjudicadosController@adjudicados2026'
+);
+
 
 
 /*
