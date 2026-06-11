@@ -86,6 +86,26 @@ $router->get(
 |--------------------------------------------------------------------------
 */
 
+/*
+|------------------------------------------------------------------
+| CATALOGO - PROVEEDORES
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/proveedores',
+    'operaciones\ProveedoresController@index'
+);
+
+$router->get(
+    '/proveedores/nueva',
+    'operaciones\ProveedoresController@nueva'
+);
+
+$router->post(
+    '/proveedores/guardar',
+    'operaciones\ProveedoresController@guardar'
+);
 
 
 $router->dispatch();
