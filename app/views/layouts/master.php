@@ -447,9 +447,9 @@ $nombre_usuario = $nombre_usuario ?? '';
 
               <li class="nav-header">CATALOGO</li>
               <li class="nav-item">
-                <a href="./mailbox/inbox.html" class="nav-link">
-                  <i class="nav-icon bi bi-building"></i>
-                  <p>Departamentos</p>
+                <a href="<?= BASE_URL ?>proveedores" class="nav-link">
+                  <i class="nav-icon bi bi-truck"></i>
+                  <p>Proveedores</p>
                 </a>
               </li>
 
