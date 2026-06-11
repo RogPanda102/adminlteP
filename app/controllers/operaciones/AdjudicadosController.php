@@ -49,7 +49,7 @@ class AdjudicadosController extends BaseController
 
     }
 
-        // =========================
+    // =========================
     // Vista 2026
     // =========================
     public function adjudicados2026()
@@ -68,16 +68,49 @@ class AdjudicadosController extends BaseController
         // DATOS GENERALES
         $datos = $this->cargar_datos();
 
-        // COTIZACIONES
-        // $datos['cotizaciones'] =
-        //     $modelo->obtenerPorAnio(2026);
+        // Adjudicados
+         $datos['adjudicados'] =
+             $modelo->obtenerPorAnio(2026);
 
         // VISTA
-        
         $this->render(
             'operaciones/adjudicados/2026',
             $datos
         );
 
+    }
+
+
+    
+    // =========================
+    // CREAR FORMULARIO
+    // =========================
+    public function nueva()
+    {
+        // DATOS GENERALES
+        $datos = $this->cargar_datos();
+        
+        $datos['nombre_pagina'] = 'Adjudicados';
+
+        $breadcrumb = [
+            [
+                'tarea' => 'Adjudicados',
+                'href' => '#'
+            ],
+            [
+                'tarea' => 'Agregar Nuevo',
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        $this->render(
+            'operaciones/adjudicados/nueva',
+            $datos
+        );
     }
 }
