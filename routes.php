@@ -68,6 +68,23 @@ $router->get(
 );
 
 
+/*
+|------------------------------------------------------------------
+| OPERACIONES - ADJUDICADOS / FORMULARIO / GUARDAR FORMULARIO
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/adjudicados/nueva',
+    'operaciones\AdjudicadosController@nueva'
+);
+
+$router->post(
+    '/adjudicados/guardar',
+    'operaciones\AdjudicadosController@adjudicados202'
+);
+
+
 
 /*
 |------------------------------------------------------------------
