@@ -72,6 +72,10 @@ $router->get(
     'operaciones\AdjudicadosController@adjudicados2026'
 );
 
+$router->get(
+    '/adjudicados/2025',
+    'operaciones\AdjudicadosController@adjudicados2025'
+);
 
 /*
 |------------------------------------------------------------------

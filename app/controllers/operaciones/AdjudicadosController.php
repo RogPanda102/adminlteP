@@ -82,6 +82,36 @@ class AdjudicadosController extends BaseController
     }
 
     // =========================
+    // Vista 2026
+    // =========================
+    public function adjudicados2025()
+    {
+
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        // MODELO
+        $modelo = new Adjudicados;
+
+        // DATOS GENERALES
+        $datos = $this->cargar_datos();
+
+        // Adjudicados
+         $datos['adjudicados'] =
+             $modelo->obtenerPorAnio(2025);
+
+        // VISTA
+        $this->render(
+            'operaciones/adjudicados/2025',
+            $datos
+        );
+
+    }
+    // =========================
     // CREAR FORMULARIO
     // =========================
     public function nueva()
