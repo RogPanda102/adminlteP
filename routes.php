@@ -56,6 +56,11 @@ $router->post(
     'operaciones\CotizacionesController@guardar'
 );
 
+$router->get(
+    '/cotizaciones/buscar',
+    'operaciones\CotizacionesController@buscarAjax'
+);
+
 /*
 |------------------------------------------------------------------
 | OPERACIONES - ADJUDICADOS 2026 - 2025
@@ -81,7 +86,12 @@ $router->get(
 
 $router->post(
     '/adjudicados/guardar',
-    'operaciones\AdjudicadosController@adjudicados202'
+    'operaciones\AdjudicadosController@guardar'
+);
+
+$router->get(
+    '/adjudicados/buscar-dependencia',
+    'operaciones\AdjudicadosController@buscarDependenciaAjax'
 );
 
 

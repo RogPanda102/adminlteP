@@ -30,4 +30,25 @@ class Adjudicados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscarDependencias($texto)
+    {
+        $sql = "
+            SELECT DISTINCT dependencia
+            FROM adjudicados
+            WHERE dependencia IS NOT NULL
+            AND dependencia <> ''
+            AND dependencia LIKE :texto
+            ORDER BY dependencia ASC
+            LIMIT 10
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':texto' => "%{$texto}%"
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

@@ -19,7 +19,7 @@ class Proveedor
         $sql = "
             SELECT *
             FROM proveedores
-            ORDER BY proveedor ASC
+            ORDER BY id DESC
         ";
 
         return $this->db
