@@ -15,6 +15,7 @@ class AdjudicadosController extends BaseController
             $this->permitido = false;
         }
     }
+
     // =========================
     // Datos plantilla
     // =========================
@@ -80,8 +81,6 @@ class AdjudicadosController extends BaseController
 
     }
 
-
-    
     // =========================
     // CREAR FORMULARIO
     // =========================
@@ -113,4 +112,21 @@ class AdjudicadosController extends BaseController
             $datos
         );
     }
+
+    public function buscarDependenciaAjax()
+    {
+        $texto = trim($_GET['q'] ?? '');
+
+        $modelo = new Adjudicados();
+
+        $resultado =
+            $modelo->buscarDependencias($texto);
+
+        header('Content-Type: application/json');
+
+        echo json_encode($resultado);
+
+        exit;
+    }
+
 }

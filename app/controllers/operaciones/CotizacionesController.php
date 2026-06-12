@@ -216,4 +216,39 @@ class CotizacionesController extends BaseController
         exit;
     }
 
+    // =========================
+    // Buscar cotización AJAX
+    // =========================
+    public function buscarAjax()
+    {
+        $anio = date('Y');
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+        $termino = trim($_GET['q'] ?? '');
+
+        if (strlen($termino) < 2) {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+        $modelo = new Cotizacion();
+
+        $resultado = $modelo->buscarCotizacion($termino, $anio);
+
+        header('Content-Type: application/json');
+
+        echo json_encode($resultado);
+
+        exit;
+    }
+
 }

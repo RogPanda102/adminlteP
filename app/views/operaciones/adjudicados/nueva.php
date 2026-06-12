@@ -17,10 +17,10 @@
 
         <div class="card-body">
 
-            <!-- BUSCADOR -->
+            <!-- BUSCADOR DE COTIZACIÓN -->
             <div class="row">
 
-                <div class="col-md-12 mb-4">
+                <div class="col-md-12 mb-4 position-relative">
 
                     <label class="form-label fw-bold">
                         Buscar cotización existente
@@ -46,12 +46,14 @@
                     ></div>
 
                     <small class="text-muted">
-                        Escribe una REQ o Número para autocompletar los datos.
+                        Escribe una REQ o Número para autocompletar los datos de una cotización existente.
                     </small>
 
                 </div>
 
             </div>
+
+            <hr>
 
             <div class="row">
 
@@ -65,6 +67,7 @@
                     <input
                         type="date"
                         name="fecha_elaboracion"
+                        id="fecha_elaboracion"
                         class="form-control"
                         value="<?= date('Y-m-d') ?>"
                         required
@@ -82,6 +85,7 @@
                     <input
                         type="number"
                         name="anio"
+                        id="anio"
                         class="form-control"
                         value="<?= date('Y') ?>"
                         required
@@ -194,6 +198,7 @@
                     <input
                         type="date"
                         name="fecha_inicio_entrega"
+                        id="fecha_inicio_entrega"
                         class="form-control"
                     >
 
@@ -209,6 +214,7 @@
                     <input
                         type="date"
                         name="fecha_fin_entrega"
+                        id="fecha_fin_entrega"
                         class="form-control"
                     >
 
@@ -224,6 +230,7 @@
                     <input
                         type="number"
                         name="total"
+                        id="total"
                         class="form-control"
                         step="0.01"
                         min="0"
@@ -241,6 +248,7 @@
                     <input
                         type="date"
                         name="dia_pago"
+                        id="dia_pago"
                         class="form-control"
                     >
 
@@ -259,6 +267,7 @@
 
                     <select
                         name="pago"
+                        id="pago"
                         class="form-select"
                     >
                         <option value="pendiente">
@@ -277,7 +286,7 @@
                 </div>
 
                 <!-- DEPENDENCIA -->
-                <div class="col-md-8 mb-3">
+                <div class="col-md-8 mb-3 position-relative">
 
                     <label class="form-label">
                         Dependencia
@@ -289,7 +298,20 @@
                         id="dependencia"
                         class="form-control"
                         maxlength="150"
+                        autocomplete="off"
                     >
+
+                    <!-- FUTURO AUTOCOMPLETE -->
+                    <div
+                        id="resultados-dependencia"
+                        class="list-group position-absolute w-100 shadow-sm"
+                        style="
+                            z-index:1000;
+                            display:none;
+                            max-height:250px;
+                            overflow-y:auto;
+                        "
+                    ></div>
 
                 </div>
 
@@ -320,3 +342,10 @@
     </form>
 
 </div>
+
+<script>
+const BASE_URL = '<?= BASE_URL ?>';
+</script>
+
+<script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/nuevo.js"></script>

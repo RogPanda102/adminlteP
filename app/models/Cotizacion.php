@@ -158,4 +158,37 @@ class Cotizacion
 
         ]);
     }
+
+    // =========================
+// Buscar cotización AJAX
+// =========================
+    public function buscarCotizacion($termino, $anio)
+    {
+        $sql = "
+            SELECT
+                id,
+                req,
+                numero,
+                elaboro,
+                partida,
+                analista
+            FROM cotizaciones
+            WHERE eliminado = 0
+            AND anio = :anio
+            AND (
+                req LIKE :termino
+                OR numero LIKE :termino
+            )
+            ORDER BY id DESC
+            LIMIT 10
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':anio'    => $anio,
+            ':termino' => "%{$termino}%"
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
