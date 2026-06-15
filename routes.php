@@ -4,7 +4,7 @@ $router = new Router();
 
 /*
 |--------------------------------------------------------------------------
-| AUTH
+| AUTH LOGIN REGISTRO
 |--------------------------------------------------------------------------
 */
 
@@ -15,6 +15,10 @@ $router->get('/login', 'auth\AuthController@login');
 $router->post('/login', 'auth\AuthController@autenticar');
 
 $router->get('/logout', 'auth\AuthController@logout');
+
+$router->get('/registro', 'auth\AuthController@registro');
+
+$router->post('/registro', 'auth\AuthController@guardarRegistro');
 
 /*
 |--------------------------------------------------------------------------
@@ -111,11 +115,7 @@ $router->get(
     'HomeController@estadisticas'
 );
 
-/*
-|--------------------------------------------------------------------------
-| EJECUTAR ROUTER
-|--------------------------------------------------------------------------
-*/
+
 
 /*
 |------------------------------------------------------------------
@@ -138,5 +138,10 @@ $router->post(
     'operaciones\ProveedoresController@guardar'
 );
 
+/*
+|--------------------------------------------------------------------------
+| EJECUTAR ROUTER
+|--------------------------------------------------------------------------
+*/
 
 $router->dispatch();

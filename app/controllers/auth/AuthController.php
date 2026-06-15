@@ -178,4 +178,158 @@ class AuthController extends BaseController
 
     }
 
+
+    // =========================
+    // Vista Login
+    // =========================
+    public function registro()
+    {
+
+        // Si ya inició sesión
+        if (isset($_SESSION['logueado'])) {
+
+            header('Location: ' . BASE_URL . 'dashboard');
+            exit;
+
+        }
+
+        View::renderLogin('auth/registro');
+
+    }
+
+    public function guardarRegistro()
+    {
+        // Validar método
+        if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+
+            header('Location: ' . BASE_URL . 'registro');
+            exit;
+
+        }
+
+        $nombre      = trim($_POST['nombre'] ?? '');
+        $apellidoPaterno = trim($_POST['apellido_paterno'] ?? '');
+        $apellidoMaterno = trim($_POST['apellido_materno'] ?? '');
+        $usuario     = trim($_POST['usuario'] ?? '');
+        $correo      = trim($_POST['correo'] ?? '');
+        $password    = trim($_POST['password'] ?? '');
+        $confirmar   = trim($_POST['confirmar_password'] ?? '');
+
+        // Validar campos
+        if (
+            empty($nombre) ||
+            empty($apellidoPaterno) ||
+            empty($usuario) ||
+            empty($correo) ||
+            empty($password) ||
+            empty($confirmar)
+        ) {
+
+            mensaje(
+                'Todos los campos son obligatorios',
+                ALERT_WARNING,
+                3000
+            );
+
+            header('Location: ' . BASE_URL . 'registro');
+            exit;
+        }
+
+        // Validar correo
+        if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+
+            mensaje(
+                'Correo electrónico inválido',
+                ALERT_WARNING,
+                3000
+            );
+
+            header('Location: ' . BASE_URL . 'registro');
+            exit;
+        }
+
+        // Validar contraseña
+        if ($password !== $confirmar) {
+
+            mensaje(
+                'Las contraseñas no coinciden',
+                ALERT_WARNING,
+                3000
+            );
+
+            header('Location: ' . BASE_URL . 'registro');
+            exit;
+        }
+
+        try {
+
+            $modeloUsuario = new Usuario();
+
+            // Usuario existente
+            if ($modeloUsuario->buscarPorUsuario($usuario)) {
+
+                mensaje(
+                    'El usuario ya existe',
+                    ALERT_WARNING,
+                    3000
+                );
+
+                header('Location: ' . BASE_URL . 'registro');
+                exit;
+            }
+
+            // Correo existente
+            if ($modeloUsuario->buscarPorCorreo($correo)) {
+
+                mensaje(
+                    'El correo ya está registrado',
+                    ALERT_WARNING,
+                    3000
+                );
+
+                header('Location: ' . BASE_URL . 'registro');
+                exit;
+            }
+
+            // Hash password
+            $passwordHash = password_hash(
+                $password,
+                PASSWORD_DEFAULT
+            );
+
+            $resultado = $modeloUsuario->crearUsuario([
+                'nombre'             => $nombre,
+                'apellido_paterno'   => $apellidoPaterno,
+                'apellido_materno'   => $apellidoMaterno,
+                'usuario'            => $usuario,
+                'correo'             => $correo,
+                'password'           => $passwordHash
+            ]);
+
+            if (!$resultado) {
+
+                throw new Exception();
+            }
+
+            mensaje(
+                'Cuenta creada correctamente',
+                ALERT_SUCCESS,
+                3000
+            );
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        } catch (Exception $e) {
+
+            mensaje(
+                'Error al crear la cuenta',
+                ALERT_DANGER,
+                3000
+            );
+
+            header('Location: ' . BASE_URL . 'registro');
+            exit;
+        }
+    }
 }
