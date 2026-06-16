@@ -139,6 +139,26 @@ $router->post(
 );
 
 /*
+|------------------------------------------------------------------
+| CATALOGO - CONTACTO
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/contactos',
+    'operaciones\ContactosController@index'
+);
+
+$router->get(
+    '/contactos/nueva',
+    'operaciones\ContactosController@nueva'
+);
+
+$router->post(
+    '/contactos/guardar',
+    'operaciones\ContactosController@guardar'
+);
+/*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER
 |--------------------------------------------------------------------------

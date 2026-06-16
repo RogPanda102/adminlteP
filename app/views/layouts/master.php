@@ -454,9 +454,9 @@ $nombre_usuario = $nombre_usuario ?? '';
               </li>
 
               <li class="nav-item">
-                <a href="./mailbox/inbox.html" class="nav-link">
+                <a href="<?= BASE_URL ?>contactos" class="nav-link">
                   <i class="nav-icon bi bi-people"></i>
-                  <p>Analistas</p>
+                  <p>Contactos</p>
                 </a>
               </li>
 
