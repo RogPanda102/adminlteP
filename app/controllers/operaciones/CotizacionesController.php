@@ -187,7 +187,7 @@ class CotizacionesController extends BaseController
             'fecha'      => $_POST['fecha'] ?? null,
             'anio'       => $_POST['anio'] ?? null,
             'req'        => trim($_POST['req'] ?? ''),
-            'numero'     => trim($_POST['numero'] ?? ''),
+            'folio'     => trim($_POST['folio'] ?? ''),
             'elaboro'    => trim($_POST['elaboro'] ?? ''),
             'partida'    => trim($_POST['partida'] ?? ''),
             'proveedor'  => trim($_POST['proveedor'] ?? ''),

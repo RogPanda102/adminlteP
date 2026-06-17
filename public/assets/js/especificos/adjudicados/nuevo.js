@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
             opcion.innerHTML =
                 `<strong>${item.req}</strong>
                 <br>
-                <small>N° ${item.numero}</small>`;
+                <small>N° ${item.folio}</small>`;
 
             opcion.addEventListener('click', e => {
 
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('req').value =
                     item.req ?? '';
 
-                document.getElementById('numero').value =
-                    item.numero ?? '';
+                document.getElementById('folio').value =
+                    item.folio ?? '';
 
                 document.getElementById('elaboro').value =
                     item.elaboro ?? '';
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.analista ?? '';
 
                 buscador.value =
-                    item.req + ' - ' + item.numero;
+                    item.req + ' - ' + item.folio;
 
                 sugerencias.style.display =
                     'none';
