@@ -56,11 +56,11 @@
                 <!-- NÚMERO -->
                 <div class="col-md-3 mb-3">
                     <label class="form-label">
-                        Número
+                        Folio
                     </label>
                     <input
                         type="text"
-                        name="numero"
+                        name="folio"
                         class="form-control"
                         maxlength="50"
                         required

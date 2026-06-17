@@ -91,8 +91,8 @@
                 },
 
                 {
-                    title: 'N°',
-                    field: 'numero'
+                    title: 'Folio',
+                    field: 'folio'
                 },
 
                 {

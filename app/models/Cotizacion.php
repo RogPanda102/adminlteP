@@ -114,7 +114,7 @@ class Cotizacion
             (
                 fecha,
                 req,
-                numero,
+                folio,
                 elaboro,
                 partida,
                 proveedor,
@@ -128,7 +128,7 @@ class Cotizacion
             (
                 :fecha,
                 :req,
-                :numero,
+                :folio,
                 :elaboro,
                 :partida,
                 :proveedor,
@@ -146,7 +146,7 @@ class Cotizacion
 
             ':fecha'      => $datos['fecha'],
             ':req'        => $datos['req'],
-            ':numero'     => $datos['numero'],
+            ':folio'     => $datos['folio'],
             ':elaboro'    => $datos['elaboro'],
             ':partida'    => $datos['partida'],
             ':proveedor'  => $datos['proveedor'],
@@ -168,7 +168,7 @@ class Cotizacion
             SELECT
                 id,
                 req,
-                numero,
+                folio,
                 elaboro,
                 partida,
                 analista
@@ -177,7 +177,7 @@ class Cotizacion
             AND anio = :anio
             AND (
                 req LIKE :termino
-                OR numero LIKE :termino
+                OR folio LIKE :termino
             )
             ORDER BY id DESC
             LIMIT 10
