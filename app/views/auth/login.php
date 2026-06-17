@@ -77,15 +77,12 @@
       
         <!-- INICIAR SESION HEAD -->
          <div class="card-header text-center border-0 pb-0">
-            <lottie-player
-                  id="panda-animation"
-                  src="<?= BASE_URL ?>assets/lottie/panda-login.json"
-                  background="transparent"
-                  speed="1"
-                  style="width:180px;height:180px;margin:auto;"
-                  loop
-                  autoplay>
-            </lottie-player>
+            <object
+                id="panda-svg"
+                data="<?= BASE_URL ?>assets/img/logosvg/logo.svg"
+                type="image/svg+xml"
+                style="width:180px;height:180px;display:block;margin:auto;">
+            </object>
             <h2 class="mt-2 mb-0">
                 <strong>Pandasoft</strong>
             </h2>
@@ -303,50 +300,8 @@
         <?= mostrar_mensaje() ?>
     </script>
 
-    <script>
-      document
-          .getElementById('btn-login')
-          .addEventListener('click', () => {
+    <script src="<?= BASE_URL ?>assets/js/logopandasvg/pandasvg.js"></script>
 
-              const panda =
-                  document.getElementById('panda-animation');
-
-              panda.load(
-                  '<?= BASE_URL ?>assets/lottie/panda-walking.json'
-              );
-
-          });
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-
-          const password =
-              document.getElementById('password');
-
-          const usuario =
-              document.getElementById('usuario');
-
-          const panda =
-              document.getElementById('panda-animation');
-
-          usuario.addEventListener('focus', () => {
-
-              panda.load(
-                  '<?= BASE_URL ?>assets/lottie/panda-login.json'
-              );
-
-          });
-
-          password.addEventListener('focus', () => {
-
-              panda.load(
-                  '<?= BASE_URL ?>assets/lottie/panda-cover-eyes.json'
-              );
-
-          });
-
-      });
-    </script>
   </body>
   <!--end::Body-->
 </html>
