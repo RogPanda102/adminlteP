@@ -105,6 +105,7 @@ $router->get(
 $router->post(
     '/adjudicados/update',
     'operaciones\AdjudicadosController@update'
+);
 /*
 |------------------------------------------------------------------
 | OPERACIONES - SERVICIOS

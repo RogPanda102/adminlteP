@@ -12,6 +12,28 @@ document.addEventListener('DOMContentLoaded', function () {
         pagination: true,
         paginationSize: 10,
 
+        rowFormatter: function(row) {
+
+            const data = row.getData();
+
+            const estado = (data.pago || '').toLowerCase();
+
+            if (estado === 'pagado') {
+
+                row.getElement().classList.add('table-success');
+
+            } else if (estado === 'pendiente') {
+
+                row.getElement().classList.add('table-light');
+
+            } else if (estado === 'cancelado') {
+
+                row.getElement().classList.add('table-danger');
+
+            }
+
+        },
+
         columns: [
 
             { title: 'REQ', field: 'req' },
@@ -285,6 +307,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (fila) {
 
                         fila.update(payload);
+
+                        fila.reformat();
 
                     }
 
