@@ -54,7 +54,6 @@
   src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/js/tabulator.min.js"
   crossorigin="anonymous"
 ></script>
-<script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/cotizaciones_index.js"></script> <!-- aqui esta  -->
 
 
 <script>

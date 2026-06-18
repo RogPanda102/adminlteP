@@ -159,4 +159,51 @@ class AdjudicadosController extends BaseController
         exit;
     }
 
+    public function update()
+    {
+        header('Content-Type: application/json');
+
+        try {
+
+            $data = json_decode(
+                file_get_contents('php://input'),
+                true
+            );
+
+            if (!$data) {
+
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Datos inválidos'
+                ]);
+
+                exit;
+            }
+
+            // 🔥 AGREGAR ESTO
+            $data['actualizado_por'] = $_SESSION['usuario_id'];
+
+            $modelo = new Adjudicados();
+
+            $resultado = $modelo->actualizar($data);
+
+            echo json_encode([
+                'success' => $resultado,
+                    'message' => $resultado
+                    ? 'Adjudicación actualizada correctamente.'
+                    : 'No fue posible actualizar la adjudicación.'
+            ]);
+
+        } catch (Exception $e) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+
+        }
+
+        exit;
+    }
+
 }
