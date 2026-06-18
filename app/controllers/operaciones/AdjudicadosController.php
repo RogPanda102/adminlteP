@@ -82,7 +82,7 @@ class AdjudicadosController extends BaseController
     }
 
     // =========================
-    // Vista 2026
+    // Vista 2025
     // =========================
     public function adjudicados2025()
     {
