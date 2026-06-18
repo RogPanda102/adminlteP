@@ -431,13 +431,13 @@ $nombre_usuario = $nombre_usuario ?? '';
                 </a>
                 <ul class="nav nav-treeview">
                   <li class="nav-item">
-                    <a href="./mailbox/inbox.html" class="nav-link">
+                    <a href="<?= BASE_URL ?>servicios/2026" class="nav-link">
                       <i class="nav-icon bi bi-calendar3"></i>
                       <p>2026</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="./mailbox/read.html" class="nav-link">
+                    <a href="<?= BASE_URL ?>servicios/2025" class="nav-link">
                       <i class="nav-icon bi bi-calendar3"></i>
                       <p>2025</p>
                     </a>

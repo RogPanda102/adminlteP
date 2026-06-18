@@ -1,0 +1,203 @@
+<?php
+
+require_once __DIR__ . '/../BaseController.php';
+require_once __DIR__ . '/../../models/Servicios.php';
+
+class ServiciosController extends BaseController
+{
+    protected $permitido = true;
+
+    // =========================
+    // Constructor
+    // =========================
+    public function __construct()
+    {
+        if (!isset($_SESSION['logueado'])) {
+            $this->permitido = false;
+        }
+    }
+
+    // =========================
+    // Datos plantilla
+    // =========================
+    private function cargar_datos()
+    {
+        $datos = [];
+
+        // =========================
+        // USUARIO
+        // =========================
+        $datos['nombre_usuario'] = $_SESSION['usuario_nombre'];
+        $datos['foto_usuario'] = BASE_URL . 'assets/upload/usuarios/' . $_SESSION['foto_usuario'];
+
+        // =========================
+        // MODULO
+        // =========================
+        $datos['nombre_pagina'] = 'Servicios 2026';
+        $datos['tarea'] = 'Servicios';
+
+        // =========================
+        // BREADCRUMB
+        // =========================
+        $breadcrumb = [
+            [
+                'tarea' => 'Servicios',
+                'href' => '#'
+            ],
+            [
+                'tarea' => '2026',
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        return $datos;
+    }
+
+    // =========================
+    // Vista 2026
+    // =========================
+    public function servicios2026()
+    {
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        $modelo = new Servicio();
+
+        $datos = $this->cargar_datos();
+
+        $datos['servicios'] =
+            $modelo->obtenerPorAnio(2026);
+
+        $this->render(
+            'operaciones/servicios/2026',
+            $datos
+        );
+    }
+
+    // =========================
+    // Vista 2025
+    // =========================
+    public function servicios2025()
+    {
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        $modelo = new Servicio();
+
+        $datos = $this->cargar_datos();
+
+        $datos['nombre_pagina'] = 'Servicios 2025';
+
+        $datos['servicios'] =
+            $modelo->obtenerPorAnio(2025);
+
+        $this->render(
+            'operaciones/servicios/2025',
+            $datos
+        );
+    }
+
+    // =========================
+    // CREAR FORMULARIO
+    // =========================
+    public function nueva()
+    {
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        $datos = $this->cargar_datos();
+
+        $datos['nombre_pagina'] = 'Servicios';
+
+        $breadcrumb = [
+            [
+                'tarea' => 'Servicios',
+                'href' => '#'
+            ],
+            [
+                'tarea' => 'Agregar Nuevo',
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        $this->render(
+            'operaciones/servicios/nueva',
+            $datos
+        );
+    }
+
+    // =========================
+    // Guardar servicio
+    // =========================
+    public function guardar()
+    {
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            header('Location: ' . BASE_URL . 'servicios/2026');
+            exit;
+
+        }
+
+        $modelo = new Servicio();
+
+        $datos = [
+
+            'req'                 => trim($_POST['req'] ?? ''),
+            'folio'               => trim($_POST['folio'] ?? ''),
+            'elaboro'             => trim($_POST['elaboro'] ?? ''),
+            'partida'             => trim($_POST['partida'] ?? ''),
+            'analista'            => trim($_POST['analista'] ?? ''),
+            'tiempo_contratacion' => trim($_POST['tiempo_contratacion'] ?? ''),
+            'fecha_contratacion'  => $_POST['fecha_contratacion'] ?? null,
+            'inicio'              => $_POST['inicio'] ?? null,
+            'finalizacion'        => $_POST['finalizacion'] ?? null,
+            'dependencia'         => trim($_POST['dependencia'] ?? ''),
+            'anio'                => $_POST['anio'] ?? null
+
+        ];
+
+        $modelo->guardar($datos);
+
+        mensaje(
+            'Servicio registrado correctamente',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        header(
+            'Location: ' . BASE_URL .
+            'servicios/' . $datos['anio']
+        );
+
+        exit;
+    }
+}
