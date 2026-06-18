@@ -102,7 +102,37 @@ $router->get(
     'operaciones\AdjudicadosController@buscarDependenciaAjax'
 );
 
+/*
+|------------------------------------------------------------------
+| OPERACIONES - SERVICIOS
+|------------------------------------------------------------------
+*/
 
+$router->get(
+    '/servicios/2025',
+    'operaciones\ServiciosController@servicios2025'
+);
+
+$router->get(
+    '/servicios/2026',
+    'operaciones\ServiciosController@servicios2026'
+);
+
+/*
+|------------------------------------------------------------------
+| OPERACIONES - SERVICIOS / FORMULARIO / GUARDAR FORMULARIO
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/servicios/nueva',
+    'operaciones\ServiciosController@nueva'
+);
+
+$router->post(
+    '/servicios/guardar',
+    'operaciones\ServiciosController@guardar'
+);
 
 /*
 |------------------------------------------------------------------
