@@ -189,8 +189,13 @@ $router->get(
 );
 
 $router->post(
-    '/contactos/guardar',
-    'operaciones\ContactosController@guardar'
+    '/contactos/guardarAnalista',
+    'operaciones\ContactosController@guardarAnalista'
+);
+
+$router->post(
+    '/contactos/guardarEncargado',
+    'operaciones\ContactosController@guardarEncargado'
 );
 /*
 |--------------------------------------------------------------------------

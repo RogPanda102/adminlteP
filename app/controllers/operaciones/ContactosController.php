@@ -61,7 +61,6 @@ class ContactosController extends BaseController
 
             header('Location: ' . BASE_URL . 'login');
             exit;
-
         }
 
         $analistaModel = new Analista();
@@ -90,15 +89,15 @@ class ContactosController extends BaseController
 
             header('Location: ' . BASE_URL . 'login');
             exit;
-
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             header('Location: ' . BASE_URL . 'contactos');
             exit;
-
         }
+
+
 
         $modelo = new Analista();
 
@@ -120,9 +119,15 @@ class ContactosController extends BaseController
 
         header(
             'Location: ' .
-            BASE_URL .
-            'contactos'
+                BASE_URL .
+                'contactos'
         );
+
+        if ($datos['nombre'] === '') {
+            mensaje('Nombre obligatorio', ALERT_ERROR, 3000);
+            header('Location: ' . BASE_URL . 'contactos');
+            exit;
+        }
 
         exit;
     }
@@ -136,14 +141,12 @@ class ContactosController extends BaseController
 
             header('Location: ' . BASE_URL . 'login');
             exit;
-
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             header('Location: ' . BASE_URL . 'contactos');
             exit;
-
         }
 
         $modelo = new Encargado();
@@ -166,8 +169,8 @@ class ContactosController extends BaseController
 
         header(
             'Location: ' .
-            BASE_URL .
-            'contactos'
+                BASE_URL .
+                'contactos'
         );
 
         exit;
