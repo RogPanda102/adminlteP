@@ -159,51 +159,130 @@ class AdjudicadosController extends BaseController
         exit;
     }
 
+    // =========================
+    // Guardar adjudicación
+    // =========================
+    public function guardar()
+    {
+        if (!$this->permitido) {
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header(
+                'Location: ' . BASE_URL . 'adjudicados/2026'
+            );
+            exit;
+        }
+        $modelo = new Adjudicados();
+        $datos = [
+            'req' => limpiarTexto(
+                $_POST['req'] ?? ''
+            ),
+            'folio' => limpiarTexto(
+                $_POST['folio'] ?? ''
+            ),
+            'elaboro' => limpiarTextoMayusculas(
+                $_POST['elaboro'] ?? ''
+            ),
+            'partida' => limpiarTextoMayusculas(
+                $_POST['partida'] ?? ''
+            ),
+            'analista' => limpiarTextoMayusculas(
+                $_POST['analista'] ?? ''
+            ),
+            'fecha_elaboracion' =>
+                $_POST['fecha_elaboracion'] ?? null,
+            'fecha_inicio_entrega' =>
+                $_POST['fecha_inicio_entrega'] ?? null,
+            'fecha_fin_entrega' =>
+                $_POST['fecha_fin_entrega'] ?? null,
+            'total' =>
+                $_POST['total'] ?? 0,
+            'dia_pago' =>
+                $_POST['dia_pago'] ?? null,
+            'pago' =>
+                $_POST['pago'] ?? 'pendiente',
+            'dependencia' =>
+                limpiarTextoMayusculas(
+                    $_POST['dependencia'] ?? ''
+                ),
+            'cotizacion_id' =>
+                $_POST['cotizacion_id'] ?? null,
+            'anio' =>
+                date('Y'),
+            'creado_por' =>
+                $_SESSION['usuario_id']
+        ];
+        $resultado = $modelo->guardar($datos);
+        if ($resultado) {
+            mensaje(
+                'Adjudicación registrada correctamente',
+                ALERT_SUCCESS,
+                3000
+            );
+        } else {
+            mensaje(
+                'No fue posible registrar la adjudicación',
+                ALERT_DANGER,
+                3000
+            );
+        }
+        header(
+            'Location: ' .
+            BASE_URL .
+            'adjudicados/2026'
+        );
+        exit;
+    }
+
     public function update()
     {
         header('Content-Type: application/json');
 
-        try {
+        $input = json_decode(file_get_contents('php://input'), true);
 
-            $data = json_decode(
-                file_get_contents('php://input'),
-                true
-            );
-
-            if (!$data) {
-
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'Datos inválidos'
-                ]);
-
-                exit;
-            }
-
-            // 🔥 AGREGAR ESTO
-            $data['actualizado_por'] = $_SESSION['usuario_id'];
-
-            $modelo = new Adjudicados();
-
-            $resultado = $modelo->actualizar($data);
-
-            echo json_encode([
-                'success' => $resultado,
-                    'message' => $resultado
-                    ? 'Adjudicación actualizada correctamente.'
-                    : 'No fue posible actualizar la adjudicación.'
-            ]);
-
-        } catch (Exception $e) {
-
+        if (!$input) {
             echo json_encode([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Datos inválidos'
             ]);
-
+            return;
         }
 
-        exit;
-    }
+        $modelo = new Adjudicados();
 
+        $datos = [
+            'id' => $input['id'],
+            'req' => $input['req'],
+            'folio' => $input['folio'],
+            'elaboro' => $input['elaboro'],
+            'partida' => $input['partida'],
+            'analista' => $input['analista'],
+            'fecha_elaboracion' => $input['fecha_elaboracion'] ?? null,
+            'fecha_inicio_entrega' => $input['fecha_inicio_entrega'] ?? null,
+            'fecha_fin_entrega' => $input['fecha_fin_entrega'] ?? null,
+            'total' => $input['total'] ?? 0,
+            'dia_pago' => $input['dia_pago'] ?? null,
+            'pago' => $input['pago'],
+            'dependencia' => $input['dependencia'],
+            'cotizacion_id' => $input['cotizacion_id'] ?? null,
+            'anio' => date('Y'),
+            'actualizado_por' => $_SESSION['usuario_id']
+        ];
+
+        $ok = $modelo->actualizar($datos);
+
+        if ($ok) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Actualizado correctamente'
+            ]);
+        } else {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar'
+            ]);
+        }
+    }
 }

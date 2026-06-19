@@ -186,12 +186,12 @@ class CotizacionesController extends BaseController
 
             'fecha'      => $_POST['fecha'] ?? null,
             'anio'       => $_POST['anio'] ?? null,
-            'req'        => trim($_POST['req'] ?? ''),
-            'folio'     => trim($_POST['folio'] ?? ''),
-            'elaboro'    => trim($_POST['elaboro'] ?? ''),
-            'partida'    => trim($_POST['partida'] ?? ''),
-            'proveedor'  => trim($_POST['proveedor'] ?? ''),
-            'analista'   => trim($_POST['analista'] ?? ''),
+            'req'        => limpiarTexto($_POST['req'] ?? ''),
+            'folio'      => limpiarTexto($_POST['folio'] ?? ''),
+            'elaboro'    => limpiarTextoMayusculas($_POST['elaboro'] ?? ''),
+            'partida'    => limpiarTextoMayusculas($_POST['partida'] ?? ''),
+            'proveedor'  => limpiarTextoMayusculas($_POST['proveedor'] ?? ''),
+            'analista'   => limpiarTextoMayusculas($_POST['analista'] ?? ''),
             'estatus'    => $_POST['estatus'] ?? 'enviado',
             'reenviar'   => isset($_POST['reenviar']) ? 1 : 0,
 

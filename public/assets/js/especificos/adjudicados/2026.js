@@ -12,26 +12,20 @@ document.addEventListener('DOMContentLoaded', function () {
         pagination: true,
         paginationSize: 10,
 
-        rowFormatter: function(row) {
+        rowFormatter: function (row) {
 
             const data = row.getData();
-
             const estado = (data.pago || '').toLowerCase();
 
             if (estado === 'pagado') {
-
                 row.getElement().classList.add('table-success');
 
             } else if (estado === 'pendiente') {
-
                 row.getElement().classList.add('table-light');
 
             } else if (estado === 'cancelado') {
-
                 row.getElement().classList.add('table-danger');
-
             }
-
         },
 
         columns: [
@@ -44,22 +38,18 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 title: 'Fecha Elaboración',
                 field: 'fecha_elaboracion',
-                formatter: function (cell) {
+                formatter: cell => {
 
-                    const valor = cell.getValue();
+                    const v = cell.getValue();
+                    if (!v) return '';
 
-                    if (!valor) {
-                        return '';
-                    }
+                    const f = new Date(v + 'T00:00:00');
 
-                    const fecha = new Date(valor + 'T00:00:00');
-
-                    return fecha.toLocaleDateString('es-MX', {
+                    return f.toLocaleDateString('es-MX', {
                         day: '2-digit',
                         month: 'long',
                         year: 'numeric'
                     });
-
                 }
             },
 
@@ -67,26 +57,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 title: 'Total',
                 field: 'total',
                 hozAlign: 'right',
-                formatter: function (cell) {
+                formatter: cell => {
 
-                    const valor = parseFloat(cell.getValue() || 0);
+                    const v = parseFloat(cell.getValue() || 0);
 
-                    return valor.toLocaleString('es-MX', {
+                    return v.toLocaleString('es-MX', {
                         style: 'currency',
                         currency: 'MXN'
                     });
-
                 }
             }
 
         ],
 
         data: window.adjudicados || []
-
     });
 
     // =====================================================
-    // DETALLE OFFCANVAS
+    // OFFCANVAS DETALLE
     // =====================================================
 
     tabla.on('rowClick', function (e, row) {
@@ -95,8 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         window.currentAdjudicacion = data;
 
-        document.getElementById('erp-folio-title').textContent =
-            data.folio || '';
+        document.getElementById('erp-folio-title').textContent = data.folio || '';
 
         const status = document.getElementById('erp-status');
 
@@ -104,80 +91,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
         status.className = 'badge';
 
-        if (estado === 'pagado') {
-
-            status.classList.add('bg-success');
-
-        } else if (estado === 'parcial') {
-
-            status.classList.add('bg-warning', 'text-dark');
-
-        } else if (estado === 'cancelado') {
-
-            status.classList.add('bg-danger');
-
-        } else {
-
-            status.classList.add('bg-secondary');
-
-        }
+        if (estado === 'pagado') status.classList.add('bg-success');
+        else if (estado === 'parcial') status.classList.add('bg-warning', 'text-dark');
+        else if (estado === 'cancelado') status.classList.add('bg-danger');
+        else status.classList.add('bg-secondary');
 
         status.textContent = estado;
 
         // GENERAL
-        document.getElementById('det-req').textContent =
-            data.req || '';
-
-        document.getElementById('det-folio').textContent =
-            data.folio || '';
-
-        document.getElementById('det-elaboro').textContent =
-            data.elaboro || '';
-
-        document.getElementById('det-partida').textContent =
-            data.partida || '';
-
-        document.getElementById('det-analista').textContent =
-            data.analista || '';
+        document.getElementById('det-req').textContent = data.req || '';
+        document.getElementById('det-folio').textContent = data.folio || '';
+        document.getElementById('det-elaboro').textContent = data.elaboro || '';
+        document.getElementById('det-partida').textContent = data.partida || '';
+        document.getElementById('det-analista').textContent = data.analista || '';
 
         // PAGOS
-        document.getElementById('det-total').textContent =
-            data.total || '';
-
-        document.getElementById('det-pago').textContent =
-            data.pago || '';
-
-        document.getElementById('det-dia-pago').textContent =
-            data.dia_pago || '';
+        document.getElementById('det-total').textContent = data.total || '';
+        document.getElementById('det-pago').textContent = data.pago || '';
+        document.getElementById('det-dia-pago').textContent = data.dia_pago || '';
 
         // DEPENDENCIA
-        document.getElementById('det-dependencia').textContent =
-            data.dependencia || '';
+        document.getElementById('det-dependencia').textContent = data.dependencia || '';
 
         // FECHAS
-        document.getElementById('det-fecha-elaboracion').textContent =
-            data.fecha_elaboracion || '';
+        document.getElementById('det-fecha-elaboracion').textContent = data.fecha_elaboracion || '';
+        document.getElementById('det-fecha-inicio').textContent = data.fecha_inicio_entrega || '';
+        document.getElementById('det-fecha-fin').textContent = data.fecha_fin_entrega || '';
 
-        document.getElementById('det-fecha-inicio').textContent =
-            data.fecha_inicio_entrega || '';
-
-        document.getElementById('det-fecha-fin').textContent =
-            data.fecha_fin_entrega || '';
-
-        const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(
+        bootstrap.Offcanvas.getOrCreateInstance(
             document.getElementById('offcanvasDetalleAdjudicacion')
-        );
-
-        offcanvas.show();
-
+        ).show();
     });
 
     // =====================================================
     // FILTRO
     // =====================================================
 
-    document
-        .getElementById('table-filter')
+    document.getElementById('table-filter')
         .addEventListener('keyup', function () {
 
             const value = this.value;
@@ -187,26 +137,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 { field: 'req', type: 'like', value },
                 { field: 'elaboro', type: 'like', value }
             ]);
-
         });
 
     // =====================================================
-    // EXPORTAR CSV
+    // EXPORTAR
     // =====================================================
 
-    document
-        .getElementById('export-csv')
+    document.getElementById('export-csv')
         .addEventListener('click', function () {
 
-            tabla.download(
-                'csv',
-                'adjudicados_2026.csv'
-            );
-
+            tabla.download('csv', 'adjudicados_2026.csv');
         });
 
     // =====================================================
-    // ABRIR MODAL EDITAR
+    // EDITAR MODAL
     // =====================================================
 
     const btnEditar = document.getElementById('btn-editar');
@@ -216,37 +160,23 @@ document.addEventListener('DOMContentLoaded', function () {
         btnEditar.addEventListener('click', function () {
 
             const data = window.currentAdjudicacion;
+            if (!data) return;
 
-            if (!data) {
-                return;
-            }
+            document.getElementById('edit-id').value = data.id || '';
+            document.getElementById('edit-req').value = data.req || '';
+            document.getElementById('edit-folio').value = data.folio || '';
+            document.getElementById('edit-elaboro').value = data.elaboro || '';
+            document.getElementById('edit-partida').value = data.partida || '';
+            document.getElementById('edit-analista').value = data.analista || '';
 
-            document.getElementById('edit-id').value =
-                data.id || '';
+            document.getElementById('edit-fecha_elaboracion').value = data.fecha_elaboracion || '';
+            document.getElementById('edit-fecha_inicio_entrega').value = data.fecha_inicio_entrega || '';
+            document.getElementById('edit-fecha_fin_entrega').value = data.fecha_fin_entrega || '';
+            document.getElementById('edit-dia_pago').value = data.dia_pago || '';
 
-            document.getElementById('edit-req').value =
-                data.req || '';
-
-            document.getElementById('edit-folio').value =
-                data.folio || '';
-
-            document.getElementById('edit-elaboro').value =
-                data.elaboro || '';
-
-            document.getElementById('edit-partida').value =
-                data.partida || '';
-
-            document.getElementById('edit-analista').value =
-                data.analista || '';
-
-            document.getElementById('edit-total').value =
-                data.total || '';
-
-            document.getElementById('edit-pago').value =
-                data.pago || 'pendiente';
-
-            document.getElementById('edit-dependencia').value =
-                data.dependencia || '';
+            document.getElementById('edit-total').value = data.total || '';
+            document.getElementById('edit-pago').value = data.pago || 'pendiente';
+            document.getElementById('edit-dependencia').value = data.dependencia || '';
 
             const modal = new bootstrap.Modal(
                 document.getElementById('modalEditarAdjudicacion')
@@ -254,21 +184,51 @@ document.addEventListener('DOMContentLoaded', function () {
 
             modal.show();
 
-        });
+            setTimeout(() => {
 
+                configurarControlPago({
+                    pago: '#edit-pago',
+                    total: '#edit-total',
+                    diaPago: '#edit-dia_pago',
+                    resetOnPendiente: true
+                });
+
+            }, 50);
+        });
     }
 
     // =====================================================
-    // GUARDAR EDICIÓN AJAX
+    // COLLAPSE TIPO SAP (SOLO 1 ABIERTO)
     // =====================================================
 
-    const formulario = document.getElementById(
-        'formEditarAdjudicacion'
-    );
+    document.addEventListener('click', (e) => {
 
-    if (formulario) {
+        const header = e.target.closest('.section-toggle');
+        if (!header) return;
 
-        formulario.addEventListener('submit', function (e) {
+        const target = document.querySelector(header.dataset.target);
+        if (!target) return;
+
+        const all = document.querySelectorAll('.collapse');
+
+        all.forEach(el => {
+            if (el !== target) {
+                bootstrap.Collapse.getOrCreateInstance(el).hide();
+            }
+        });
+
+        bootstrap.Collapse.getOrCreateInstance(target).toggle();
+    });
+
+    // =====================================================
+    // GUARDAR AJAX
+    // =====================================================
+
+    const form = document.getElementById('formEditarAdjudicacion');
+
+    if (form) {
+
+        form.addEventListener('submit', function (e) {
 
             e.preventDefault();
 
@@ -280,69 +240,46 @@ document.addEventListener('DOMContentLoaded', function () {
                 elaboro: document.getElementById('edit-elaboro').value,
                 partida: document.getElementById('edit-partida').value,
                 analista: document.getElementById('edit-analista').value,
-                total: document.getElementById('edit-total').value,
-                pago: document.getElementById('edit-pago').value,
-                dependencia: document.getElementById('edit-dependencia').value
 
+                fecha_elaboracion: document.getElementById('edit-fecha_elaboracion').value,
+                fecha_inicio_entrega: document.getElementById('edit-fecha_inicio_entrega').value,
+                fecha_fin_entrega: document.getElementById('edit-fecha_fin_entrega').value,
+
+                total: document.getElementById('edit-total').value,
+                dia_pago: document.getElementById('edit-dia_pago').value,
+                pago: document.getElementById('edit-pago').value,
+
+                dependencia: document.getElementById('edit-dependencia').value
             };
 
             fetch(BASE_URL + 'adjudicados/update', {
-
                 method: 'POST',
-
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
-
             })
-            .then(response => response.json())
-            .then(data => {
+                .then(r => r.json())
+                .then(data => {
 
-                if (data.success) {
+                    if (data.success) {
 
-                    const fila = tabla.getRow(payload.id);
+                        const fila = tabla.getRow(payload.id);
+                        if (fila) fila.update(payload);
 
-                    if (fila) {
+                        bootstrap.Modal.getInstance(
+                            document.getElementById('modalEditarAdjudicacion')
+                        )?.hide();
 
-                        fila.update(payload);
+                        toastr.success(data.message);
 
-                        fila.reformat();
-
+                    } else {
+                        toastr.error(data.message);
                     }
 
-                    const modal = bootstrap.Modal.getInstance(
-                        document.getElementById('modalEditarAdjudicacion')
-                    );
-
-                    if (modal) {
-                        modal.hide();
-                    }
-
-                    toastr.success(
-                        data.message || 'Adjudicación actualizada correctamente.'
-                    );
-
-                } else {
-
-                    toastr.error(
-                        data.message || 'No fue posible actualizar la adjudicación.'
-                    );
-
-                }
-
-            })
-            .catch(() => {
-
-                toastr.error(
-                    'Ocurrió un error al actualizar la adjudicación.'
-                );
-
-            });
-
+                })
+                .catch(() => {
+                    toastr.error('Error al actualizar');
+                });
         });
-
     }
 
 });

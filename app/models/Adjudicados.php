@@ -61,31 +61,43 @@ class Adjudicados
         $sql = "
             UPDATE adjudicados
             SET
-                req = ?,
-                folio = ?,
-                elaboro = ?,
-                partida = ?,
-                analista = ?,
-                total = ?,
-                pago = ?,
-                dependencia = ?,
-                actualizado_por = ?
-            WHERE id = ?
+                req = :req,
+                folio = :folio,
+                elaboro = :elaboro,
+                partida = :partida,
+                analista = :analista,
+                fecha_elaboracion = :fecha_elaboracion,
+                fecha_inicio_entrega = :fecha_inicio_entrega,
+                fecha_fin_entrega = :fecha_fin_entrega,
+                total = :total,
+                dia_pago = :dia_pago,
+                pago = :pago,
+                dependencia = :dependencia,
+                cotizacion_id = :cotizacion_id,
+                anio = :anio,
+                actualizado_por = :actualizado_por
+            WHERE id = :id
         ";
 
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
-            $datos['req'],
-            $datos['folio'],
-            $datos['elaboro'],
-            $datos['partida'],
-            $datos['analista'],
-            $datos['total'],
-            $datos['pago'],
-            $datos['dependencia'],
-            $datos['actualizado_por'],
-            $datos['id']
+            ':req' => $datos['req'],
+            ':folio' => $datos['folio'],
+            ':elaboro' => $datos['elaboro'],
+            ':partida' => $datos['partida'],
+            ':analista' => $datos['analista'],
+            ':fecha_elaboracion' => $datos['fecha_elaboracion'],
+            ':fecha_inicio_entrega' => $datos['fecha_inicio_entrega'],
+            ':fecha_fin_entrega' => $datos['fecha_fin_entrega'],
+            ':total' => $datos['total'],
+            ':dia_pago' => $datos['dia_pago'],
+            ':pago' => $datos['pago'],
+            ':dependencia' => $datos['dependencia'],
+            ':cotizacion_id' => $datos['cotizacion_id'],
+            ':anio' => $datos['anio'],
+            ':actualizado_por' => $datos['actualizado_por'],
+            ':id' => $datos['id']
         ]);
     }
 
@@ -106,6 +118,114 @@ class Adjudicados
         $stmt->execute([$id]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    // =========================
+    // Guardar adjudicación
+    // =========================
+    public function guardar($datos)
+    {
+
+        $sql = "
+            INSERT INTO adjudicados
+            (
+                req,
+                folio,
+                elaboro,
+                partida,
+                analista,
+                fecha_elaboracion,
+                fecha_inicio_entrega,
+                fecha_fin_entrega,
+                total,
+                dia_pago,
+                pago,
+                dependencia,
+                cotizacion_id,
+                anio,
+                creado_por
+            )
+            VALUES
+            (
+                :req,
+                :folio,
+                :elaboro,
+                :partida,
+                :analista,
+                :fecha_elaboracion,
+                :fecha_inicio_entrega,
+                :fecha_fin_entrega,
+                :total,
+                :dia_pago,
+                :pago,
+                :dependencia,
+                :cotizacion_id,
+                :anio,
+                :creado_por
+            )
+        ";
+
+
+        $stmt = $this->db->prepare($sql);
+
+
+        return $stmt->execute([
+
+            ':req' =>
+                $datos['req'],
+
+            ':folio' =>
+                $datos['folio'],
+
+            ':elaboro' =>
+                $datos['elaboro'],
+
+            ':partida' =>
+                $datos['partida'],
+
+            ':analista' =>
+                $datos['analista'],
+
+
+            ':fecha_elaboracion' =>
+                $datos['fecha_elaboracion'],
+
+            ':fecha_inicio_entrega' =>
+                $datos['fecha_inicio_entrega'],
+
+            ':fecha_fin_entrega' =>
+                $datos['fecha_fin_entrega'],
+
+
+            ':total' =>
+                $datos['total'],
+
+            ':dia_pago' =>
+                $datos['dia_pago'],
+
+
+            ':pago' =>
+                $datos['pago'],
+
+
+            ':dependencia' =>
+                $datos['dependencia'],
+
+
+            ':cotizacion_id' =>
+                $datos['cotizacion_id'],
+
+
+            ':anio' =>
+                $datos['anio'],
+
+
+            ':creado_por' =>
+                $datos['creado_por']
+
+        ]);
+
     }
 
 }

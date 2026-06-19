@@ -346,6 +346,6 @@
 <script>
 const BASE_URL = '<?= BASE_URL ?>';
 </script>
-
+<script src="<?= BASE_URL ?>assets/js/helpers/pagoToggle.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/nuevo.js"></script>

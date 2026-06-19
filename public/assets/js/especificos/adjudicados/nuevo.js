@@ -1,113 +1,115 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const buscador =
-        document.getElementById('buscar-cotizacion');
+    // =====================================================
+    // AUTOCOMPLETE COTIZACIONES
+    // =====================================================
 
-    const sugerencias =
-        document.getElementById('resultados-cotizacion');
+    const buscador = document.getElementById('buscar-cotizacion');
+    const sugerencias = document.getElementById('resultados-cotizacion');
 
-    buscador.addEventListener('keyup', async () => {
+    if (buscador && sugerencias) {
 
-        const texto = buscador.value.trim();
+        buscador.addEventListener('keyup', async () => {
 
-        if (texto.length < 2) {
+            const texto = buscador.value.trim();
 
-            sugerencias.style.display = 'none';
+            if (texto.length < 2) {
+                sugerencias.style.display = 'none';
+                return;
+            }
 
-            return;
-        }
+            const respuesta = await fetch(
+                BASE_URL +
+                'cotizaciones/buscar?q=' +
+                encodeURIComponent(texto)
+            );
 
-        const respuesta = await fetch(
-            BASE_URL +
-            'cotizaciones/buscar?q=' +
-            encodeURIComponent(texto)
-        );
+            const datos = await respuesta.json();
 
-        const datos = await respuesta.json();
+            sugerencias.innerHTML = '';
 
-        sugerencias.innerHTML = '';
+            if (!datos.length) {
+                sugerencias.style.display = 'none';
+                return;
+            }
 
-        if (!datos.length) {
+            datos.forEach(item => {
 
-            sugerencias.style.display = 'none';
+                const opcion = document.createElement('a');
 
-            return;
-        }
+                opcion.href = '#';
 
-        datos.forEach(item => {
+                opcion.className =
+                    'list-group-item list-group-item-action';
 
-            const opcion =
-                document.createElement('a');
+                opcion.innerHTML =
+                    `<strong>${item.req}</strong>
+                    <br>
+                    <small>N° ${item.folio}</small>`;
 
-            opcion.href = '#';
+                opcion.addEventListener('click', e => {
 
-            opcion.className =
-                'list-group-item list-group-item-action';
+                    e.preventDefault();
 
-            opcion.innerHTML =
-                `<strong>${item.req}</strong>
-                <br>
-                <small>N° ${item.folio}</small>`;
+                    document.getElementById('req').value =
+                        item.req ?? '';
 
-            opcion.addEventListener('click', e => {
+                    document.getElementById('folio').value =
+                        item.folio ?? '';
 
-                e.preventDefault();
+                    document.getElementById('elaboro').value =
+                        item.elaboro ?? '';
 
-                document.getElementById('req').value =
-                    item.req ?? '';
+                    document.getElementById('partida').value =
+                        item.partida ?? '';
 
-                document.getElementById('folio').value =
-                    item.folio ?? '';
+                    document.getElementById('analista').value =
+                        item.analista ?? '';
 
-                document.getElementById('elaboro').value =
-                    item.elaboro ?? '';
+                    buscador.value =
+                        item.req + ' - ' + item.folio;
 
-                document.getElementById('partida').value =
-                    item.partida ?? '';
+                    sugerencias.style.display = 'none';
+                });
 
-                document.getElementById('analista').value =
-                    item.analista ?? '';
-
-                buscador.value =
-                    item.req + ' - ' + item.folio;
-
-                sugerencias.style.display =
-                    'none';
+                sugerencias.appendChild(opcion);
             });
 
-            sugerencias.appendChild(opcion);
-
+            sugerencias.style.display = 'block';
         });
 
-        sugerencias.style.display =
-            'block';
+        document.addEventListener('click', e => {
 
-    });
-
-    document.addEventListener('click', e => {
-
-        if (
-            !buscador.contains(e.target) &&
-            !sugerencias.contains(e.target)
-        ) {
-
-            sugerencias.style.display =
-                'none';
-        }
-
-    });
-
+            if (
+                !buscador.contains(e.target) &&
+                !sugerencias.contains(e.target)
+            ) {
+                sugerencias.style.display = 'none';
+            }
+        });
+    }
 });
 
 
+// =====================================================
+// CONTROL ESTATUS DE PAGO (AHORA REUTILIZABLE)
+// =====================================================
+
+// 🔥 AQUÍ YA USAMOS TU HELPER NUEVO
+configurarControlPago({
+    pago: '#pago',
+    total: '#total',
+    diaPago: '#dia_pago'
+});
+
+
+// =====================================================
+// AUTOCOMPLETE DEPENDENCIA
+// =====================================================
+
 crearAutocomplete({
-
     input: '#dependencia',
-
     resultados: '#resultados-dependencia',
-
     url: 'adjudicados/buscar-dependencia',
-
     campo: 'dependencia'
-
-}); 
+});

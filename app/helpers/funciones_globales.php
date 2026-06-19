@@ -108,3 +108,25 @@
         return $html;
 
     }
+
+    // ================================
+    // L I M P I A R   T E X T O
+    // ================================
+    function limpiarTexto($texto = '')
+    {
+        $texto = trim($texto);
+
+        // elimina espacios dobles o triples
+        $texto = preg_replace('/\s+/', ' ', $texto);
+
+        return $texto;
+    }
+    // ================================
+    // T E X T O   M A Y U S C U L A S
+    // ================================
+    function limpiarTextoMayusculas($texto = '')
+    {
+        $texto = limpiarTexto($texto);
+
+        return mb_strtoupper($texto, 'UTF-8');
+    }
