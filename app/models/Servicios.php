@@ -156,4 +156,71 @@ class Servicio
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function buscarPredictivo($texto)
+    {
+
+        $sql = "
+        SELECT
+            id,
+            req,
+            folio,
+            elaboro,
+            partida,
+            analista
+        FROM cotizaciones
+        WHERE anio = :anio
+        AND (
+            req LIKE :texto
+            OR folio LIKE :texto
+        )
+        ORDER BY id DESC
+        LIMIT 10
+    ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+
+            ':anio' => date('Y'),
+
+            ':texto' => '%' . $texto . '%'
+
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // =========================
+// Buscar dependencias
+// =========================
+public function buscarDependencias($texto)
+{
+
+    $sql = "
+        SELECT DISTINCT
+            dependencia
+        FROM servicios
+        WHERE dependencia LIKE :texto
+        ORDER BY dependencia ASC
+        LIMIT 10
+    ";
+
+
+    $stmt = $this->db->prepare($sql);
+
+
+    $stmt->execute([
+
+        ':texto' => '%' . $texto . '%'
+
+    ]);
+
+
+    return $stmt->fetchAll(
+        PDO::FETCH_ASSOC
+    );
+
+}
+
 }
