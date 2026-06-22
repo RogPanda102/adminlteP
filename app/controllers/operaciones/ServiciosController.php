@@ -67,7 +67,6 @@ class ServiciosController extends BaseController
 
             redirect('login');
             exit;
-
         }
 
         $modelo = new Servicio();
@@ -118,7 +117,6 @@ class ServiciosController extends BaseController
 
             redirect('login');
             exit;
-
         }
 
         $datos = $this->cargar_datos();
@@ -148,6 +146,101 @@ class ServiciosController extends BaseController
     }
 
     // =========================
+    // Buscar servicios predictivo
+    // =========================
+    public function buscar()
+    {
+        if (!$this->permitido) {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+
+        $texto = trim(
+            $_GET['q'] ?? ''
+        );
+
+
+        if ($texto === '') {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+
+        $modelo = new Servicio();
+
+
+        $resultado = $modelo->buscarPredictivo(
+            $texto
+        );
+
+
+        header(
+            'Content-Type: application/json'
+        );
+
+
+        echo json_encode(
+            $resultado
+        );
+
+
+        exit;
+    }
+
+    // =========================
+    // Buscar dependencia predictiva
+    // =========================
+    public function buscarDependencia()
+    {
+
+        if (!$this->permitido) {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+
+        $texto = trim(
+            $_GET['q'] ?? ''
+        );
+
+
+        if ($texto === '') {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+
+        $modelo = new Servicio();
+
+
+        $datos =
+            $modelo->buscarDependencias(
+                $texto
+            );
+
+
+        header(
+            'Content-Type: application/json'
+        );
+
+
+        echo json_encode($datos);
+
+        exit;
+    }
+
+
+
+    // =========================
     // Guardar servicio
     // =========================
     public function guardar()
@@ -156,14 +249,12 @@ class ServiciosController extends BaseController
 
             redirect('login');
             exit;
-
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
             redirect('servicios/2026');
             exit;
-
         }
 
         $modelo = new Servicio();
