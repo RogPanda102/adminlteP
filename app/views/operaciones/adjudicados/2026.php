@@ -73,125 +73,80 @@ $adjudicados = $adjudicados ?? [];
 </main>
 
 <!-- ================= OFFCANVAS DETALLE ERP ================= -->
-<div class="offcanvas offcanvas-end" tabindex="-1"
-    id="offcanvasDetalleAdjudicacion"
-    style="width: 500px;">
-
-    <!-- HEADER ERP -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:520px;">
     <div class="offcanvas-header border-bottom flex-column align-items-start">
-
         <div class="d-flex justify-content-between w-100">
-
-            <h5 class="offcanvas-title mb-0">
-                Adjudicación <span id="erp-folio-title"></span>
+            <h5 class="offcanvas-title mb-0 fw-semibold">
+                Adjudicación <span id="erp-folio-title" class="text-primary"></span>
             </h5>
-
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-
         </div>
 
         <div class="mt-2 d-flex align-items-center gap-2">
-
-            <!-- ESTADO -->
-            <span id="erp-status" class="badge bg-secondary">
-                Pendiente
-            </span>
-
+            <span id="erp-status" class="badge bg-secondary px-3 py-2 rounded-pill">Pendiente</span>
         </div>
 
-        <!-- ACCIONES -->
-        <div class="mt-2 d-flex gap-2">
-
-            <button class="btn btn-sm btn-primary" id="btn-editar">
+        <div class="mt-2 d-flex gap-2 flex-wrap">
+            <button class="btn btn-sm btn-primary px-3" id="btn-editar">
                 ✏️ Editar
             </button>
-
-            <button class="btn btn-sm btn-outline-dark" id="btn-historial">
+            <button class="btn btn-sm btn-outline-dark px-3" id="btn-historial">
                 🕓 Historial
             </button>
-
         </div>
-
     </div>
 
-    <!-- BODY -->
-    <div class="offcanvas-body p-0">
+    <div class="offcanvas-body p-3 bg-light">
 
-        <!-- TABS -->
-        <ul class="nav nav-tabs px-3 pt-2">
-
-            <li class="nav-item">
-                <button class="nav-link active"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-general">
-                    General
-                </button>
-            </li>
-
-            <li class="nav-item">
-                <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-pagos">
-                    Pagos
-                </button>
-            </li>
-
-            <li class="nav-item">
-                <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-dependencia">
-                    Dependencia
-                </button>
-            </li>
-
-            <li class="nav-item">
-                <button class="nav-link"
-                    data-bs-toggle="tab"
-                    data-bs-target="#tab-fechas">
-                    Fechas
-                </button>
-            </li>
-
-        </ul>
-
-        <div class="tab-content p-3">
-
-            <!-- GENERAL -->
-            <div class="tab-pane fade show active" id="tab-general">
-
-                <div class="mb-2"><strong>REQ:</strong> <span id="det-req"></span></div>
-                <div class="mb-2"><strong>Folio:</strong> <span id="det-folio"></span></div>
-                <div class="mb-2"><strong>Elaboró:</strong> <span id="det-elaboro"></span></div>
-                <div class="mb-2"><strong>Partida:</strong> <span id="det-partida"></span></div>
-                <div class="mb-2"><strong>Analista:</strong> <span id="det-analista"></span></div>
-
+        <!-- CARD GENERAL -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-white border-bottom fw-semibold">
+                <i class="bi bi-info-circle me-1 text-primary"></i> General
             </div>
-
-            <!-- PAGOS -->
-            <div class="tab-pane fade" id="tab-pagos">
-
-                <div class="mb-2"><strong>Total:</strong> <span id="det-total"></span></div>
-                <div class="mb-2"><strong>Pago:</strong> <span id="det-pago"></span></div>
-                <div class="mb-2"><strong>Día pago:</strong> <span id="det-dia-pago"></span></div>
-
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">REQ</span><span id="det-req" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Folio</span><span id="det-folio" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Elaboró</span><span id="det-elaboro" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Partida</span><span id="det-partida" class="fw-semibold"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Analista</span><span id="det-analista" class="fw-semibold"></span></div>
             </div>
+        </div>
 
-            <!-- DEPENDENCIA -->
-            <div class="tab-pane fade" id="tab-dependencia">
-
-                <div class="mb-2"><strong>Dependencia:</strong> <span id="det-dependencia"></span></div>
-
+        <!-- CARD PAGOS -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-white border-bottom fw-semibold">
+                <i class="bi bi-cash-coin me-1 text-success"></i> Pagos
             </div>
-
-            <!-- FECHAS -->
-            <div class="tab-pane fade" id="tab-fechas">
-
-                <div class="mb-2"><strong>Elaboración:</strong> <span id="det-fecha-elaboracion"></span></div>
-                <div class="mb-2"><strong>Inicio entrega:</strong> <span id="det-fecha-inicio"></span></div>
-                <div class="mb-2"><strong>Fin entrega:</strong> <span id="det-fecha-fin"></span></div>
-
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Total</span><span id="det-total" class="fw-semibold text-success"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Estado</span><span id="det-pago" class="badge bg-light text-dark"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Día pago</span><span id="det-dia-pago" class="fw-semibold"></span></div>
             </div>
+        </div>
 
+        <!-- CARD DEPENDENCIA -->
+        <div class="card border-0 shadow-sm mb-3">
+            <div class="card-header bg-white border-bottom fw-semibold">
+                <i class="bi bi-building me-1 text-warning"></i> Dependencia
+            </div>
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Dependencia</span>
+                    <span id="det-dependencia" class="fw-semibold text-end"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARD FECHAS -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-bottom fw-semibold">
+                <i class="bi bi-calendar me-1 text-danger"></i> Fechas
+            </div>
+            <div class="card-body py-2">
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Elaboración</span><span id="det-fecha-elaboracion"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Inicio</span><span id="det-fecha-inicio"></span></div>
+                <div class="d-flex justify-content-between py-1"><span class="text-muted">Fin</span><span id="det-fecha-fin"></span></div>
+            </div>
         </div>
 
     </div>

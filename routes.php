@@ -138,6 +138,16 @@ $router->post(
     'operaciones\ServiciosController@guardar'
 );
 
+
+$router->get(
+    '/servicios/buscar',
+    'operaciones\ServiciosController@buscar'
+);
+
+$router->get(
+    '/servicios/buscar-dependencia',
+    'operaciones\ServiciosController@buscarDependencia'
+);
 /*
 |------------------------------------------------------------------
 | DATOS AJAX / DASHBOARD
