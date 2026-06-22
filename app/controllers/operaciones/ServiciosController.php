@@ -65,7 +65,7 @@ class ServiciosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
+            redirect('login');
             exit;
 
         }
@@ -90,8 +90,7 @@ class ServiciosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
 
         }
 
@@ -117,7 +116,7 @@ class ServiciosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
+            redirect('login');
             exit;
 
         }
@@ -155,14 +154,14 @@ class ServiciosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
+            redirect('login');
             exit;
 
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-            header('Location: ' . BASE_URL . 'servicios/2026');
+            redirect('servicios/2026');
             exit;
 
         }
@@ -193,8 +192,7 @@ class ServiciosController extends BaseController
             3000
         );
 
-        header(
-            'Location: ' . BASE_URL .
+        redirect(
             'servicios/' . $datos['anio']
         );
 

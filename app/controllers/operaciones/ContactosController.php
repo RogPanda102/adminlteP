@@ -59,8 +59,7 @@ class ContactosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
         }
 
         $analistaModel = new Analista();
@@ -87,19 +86,13 @@ class ContactosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-            header('Location: ' . BASE_URL . 'contactos');
-            exit;
+            redirect('contactos');
         }
-
-
-
-        $modelo = new Analista();
 
         $datos = [
 
@@ -109,6 +102,34 @@ class ContactosController extends BaseController
 
         ];
 
+        
+        if (
+            !validarRequerido(
+                $datos['nombre'],
+                'El nombre del analista es obligatorio'
+            )
+        ) {
+            redirect('contactos');
+        }
+
+        if (
+            !empty($datos['correo']) &&
+            !filter_var($datos['correo'], FILTER_VALIDATE_EMAIL)
+        ) {
+
+            mensaje(
+                'El correo no es válido',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('contactos');
+        }
+
+        $modelo = new Analista();
+
+        
+
         $modelo->guardar($datos);
 
         mensaje(
@@ -117,17 +138,9 @@ class ContactosController extends BaseController
             3000
         );
 
-        header(
-            'Location: ' .
-                BASE_URL .
-                'contactos'
+        redirect(
+            'contactos'
         );
-
-        if ($datos['nombre'] === '') {
-            mensaje('Nombre obligatorio', ALERT_ERROR, 3000);
-            header('Location: ' . BASE_URL . 'contactos');
-            exit;
-        }
 
         exit;
     }
@@ -139,17 +152,13 @@ class ContactosController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-            header('Location: ' . BASE_URL . 'contactos');
-            exit;
+            redirect('contactos');
         }
-
-        $modelo = new Encargado();
 
         $datos = [
 
@@ -159,6 +168,37 @@ class ContactosController extends BaseController
 
         ];
 
+        if (
+            !validarRequerido(
+                $datos['nombre'],
+                'El nombre del analista es obligatorio'
+            )
+        ) {
+            redirect('contactos');
+        }
+
+        if (
+            !validarRequerido(
+                $datos['dependencia'],
+                'La dependencia es obligatoria'
+            )
+        ) {
+            redirect('contactos');
+        }
+
+        if (empty($datos['dependencia'])) {
+
+            mensaje(
+                'La dependencia es obligatoria',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('contactos');
+        }
+
+        $modelo = new Encargado();
+
         $modelo->guardar($datos);
 
         mensaje(
@@ -167,10 +207,8 @@ class ContactosController extends BaseController
             3000
         );
 
-        header(
-            'Location: ' .
-                BASE_URL .
-                'contactos'
+        redirect(
+            'contactos'
         );
 
         exit;
