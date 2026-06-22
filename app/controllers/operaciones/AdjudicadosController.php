@@ -58,8 +58,7 @@ class AdjudicadosController extends BaseController
 
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
 
         }
 
@@ -165,14 +164,10 @@ class AdjudicadosController extends BaseController
     public function guardar()
     {
         if (!$this->permitido) {
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
         }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header(
-                'Location: ' . BASE_URL . 'adjudicados/2026'
-            );
-            exit;
+            redirect('adjudicados/2026');
         }
         $modelo = new Adjudicados();
         $datos = [
@@ -228,12 +223,9 @@ class AdjudicadosController extends BaseController
                 3000
             );
         }
-        header(
-            'Location: ' .
-            BASE_URL .
-            'adjudicados/2026'
+        redirect(
+            'adjudicados/' . $datos['anio']
         );
-        exit;
     }
 
     public function update()

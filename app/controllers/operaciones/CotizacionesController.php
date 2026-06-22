@@ -208,8 +208,7 @@ class CotizacionesController extends BaseController
             3000
         );
 
-        header(
-            'Location: ' . BASE_URL .
+        redirect(
             'cotizaciones/' . $datos['anio']
         );
 
