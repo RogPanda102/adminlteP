@@ -73,80 +73,163 @@ $adjudicados = $adjudicados ?? [];
 </main>
 
 <!-- ================= OFFCANVAS DETALLE ERP ================= -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:520px;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:720px; transition: all .3s ease;">
+
+    <!-- HEADER -->
     <div class="offcanvas-header border-bottom flex-column align-items-start">
+
         <div class="d-flex justify-content-between w-100">
             <h5 class="offcanvas-title mb-0 fw-semibold">
                 Adjudicación <span id="erp-folio-title" class="text-primary"></span>
             </h5>
+
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
 
         <div class="mt-2 d-flex align-items-center gap-2">
-            <span id="erp-status" class="badge bg-secondary px-3 py-2 rounded-pill">Pendiente</span>
+            <span id="erp-status" class="badge bg-secondary px-3 py-2 rounded-pill">
+                Pendiente
+            </span>
         </div>
 
         <div class="mt-2 d-flex gap-2 flex-wrap">
+
             <button class="btn btn-sm btn-primary px-3" id="btn-editar">
                 ✏️ Editar
             </button>
+
             <button class="btn btn-sm btn-outline-dark px-3" id="btn-historial">
                 🕓 Historial
             </button>
+
         </div>
+
     </div>
 
-    <div class="offcanvas-body p-3 bg-light">
+    <!-- BODY -->
+    <div class="offcanvas-body p-0 bg-light d-flex" id="erp-wrapper">
 
-        <!-- CARD GENERAL -->
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white border-bottom fw-semibold">
-                <i class="bi bi-info-circle me-1 text-primary"></i> General
-            </div>
-            <div class="card-body py-2">
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">REQ</span><span id="det-req" class="fw-semibold"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Folio</span><span id="det-folio" class="fw-semibold"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Elaboró</span><span id="det-elaboro" class="fw-semibold"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Partida</span><span id="det-partida" class="fw-semibold"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Analista</span><span id="det-analista" class="fw-semibold"></span></div>
-            </div>
-        </div>
+        <!-- ================= PANEL IZQUIERDO (DETALLE) ================= -->
+        <div id="erp-panel-detalle" class="p-3 flex-grow-1" style="width: 100%; transition: all .3s ease;">
 
-        <!-- CARD PAGOS -->
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white border-bottom fw-semibold">
-                <i class="bi bi-cash-coin me-1 text-success"></i> Pagos
-            </div>
-            <div class="card-body py-2">
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Total</span><span id="det-total" class="fw-semibold text-success"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Estado</span><span id="det-pago" class="badge bg-light text-dark"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Día pago</span><span id="det-dia-pago" class="fw-semibold"></span></div>
-            </div>
-        </div>
-
-        <!-- CARD DEPENDENCIA -->
-        <div class="card border-0 shadow-sm mb-3">
-            <div class="card-header bg-white border-bottom fw-semibold">
-                <i class="bi bi-building me-1 text-warning"></i> Dependencia
-            </div>
-            <div class="card-body py-2">
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Dependencia</span>
-                    <span id="det-dependencia" class="fw-semibold text-end"></span>
+            <!-- CARD GENERAL -->
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-white border-bottom fw-semibold">
+                    <i class="bi bi-info-circle me-1 text-primary"></i> General
+                </div>
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">REQ</span><span id="det-req" class="fw-semibold"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Folio</span><span id="det-folio" class="fw-semibold"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Elaboró</span><span id="det-elaboro" class="fw-semibold"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Partida</span><span id="det-partida" class="fw-semibold"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Analista</span><span id="det-analista" class="fw-semibold"></span>
+                    </div>
                 </div>
             </div>
+
+            <!-- PAGOS -->
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-white border-bottom fw-semibold">
+                    <i class="bi bi-cash-coin me-1 text-success"></i> Pagos
+                </div>
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Total</span><span id="det-total" class="fw-semibold text-success"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Estado</span><span id="det-pago" class="badge bg-light text-dark"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Día pago</span><span id="det-dia-pago"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DEPENDENCIA -->
+            <div class="card border-0 shadow-sm mb-3">
+                <div class="card-header bg-white border-bottom fw-semibold">
+                    <i class="bi bi-building me-1 text-warning"></i> Dependencia
+                </div>
+                <div class="card-body py-2">
+                    <span id="det-dependencia" class="fw-semibold"></span>
+                </div>
+            </div>
+
+            <!-- FECHAS -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-bottom fw-semibold">
+                    <i class="bi bi-calendar me-1 text-danger"></i> Fechas
+                </div>
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Elaboración</span><span id="det-fecha-elaboracion"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Inicio</span><span id="det-fecha-inicio"></span>
+                    </div>
+                    <div class="d-flex justify-content-between py-1">
+                        <span class="text-muted">Fin</span><span id="det-fecha-fin"></span>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- CARD FECHAS -->
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-bottom fw-semibold">
-                <i class="bi bi-calendar me-1 text-danger"></i> Fechas
+        <!-- ================= PANEL DERECHO (HISTORIAL) ================= -->
+        <div id="erp-panel-historial"
+            class="bg-white border-start d-flex flex-column"
+            style="width: 0; overflow: hidden; transition: all .3s ease;">
+
+            <!-- HEADER -->
+            <div class="p-3 border-bottom">
+                <h6 class="fw-bold mb-0">
+                    🕓 Historial
+                </h6>
+                <small class="text-muted">
+                    Auditoría de cambios del registro
+                </small>
             </div>
-            <div class="card-body py-2">
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Elaboración</span><span id="det-fecha-elaboracion"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Inicio</span><span id="det-fecha-inicio"></span></div>
-                <div class="d-flex justify-content-between py-1"><span class="text-muted">Fin</span><span id="det-fecha-fin"></span></div>
+
+            <!-- BODY SPLIT -->
+            <div class="d-flex h-100" id="historial-wrapper">
+
+                <!-- IZQUIERDA: LISTA -->
+                <div id="historial-lista"
+                    class="border-end"
+                    style="width: 40%; overflow-y: auto;">
+
+                    <div class="p-2 border-bottom fw-bold">
+                        🕓 Historial
+                    </div>
+
+                    <div id="historial-items" class="p-2">
+                        <small class="text-muted">Cargando...</small>
+                    </div>
+
+                </div>
+
+                <!-- DERECHA: DETALLE -->
+                <div id="historial-detalle"
+                    class="p-3"
+                    style="width: 60%;">
+
+                    <div class="text-muted">
+                        Selecciona un cambio para ver detalles
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
 
     </div>

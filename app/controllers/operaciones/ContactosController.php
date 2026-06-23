@@ -124,7 +124,7 @@ class ContactosController extends BaseController
         );
 
         if ($datos['nombre'] === '') {
-            mensaje('Nombre obligatorio', ALERT_ERROR, 3000);
+            mensaje('Nombre obligatorio', ALERT_DANGER, 3000);
             header('Location: ' . BASE_URL . 'contactos');
             exit;
         }
