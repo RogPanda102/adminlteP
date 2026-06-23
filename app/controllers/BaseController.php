@@ -4,6 +4,7 @@ require_once CORE_PATH . '/view.php';
 require_once CONFIG_PATH . '/database.php';
 require_once APP_PATH . '/helpers/funciones_globales.php';
 require_once APP_PATH . '/helpers/permisos.php';
+require_once APP_PATH . '/helpers/historial.php';
 
 class BaseController
 {
@@ -24,6 +25,12 @@ class BaseController
     // Renderizar vistas
     protected function render($vista, $datos = [])
     {
-        View::render($vista, $datos);
+
+        View::render(
+            $vista,
+            $datos
+        );
+
     }
+
 }

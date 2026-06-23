@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../BaseController.php';
+require_once APP_PATH . '/controllers/BaseController.php';
 require_once __DIR__ . '/../../models/Adjudicados.php';
 
 class AdjudicadosController extends BaseController
@@ -11,6 +11,8 @@ class AdjudicadosController extends BaseController
     // =========================
     public function __construct()
     {
+        parent::__construct();
+
         if (!isset($_SESSION['logueado'])) {
             $this->permitido = false;
         }
@@ -40,14 +42,13 @@ class AdjudicadosController extends BaseController
                 'tarea' => 'Adjudicados',
                 'href'  => '#'
             ),
-                    array(
+            array(
                 'tarea' => '2026',
                 'href'  => '#'
             )
         );
-        $datos['breadcrumb'] = breadcrumb( $datos['tarea'], $breadcrumb );
+        $datos['breadcrumb'] = breadcrumb($datos['tarea'], $breadcrumb);
         return $datos;
-
     }
 
     // =========================
@@ -69,15 +70,14 @@ class AdjudicadosController extends BaseController
         $datos = $this->cargar_datos();
 
         // Adjudicados
-         $datos['adjudicados'] =
-             $modelo->obtenerPorAnio(2026);
+        $datos['adjudicados'] =
+            $modelo->obtenerPorAnio(2026);
 
         // VISTA
         $this->render(
             'operaciones/adjudicados/2026',
             $datos
         );
-
     }
 
     // =========================
@@ -90,7 +90,6 @@ class AdjudicadosController extends BaseController
 
             header('Location: ' . BASE_URL . 'login');
             exit;
-
         }
 
         // MODELO
@@ -100,15 +99,14 @@ class AdjudicadosController extends BaseController
         $datos = $this->cargar_datos();
 
         // Adjudicados
-         $datos['adjudicados'] =
-             $modelo->obtenerPorAnio(2025);
+        $datos['adjudicados'] =
+            $modelo->obtenerPorAnio(2025);
 
         // VISTA
         $this->render(
             'operaciones/adjudicados/2025',
             $datos
         );
-
     }
     // =========================
     // CREAR FORMULARIO
@@ -117,7 +115,7 @@ class AdjudicadosController extends BaseController
     {
         // DATOS GENERALES
         $datos = $this->cargar_datos();
-        
+
         $datos['nombre_pagina'] = 'Adjudicados';
 
         $breadcrumb = [
@@ -187,27 +185,27 @@ class AdjudicadosController extends BaseController
                 $_POST['analista'] ?? ''
             ),
             'fecha_elaboracion' =>
-                $_POST['fecha_elaboracion'] ?? null,
+            $_POST['fecha_elaboracion'] ?? null,
             'fecha_inicio_entrega' =>
-                $_POST['fecha_inicio_entrega'] ?? null,
+            $_POST['fecha_inicio_entrega'] ?? null,
             'fecha_fin_entrega' =>
-                $_POST['fecha_fin_entrega'] ?? null,
+            $_POST['fecha_fin_entrega'] ?? null,
             'total' =>
-                $_POST['total'] ?? 0,
+            $_POST['total'] ?? 0,
             'dia_pago' =>
-                $_POST['dia_pago'] ?? null,
+            $_POST['dia_pago'] ?? null,
             'pago' =>
-                $_POST['pago'] ?? 'pendiente',
+            $_POST['pago'] ?? 'pendiente',
             'dependencia' =>
-                limpiarTextoMayusculas(
-                    $_POST['dependencia'] ?? ''
-                ),
+            limpiarTextoMayusculas(
+                $_POST['dependencia'] ?? ''
+            ),
             'cotizacion_id' =>
-                $_POST['cotizacion_id'] ?? null,
+            $_POST['cotizacion_id'] ?? null,
             'anio' =>
-                date('Y'),
+            date('Y'),
             'creado_por' =>
-                $_SESSION['usuario_id']
+            $_SESSION['usuario_id']
         ];
         $resultado = $modelo->guardar($datos);
         if ($resultado) {
@@ -232,48 +230,126 @@ class AdjudicadosController extends BaseController
     {
         header('Content-Type: application/json');
 
-        $input = json_decode(file_get_contents('php://input'), true);
+
+        $input = json_decode(
+            file_get_contents('php://input'),
+            true
+        );
+
 
         if (!$input) {
+
             echo json_encode([
                 'success' => false,
                 'message' => 'Datos inválidos'
             ]);
+
             return;
         }
 
+
         $modelo = new Adjudicados();
 
+
         $datos = [
+
             'id' => $input['id'],
+
             'req' => $input['req'],
+
             'folio' => $input['folio'],
+
             'elaboro' => $input['elaboro'],
+
             'partida' => $input['partida'],
+
             'analista' => $input['analista'],
-            'fecha_elaboracion' => $input['fecha_elaboracion'] ?? null,
-            'fecha_inicio_entrega' => $input['fecha_inicio_entrega'] ?? null,
-            'fecha_fin_entrega' => $input['fecha_fin_entrega'] ?? null,
-            'total' => $input['total'] ?? 0,
-            'dia_pago' => $input['dia_pago'] ?? null,
-            'pago' => $input['pago'],
-            'dependencia' => $input['dependencia'],
-            'cotizacion_id' => $input['cotizacion_id'] ?? null,
-            'anio' => date('Y'),
-            'actualizado_por' => $_SESSION['usuario_id']
+
+            'fecha_elaboracion' =>
+            $input['fecha_elaboracion'] ?? null,
+
+            'fecha_inicio_entrega' =>
+            $input['fecha_inicio_entrega'] ?? null,
+
+            'fecha_fin_entrega' =>
+            $input['fecha_fin_entrega'] ?? null,
+
+            'total' =>
+            $input['total'] ?? 0,
+
+            'dia_pago' =>
+            $input['dia_pago'] ?? null,
+
+            'pago' =>
+            $input['pago'],
+
+            'dependencia' =>
+            $input['dependencia'],
+
+            'cotizacion_id' =>
+            $input['cotizacion_id'] ?? null,
+
+            'anio' =>
+            date('Y'),
+
+            'actualizado_por' =>
+            $_SESSION['usuario_id']
+
         ];
 
-        $ok = $modelo->actualizar($datos);
+
+
+        // =========================
+        // HISTORIAL
+        // =========================
+
+        $antes = $modelo->buscarPorId(
+            $datos['id']
+        );
+
+
+
+        $ok = $modelo->actualizar(
+            $datos
+        );
+
+
 
         if ($ok) {
+
+
+            $despues = $modelo->buscarPorId(
+                $datos['id']
+            );
+
+
+            registrarHistorial(
+                'adjudicados',
+                $datos['id'],
+                'UPDATE',
+                $antes,
+                $despues
+            );
+
+
             echo json_encode([
+
                 'success' => true,
-                'message' => 'Actualizado correctamente'
+
+                'message' =>
+                'Actualizado correctamente'
+
             ]);
         } else {
+
+
             echo json_encode([
+
                 'success' => false,
-                'message' => 'Error al actualizar'
+
+                'message' =>
+                'Error al actualizar'
+
             ]);
         }
     }

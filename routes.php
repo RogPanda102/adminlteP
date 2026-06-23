@@ -81,6 +81,11 @@ $router->get(
     'operaciones\AdjudicadosController@adjudicados2025'
 );
 
+$router->get(
+    '/historial/adjudicados',
+    'operaciones\HistorialController@adjudicados'
+);
+
 /*
 |------------------------------------------------------------------
 | OPERACIONES - ADJUDICADOS / FORMULARIO / GUARDAR FORMULARIO
