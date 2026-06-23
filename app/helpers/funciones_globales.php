@@ -130,3 +130,23 @@
 
         return mb_strtoupper($texto, 'UTF-8');
     }
+    function redirect($ruta)
+    {
+        header('Location: ' . BASE_URL . $ruta);
+        exit;
+    }
+    function validarRequerido($valor, $mensaje)
+    {
+        if (empty(trim($valor))) {
+
+            mensaje(
+                $mensaje,
+                ALERT_DANGER,
+                3000
+            );
+
+            return false;
+        }
+
+        return true;
+    }

@@ -53,8 +53,7 @@ class ProveedoresController extends BaseController
 
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
 
         }
 
@@ -112,14 +111,12 @@ class ProveedoresController extends BaseController
     {
         if (!$this->permitido) {
 
-            header('Location: ' . BASE_URL . 'login');
-            exit;
+            redirect('login');
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-            header('Location: ' . BASE_URL . 'proveedores');
-            exit;
+            redirect('proveedores');
 
         }
 
@@ -148,12 +145,9 @@ class ProveedoresController extends BaseController
             3000
         );
 
-        header(
-            'Location: ' . BASE_URL .
+        redirect(
             'proveedores'
         );
-
-        exit;
     }
 
 }
