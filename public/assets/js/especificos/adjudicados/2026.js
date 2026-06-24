@@ -1,73 +1,241 @@
 let tabla;
-let historialAbierto = false;
 
 document.addEventListener('DOMContentLoaded', function () {
 
     // =====================================================
-    // TABLA ADJUDICADOS
+    // TABLA ADJUDICADOS ERP PRO
     // =====================================================
 
     tabla = new Tabulator('#tabla-adjudicados', {
 
         layout: 'fitColumns',
+
         pagination: true,
         paginationSize: 10,
+
+        movableColumns: true,
+
+        responsiveLayout: "collapse",
+
+
+        // ==============================
+        // ESTADO VISUAL DE FILA
+        // ==============================
 
         rowFormatter: function (row) {
 
             const data = row.getData();
             const estado = (data.pago || '').toLowerCase();
 
+            const el = row.getElement();
+
+
+            el.classList.remove(
+                'row-pagado',
+                'row-pendiente',
+                'row-cancelado'
+            );
+
+
             if (estado === 'pagado') {
-                row.getElement().classList.add('table-success');
+
+                el.classList.add('row-pagado');
+
             } else if (estado === 'pendiente') {
-                row.getElement().classList.add('table-light');
+
+                el.classList.add('row-pendiente');
+
             } else if (estado === 'cancelado') {
-                row.getElement().classList.add('table-danger');
+
+                el.classList.add('row-cancelado');
+
             }
+
         },
 
+
         columns: [
-            { title: 'REQ', field: 'req' },
-            { title: 'Folio', field: 'folio' },
-            { title: 'Elaboró', field: 'elaboro' },
-            { title: 'Partida', field: 'partida' },
+
+
+            // ==============================
+            // REQ
+            // ==============================
 
             {
-                title: 'Fecha Elaboración',
-                field: 'fecha_elaboracion',
-                formatter: cell => {
+                title: "REQ",
+                field: "req",
+                width: 110,
+                hozAlign: "center",
 
-                    const v = cell.getValue();
-                    if (!v) return '';
+                formatter: function (cell) {
 
-                    const f = new Date(v + 'T00:00:00');
+                    return `
+                    <span class="fw-semibold">
+                        ${cell.getValue() || ''}
+                    </span>
+                `;
 
-                    return f.toLocaleDateString('es-MX', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric'
-                    });
                 }
             },
 
+
+            // ==============================
+            // FOLIO
+            // ==============================
+
             {
-                title: 'Total',
-                field: 'total',
-                hozAlign: 'right',
-                formatter: cell => {
+                title: "FOLIO",
+                field: "folio",
+                width: 110,
+                hozAlign: "center",
 
-                    const v = parseFloat(cell.getValue() || 0);
+                formatter: function (cell) {
 
-                    return v.toLocaleString('es-MX', {
-                        style: 'currency',
-                        currency: 'MXN'
-                    });
+                    return `
+                    <span class="folio-badge">
+                        ${cell.getValue() || ''}
+                    </span>
+                `;
+
                 }
+            },
+
+
+            // ==============================
+            // ELABORÓ
+            // ==============================
+
+            {
+                title: "ELABORÓ",
+                field: "elaboro",
+
+                formatter: function (cell) {
+
+                    return `
+
+                <div class="erp-main-cell">
+
+                    <div class="erp-title">
+                        ${cell.getValue() || ''}
+                    </div>
+
+                </div>
+
+                `;
+
+                }
+            },
+
+
+            // ==============================
+            // PARTIDA
+            // ==============================
+
+            {
+                title: "PARTIDA",
+                field: "partida",
+
+                formatter: function (cell) {
+
+                    return `
+
+                    <span class="erp-sub">
+                        ${cell.getValue() || ''}
+                    </span>
+
+                `;
+
+                }
+            },
+
+
+            // ==============================
+            // FECHA
+            // ==============================
+
+            {
+                title: "FECHA ELABORACIÓN",
+                field: "fecha_elaboracion",
+                width: 170,
+
+                formatter: function (cell) {
+
+                    const v = cell.getValue();
+
+                    if (!v) return "";
+
+
+                    const f = new Date(v + "T00:00:00");
+
+
+                    return `
+
+                    <div class="erp-date">
+
+                        ${f.toLocaleDateString(
+                        'es-MX',
+                        {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        }
+                    )}
+
+                    </div>
+
+                `;
+
+                }
+
+            },
+
+
+            // ==============================
+            // TOTAL
+            // ==============================
+
+            {
+                title: "TOTAL",
+                field: "total",
+
+                hozAlign: "right",
+
+                width: 150,
+
+
+                formatter: function (cell) {
+
+                    const v = parseFloat(
+                        cell.getValue() || 0
+                    );
+
+
+                    return `
+
+                    <div class="erp-total">
+
+                        ${v.toLocaleString(
+                        'es-MX',
+                        {
+                            style: 'currency',
+                            currency: 'MXN'
+                        }
+                    )}
+
+                    </div>
+
+                `;
+
+                }
+
             }
+
+
         ],
 
+
         data: window.adjudicados || []
+
     });
 
     // =====================================================
@@ -115,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-        // =====================================================
+    // =====================================================
     // EDITAR MODAL
     // =====================================================
 
@@ -184,6 +352,15 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('formEditarAdjudicacion')?.addEventListener('submit', function (e) {
 
         e.preventDefault();
+        const folioInput = document.getElementById('edit-folio');
+        let folio = folioInput.value.trim();
+
+        // fuerza solo números y máximo 4 dígitos
+        folio = folio.replace(/\D/g, '').slice(0, 4);
+
+        // lo regresas al input (UX)
+        folioInput.value = folio;
+
 
         const payload = {
 
@@ -241,119 +418,253 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const btnHistorial = document.getElementById('btn-historial');
 
+
     btnHistorial?.addEventListener('click', async function () {
 
+
         const id = window.currentAdjudicacion?.id;
+
         if (!id) return;
 
-        const panelHistorial = document.getElementById('erp-panel-historial');
-        const panelDetalle = document.getElementById('erp-panel-detalle');
 
-        if (!panelHistorial || !panelDetalle) return;
+        const itemsContainer = document.getElementById('historial-items');
 
-        if (!historialAbierto) {
+        const detalleContainer = document.getElementById('historial-detalle');
 
-            historialAbierto = true;
 
-            panelDetalle.style.width = '60%';
-            panelHistorial.style.width = '60%';
+        if (!itemsContainer || !detalleContainer) return;
 
-            document.getElementById('historial-items').innerHTML =
-                `<small class="text-muted">Cargando...</small>`;
 
-            document.getElementById('historial-detalle').innerHTML =
-                `<div class="text-muted">Selecciona un cambio</div>`;
 
-            try {
+        // estado inicial
 
-                const res = await fetch(`${BASE_URL}historial/adjudicados&id=${id}`);
-                const json = await res.json();
+        itemsContainer.innerHTML = `
 
-                if (!json.success) throw new Error(json.message);
+        <div class="text-muted small">
 
-                const data = json.data || [];
+            Cargando historial...
 
-                window.historialData = data;
+        </div>
 
-                const itemsContainer = document.getElementById('historial-items');
+    `;
 
-                if (!data.length) {
-                    itemsContainer.innerHTML =
-                        `<div class="text-muted">Sin cambios registrados</div>`;
-                    return;
-                }
 
-                itemsContainer.innerHTML = data.map((item, index) => {
+        detalleContainer.innerHTML = `
 
-                    const fecha = item.fecha
-                        ? new Date(item.fecha).toLocaleString('es-MX')
-                        : '';
+        <div class="text-muted small">
 
-                    return `
-                        <div class="hist-item border-bottom py-2 px-2"
-                             data-index="${index}"
-                             style="cursor:pointer">
+            Selecciona un cambio para ver el detalle
 
-                            <div class="fw-bold text-primary">
-                                ${item.accion}
-                            </div>
+        </div>
 
-                            <small class="text-muted">
-                                ${fecha}
-                            </small>
+    `;
 
-                        </div>
-                    `;
-                }).join('');
 
-                // CLICK EN ITEMS
-                document.querySelectorAll('.hist-item').forEach(el => {
 
-                    el.addEventListener('click', function () {
+        try {
 
-                        const index = this.dataset.index;
-                        const item = window.historialData[index];
 
-                        renderHistorialDetalle(item);
-                    });
-                });
+            const res = await fetch(
+                `${BASE_URL}historial/adjudicados&id=${id}`
+            );
 
-            } catch (err) {
 
-                document.getElementById('historial-items').innerHTML =
-                    `<div class="text-danger">Error cargando historial</div>`;
+            const json = await res.json();
+
+
+
+            if (!json.success) {
+
+                throw new Error(json.message);
+
             }
 
-            return;
+
+
+            const data = json.data || [];
+
+
+
+            window.historialData = data;
+
+
+
+            if (!data.length) {
+
+
+                itemsContainer.innerHTML = `
+
+                <div class="text-muted">
+
+                    Sin cambios registrados
+
+                </div>
+
+            `;
+
+
+                return;
+
+            }
+
+
+
+
+
+            itemsContainer.innerHTML = data.map((item, index) => {
+
+
+                const fecha = item.fecha
+
+                    ? new Date(item.fecha)
+                        .toLocaleString('es-MX')
+
+                    : '';
+
+
+
+                let badge = 'bg-primary';
+
+
+
+                if (item.accion === 'CREATE') {
+
+                    badge = 'bg-success';
+
+                }
+
+
+                if (item.accion === 'DELETE') {
+
+                    badge = 'bg-danger';
+
+                }
+
+
+
+
+
+                return `
+
+                <div class="hist-item p-3 mb-2 border rounded shadow-sm"
+
+                     data-index="${index}"
+
+                     style="cursor:pointer">
+
+
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+
+                        <span class="badge ${badge}">
+
+                            ${item.accion}
+
+                        </span>
+
+
+                        <small class="text-muted">
+
+                            ${fecha}
+
+                        </small>
+
+
+                    </div>
+
+
+
+                </div>
+
+            `;
+
+
+            }).join('');
+
+
+
+
+
+
+            document.querySelectorAll('.hist-item')
+
+                .forEach(item => {
+
+
+
+                    item.addEventListener('click', function () {
+
+
+
+                        document.querySelectorAll('.hist-item')
+
+                            .forEach(el => {
+
+                                el.classList.remove('border-primary');
+
+                            });
+
+
+
+                        this.classList.add('border-primary');
+
+
+
+
+                        const index = this.dataset.index;
+
+
+
+                        const registro = window.historialData[index];
+
+
+
+                        renderHistorialDetalle(registro);
+
+
+
+                    });
+
+
+
+                });
+
+
+
+
+
+        } catch (error) {
+
+
+
+            console.error(error);
+
+
+
+            itemsContainer.innerHTML = `
+
+            <div class="text-danger">
+
+                Error cargando historial
+
+            </div>
+
+        `;
+
+
         }
 
-        historialAbierto = false;
-        cerrarHistorial();
+
     });
 
 });
 
 // =====================================================
-// HELPERS
-// =====================================================
-
-function cerrarHistorial() {
-
-    const panelHistorial = document.getElementById('erp-panel-historial');
-    const panelDetalle = document.getElementById('erp-panel-detalle');
-
-    if (panelHistorial) panelHistorial.style.width = '0%';
-    if (panelDetalle) panelDetalle.style.width = '100%';
-
-    historialAbierto = false;
-}
-
-// =====================================================
 // DETALLE PRO DEL HISTORIAL
 // =====================================================
 
-function renderHistorialDetalle(item)
-{
+function renderHistorialDetalle(item) {
     const container = document.getElementById('historial-detalle');
 
     // =========================
@@ -406,7 +717,7 @@ function renderHistorialDetalle(item)
             </div>
 
             <div class="text-muted small">
-                👤 Usuario ID: ${item.usuario_id ?? 'N/A'}
+                👤 Modificado por: ${item.usuario ?? 'N/A'}
             </div>
 
             <div class="text-muted small">

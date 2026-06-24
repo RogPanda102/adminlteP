@@ -1,7 +1,7 @@
 <?php
 $adjudicados = $adjudicados ?? [];
 ?>
-<!-- TABULATOR CSS -->
+
 <link
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css"
@@ -15,6 +15,78 @@ $adjudicados = $adjudicados ?? [];
     #tabla-adjudicados .tabulator-row:hover {
         background-color: rgba(13, 110, 253, 0.08);
     }
+    /* ===============================
+    FILAS ERP STYLE
+    ================================*/
+    .tabulator-row {
+        border-left: 4px solid transparent;
+        transition: all .2s ease;
+    }
+
+    .tabulator-row:hover {
+        background: #f8fafc !important;
+    }
+
+    /* estados */
+    .row-pagado {
+        border-left: 4px solid #16a34a;
+    }
+
+    .row-pendiente {
+        border-left: 4px solid #f59e0b;
+    }
+
+    .row-cancelado {
+        border-left: 4px solid #dc2626;
+    }
+
+    /* ===============================
+    FOLIO BADGE (KEY ERP DATA)
+    ================================*/
+    .folio-badge {
+        background: #1f4b99;
+        color: #fff;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    /* ===============================
+    CELDA PRINCIPAL
+    ================================*/
+    .erp-main-cell {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .erp-title {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .erp-sub {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* ===============================
+    FECHA
+    ================================*/
+    .erp-date {
+        font-size: 13px;
+        color: #374151;
+    }
+
+    /* ===============================
+    TOTAL (IMPORTANTE VISUAL)
+    ================================*/
+    .erp-total {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+
 </style>
 
 <main class="app-main">
@@ -73,7 +145,7 @@ $adjudicados = $adjudicados ?? [];
 </main>
 
 <!-- ================= OFFCANVAS DETALLE ERP ================= -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:720px; transition: all .3s ease;">
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:420px; transition: all .3s ease;">
 
     <!-- HEADER -->
     <div class="offcanvas-header border-bottom flex-column align-items-start">
@@ -109,10 +181,10 @@ $adjudicados = $adjudicados ?? [];
     <!-- BODY -->
     <div class="offcanvas-body p-0 bg-light d-flex" id="erp-wrapper">
 
-        <!-- ================= PANEL IZQUIERDO (DETALLE) ================= -->
-        <div id="erp-panel-detalle" class="p-3 flex-grow-1" style="width: 100%; transition: all .3s ease;">
+        <!-- ================= PANEL DETALLE ================= -->
+        <div id="erp-panel-detalle" class="p-3" style="width:100%; transition:all .3s ease;">
 
-            <!-- CARD GENERAL -->
+            <!-- GENERAL -->
             <div class="card border-0 shadow-sm mb-3">
                 <div class="card-header bg-white border-bottom fw-semibold">
                     <i class="bi bi-info-circle me-1 text-primary"></i> General
@@ -165,7 +237,7 @@ $adjudicados = $adjudicados ?? [];
             </div>
 
             <!-- FECHAS -->
-            <div class="card border-0 shadow-sm">
+            <div class="card border-0 shadow-sm mb-3">
                 <div class="card-header bg-white border-bottom fw-semibold">
                     <i class="bi bi-calendar me-1 text-danger"></i> Fechas
                 </div>
@@ -182,60 +254,36 @@ $adjudicados = $adjudicados ?? [];
                 </div>
             </div>
 
-        </div>
+            <!-- ================= HISTORIAL (REUBICADO AQUÍ) ================= -->
+            <div class="card border-0 shadow-sm mb-3">
 
-        <!-- ================= PANEL DERECHO (HISTORIAL) ================= -->
-        <div id="erp-panel-historial"
-            class="bg-white border-start d-flex flex-column"
-            style="width: 0; overflow: hidden; transition: all .3s ease;">
+                <div class="card-header bg-white border-bottom fw-semibold">
+                    <i class="bi bi-clock-history text-primary me-1"></i>
+                    Auditoría del registro
+                </div>
 
-            <!-- HEADER -->
-            <div class="p-3 border-bottom">
-                <h6 class="fw-bold mb-0">
-                    🕓 Historial
-                </h6>
-                <small class="text-muted">
-                    Auditoría de cambios del registro
-                </small>
-            </div>
+                <div class="card-body">
 
-            <!-- BODY SPLIT -->
-            <div class="d-flex h-100" id="historial-wrapper">
-
-                <!-- IZQUIERDA: LISTA -->
-                <div id="historial-lista"
-                    class="border-end"
-                    style="width: 40%; overflow-y: auto;">
-
-                    <div class="p-2 border-bottom fw-bold">
-                        🕓 Historial
+                    <div id="historial-items">
+                        <div class="text-muted small">
+                            Presiona historial para cargar cambios
+                        </div>
                     </div>
 
-                    <div id="historial-items" class="p-2">
-                        <small class="text-muted">Cargando...</small>
+                    <div id="historial-detalle" class="mt-3">
+                        <div class="text-muted small">
+                            Selecciona un cambio para ver el detalle
+                        </div>
                     </div>
 
                 </div>
-
-                <!-- DERECHA: DETALLE -->
-                <div id="historial-detalle"
-                    class="p-3"
-                    style="width: 60%;">
-
-                    <div class="text-muted">
-                        Selecciona un cambio para ver detalles
-                    </div>
-
-                </div>
-
             </div>
 
         </div>
-
     </div>
 </div>
-<!-- ================= MODAL EDITAR ADJUDICACION ================= -->
 
+<!-- ================= MODAL EDITAR ADJUDICACION ================= -->
 <div class="modal fade" id="modalEditarAdjudicacion" tabindex="-1">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content shadow-lg">
@@ -258,7 +306,7 @@ $adjudicados = $adjudicados ?? [];
                     <input type="hidden" id="edit-cotizacion_id">
                     <input type="hidden" id="edit-anio">
 
-                    <!-- ================= GENERAL ================= -->
+                    <!-- GENERAL -->
                     <div class="card mb-1">
                         <div class="card-header bg-light py-2 section-toggle" data-target="#sec-general">
                             <strong><i class="bi bi-info-circle me-1"></i>Información general</strong>
@@ -272,7 +320,7 @@ $adjudicados = $adjudicados ?? [];
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label mb-0">Folio</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-folio">
+                                        <input type="text" class="form-control form-control-sm" id="edit-folio" maxlength="4">
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label mb-0">Elaboró</label>
@@ -291,7 +339,7 @@ $adjudicados = $adjudicados ?? [];
                         </div>
                     </div>
 
-                    <!-- ================= FECHAS ================= -->
+                    <!-- FECHAS -->
                     <div class="card mb-1">
                         <div class="card-header bg-light py-2 section-toggle" data-target="#sec-fechas">
                             <strong><i class="bi bi-calendar me-1"></i>Fechas</strong>
@@ -316,7 +364,7 @@ $adjudicados = $adjudicados ?? [];
                         </div>
                     </div>
 
-                    <!-- ================= PAGOS ================= -->
+                    <!-- PAGOS -->
                     <div class="card mb-1">
                         <div class="card-header bg-light py-2 section-toggle" data-target="#sec-pago">
                             <strong><i class="bi bi-cash-coin me-1"></i>Pago</strong>
@@ -345,7 +393,7 @@ $adjudicados = $adjudicados ?? [];
                         </div>
                     </div>
 
-                    <!-- ================= DEPENDENCIA ================= -->
+                    <!-- DEPENDENCIA -->
                     <div class="card mb-1">
                         <div class="card-header bg-light py-2 section-toggle" data-target="#sec-dep">
                             <strong><i class="bi bi-building me-1"></i>Dependencia</strong>
@@ -372,18 +420,15 @@ $adjudicados = $adjudicados ?? [];
     </div>
 </div>
 
-
-
-<!-- TABULATOR JS -->
-<script
-    src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/js/tabulator.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/js/tabulator.min.js"></script>
 
 <script>
     window.adjudicados = <?= json_encode($adjudicados) ?>;
 </script>
+
 <script>
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
+
 <script src="<?= BASE_URL ?>assets/js/helpers/pagoToggle.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/2026.js"></script>
