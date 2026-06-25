@@ -18,10 +18,11 @@ class Usuario
     public function buscarPorUsuario($usuario)
     {
 
-        $sql = "SELECT *
-                FROM usuarios
-                WHERE usuario = :usuario
-                AND eliminado = 0
+        $sql = "SELECT u.*, r.nombre AS rol
+                FROM usuarios u
+                INNER JOIN roles r ON r.id = u.rol_id
+                WHERE u.usuario = :usuario
+                AND u.eliminado = 0
                 LIMIT 1";
 
         $query = $this->conexion->prepare($sql);
@@ -31,7 +32,6 @@ class Usuario
         $query->execute();
 
         return $query->fetch(PDO::FETCH_ASSOC);
-
     }
 
     public function buscarPorCorreo($correo)
@@ -50,7 +50,6 @@ class Usuario
         $query->execute();
 
         return $query->fetch(PDO::FETCH_ASSOC);
-
     }
     public function crearUsuario($datos)
     {
@@ -88,6 +87,39 @@ class Usuario
             ':password'           => $datos['password']
         ]);
     }
-    
 
+    public function estadisticasUsuario($usuario_id)
+    {
+        $sql = "
+        SELECT
+            SUM(CASE WHEN estado = 'pendiente' THEN 1 ELSE 0 END) AS pendientes,
+            SUM(CASE WHEN estado = 'proceso' THEN 1 ELSE 0 END) AS proceso,
+            SUM(CASE WHEN estado = 'completado' THEN 1 ELSE 0 END) AS completados
+        FROM adjudicaciones
+        WHERE usuario_id = :id
+    ";
+
+        $query = $this->conexion->prepare($sql);
+        $query->bindParam(':id', $usuario_id);
+        $query->execute();
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function actividadReciente($usuario_id, $limit = 10)
+    {
+        $sql = "
+        SELECT *
+        FROM actividad_usuario
+        WHERE usuario_id = :id
+        ORDER BY created_at DESC
+        LIMIT $limit
+    ";
+
+        $query = $this->conexion->prepare($sql);
+        $query->bindParam(':id', $usuario_id);
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
