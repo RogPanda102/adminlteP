@@ -110,7 +110,18 @@ class HomeController extends BaseController
         $datos = array();
 
         $datos['nombre_usuario'] = $_SESSION['usuario_nombre'];
-        $datos['foto_usuario'] = BASE_URL . 'assets/upload/usuarios/' . $_SESSION['foto_usuario'];
+
+        if (!empty($_SESSION['foto_usuario'])) {
+            $datos['foto_usuario'] =
+                BASE_URL . 'assets/upload/usuarios/' . $_SESSION['foto_usuario'];
+        } else {
+            $datos['foto_usuario'] =
+                BASE_URL . 'assets/upload/usuarios/default.webp';
+        }
+
+
+
+
         $datos['tarea'] = 'Dashboard';
 
         $breadcrumb = array(

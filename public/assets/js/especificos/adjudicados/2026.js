@@ -1,74 +1,45 @@
 let tabla;
 
 document.addEventListener('DOMContentLoaded', function () {
-
     // =====================================================
     // TABLA ADJUDICADOS ERP PRO
     // =====================================================
-
     tabla = new Tabulator('#tabla-adjudicados', {
-
         layout: 'fitColumns',
-
         pagination: true,
         paginationSize: 10,
-
         movableColumns: true,
-
         responsiveLayout: "collapse",
-
-
         // ==============================
         // ESTADO VISUAL DE FILA
         // ==============================
-
         rowFormatter: function (row) {
-
             const data = row.getData();
             const estado = (data.pago || '').toLowerCase();
-
             const el = row.getElement();
-
-
             el.classList.remove(
                 'row-pagado',
                 'row-pendiente',
                 'row-cancelado'
             );
-
-
             if (estado === 'pagado') {
-
                 el.classList.add('row-pagado');
-
             } else if (estado === 'pendiente') {
-
                 el.classList.add('row-pendiente');
-
             } else if (estado === 'cancelado') {
-
                 el.classList.add('row-cancelado');
-
             }
-
         },
-
-
         columns: [
-
-
             // ==============================
             // REQ
             // ==============================
-
             {
                 title: "REQ",
                 field: "req",
-                width: 110,
+                
                 hozAlign: "center",
-
                 formatter: function (cell) {
-
                     return `
                     <span class="fw-semibold">
                         ${cell.getValue() || ''}
@@ -86,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 title: "FOLIO",
                 field: "folio",
-                width: 110,
+                
                 hozAlign: "center",
 
                 formatter: function (cell) {
@@ -108,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 title: "ELABORÓ",
                 field: "elaboro",
-
+                
                 formatter: function (cell) {
 
                     return `
@@ -134,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 title: "PARTIDA",
                 field: "partida",
+                
 
                 formatter: function (cell) {
 
@@ -156,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function () {
             {
                 title: "FECHA ELABORACIÓN",
                 field: "fecha_elaboracion",
-                width: 170,
+               
 
                 formatter: function (cell) {
 
