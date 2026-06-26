@@ -89,7 +89,9 @@ class Servicio
                 inicio,
                 finalizacion,
                 dependencia,
-                anio
+                anio,
+                creado_por,
+                actualizado_por
             )
             VALUES
             (
@@ -103,7 +105,9 @@ class Servicio
                 :inicio,
                 :finalizacion,
                 :dependencia,
-                :anio
+                :anio,
+                :creado_por,
+                :actualizado_por
             )
         ";
 
@@ -120,7 +124,9 @@ class Servicio
             ':inicio'              => $datos['inicio'],
             ':finalizacion'        => $datos['finalizacion'],
             ':dependencia'         => $datos['dependencia'],
-            ':anio'                => $datos['anio']
+            ':anio'                => $datos['anio'],
+            ':creado_por'          => $datos['creado_por'],
+            ':actualizado_por'     => $datos['actualizado_por']
         ]);
     }
 
