@@ -271,7 +271,9 @@ class ServiciosController extends BaseController
             'inicio'              => $_POST['inicio'] ?? null,
             'finalizacion'        => $_POST['finalizacion'] ?? null,
             'dependencia'         => trim($_POST['dependencia'] ?? ''),
-            'anio'                => $_POST['anio'] ?? null
+            'anio'                => $_POST['anio'] ?? null,
+            'creado_por'          => $_SESSION['usuario_id'] ?? null,
+            'actualizado_por'     => null
 
         ];
 

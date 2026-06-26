@@ -212,6 +212,17 @@ $router->post(
     '/contactos/guardarEncargado',
     'operaciones\ContactosController@guardarEncargado'
 );
+
+/*
+|------------------------------------------------------------------
+| ADMINISTRACION - PERFIL
+|------------------------------------------------------------------
+*/
+
+$router->get(
+    '/perfil',
+    'operaciones\UsuarioController@perfil'
+);
 /*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER

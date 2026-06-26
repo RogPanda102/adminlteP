@@ -328,7 +328,7 @@ $nombre_usuario = $nombre_usuario ?? '';
                 <!--end::Menu Body-->
                 <!--begin::Menu Footer-->
                 <li class="user-footer">
-                  <a href="#" class="btn btn-outline-secondary">Profile</a>
+                  <a href="<?= BASE_URL ?>perfil" class="btn btn-outline-secondary">Profile</a>
                   <a href="<?= BASE_URL ?>logout" class="btn btn-outline-danger float-end"> Cerrar sesión</a>
                 </li>
                 <!--end::Menu Footer-->
