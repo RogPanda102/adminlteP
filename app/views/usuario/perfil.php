@@ -1,6 +1,7 @@
 <?php
 
-$usuario = $usuario ?? [];
+$nombre_usuario = $nombre_usuario ?? '';
+$foto_usuario = $foto_usuario ?? '';
 $estadisticas = $estadisticas ?? [];
 $actividad = $actividad ?? [];
 
@@ -17,14 +18,14 @@ $actividad = $actividad ?? [];
                     <div class="card">
                         <div class="card-body text-center">
                             <img
-                                src="<?= BASE_URL ?>assets/img/default-user.png"
+                                src="<?= $foto_usuario ?>"
                                 class="img-fluid rounded-circle mb-3"
                                 width="100"
                                 height="100"
                                 alt="Foto de perfil" />
                             <h3 class="h5 mb-0">
-                                <?= $usuario['nombre'] ?>
-                                <?= $usuario['apellido_paterno'] ?>
+                                <?= $nombre_usuario ?>
+                                
                             </h3>
                             <p class="text-secondary mb-3">Product Designer</p>
                             <ul class="list-group list-group-flush text-start small">
