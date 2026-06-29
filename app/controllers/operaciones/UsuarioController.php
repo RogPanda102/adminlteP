@@ -36,6 +36,7 @@ class UsuarioController extends BaseController
             BASE_URL .
             'assets/upload/usuarios/' .
             $_SESSION['foto_usuario'];
+            
 
         // =========================
         // MODULO
@@ -82,11 +83,7 @@ class UsuarioController extends BaseController
 
         $datos = $this->cargar_datos();
 
-        $datos['usuario'] =
-            $modelo->buscarPorId(
-                $_SESSION['usuario_id']
-            );
-
+        $datos['usuario'] = $modelo->buscarPorId( $_SESSION['usuario_id']);
         $this->render(
             'usuario/perfil',
             $datos
