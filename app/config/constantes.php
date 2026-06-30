@@ -54,8 +54,12 @@ define("TAREA_USUARIOS", 'tarea_usuarios');
 define("TAREA_USUARIO_NUEVO", 'tarea_usuario_nuevo');
 define("TAREA_USUARIO_DETALLES", 'tarea_usuario_detalles');
 
-define("TAREA_PRODUCTOS", 'tarea_productos');
-define("TAREA_VENTAS", 'tarea_ventas');
+define("TAREA_COTIZACIONES", 'tarea_cotizaciones');
+define("TAREA_ADJUDICADOS", 'tarea_adjudicados');
+define("TAREA_SERVICIOS", 'tarea_servicios');
+
+define("TAREA_PROVEEDORES", 'tarea_proveedores');
+define("TAREA_CONTACTOS", 'tarea_contactos');
 
 /*
 |--------------------------------------------------------------------------
@@ -69,8 +73,11 @@ define("ACCESO_ADMINISTRADOR", [
     TAREA_USUARIOS,
     TAREA_USUARIO_NUEVO,
     TAREA_USUARIO_DETALLES,
-    TAREA_PRODUCTOS,
-    TAREA_VENTAS
+    TAREA_COTIZACIONES,
+    TAREA_ADJUDICADOS,
+    TAREA_SERVICIOS,
+    TAREA_PROVEEDORES,
+    TAREA_CONTACTOS
 ]);
 
 define("ACCESO_USUARIO", [
