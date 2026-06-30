@@ -123,22 +123,25 @@ class Usuario
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function buscarPorId($usuario_id)
+    public function buscarPorId($id)
     {
-        $sql = "SELECT u.*, r.nombre AS rol
-                FROM usuarios u
-                INNER JOIN roles r
-                    ON r.id = u.rol_id
-                WHERE u.id = :id
-                AND u.eliminado = 0
+
+        $sql = "SELECT *
+                FROM usuarios
+                WHERE id = :id
                 LIMIT 1";
 
         $query = $this->conexion->prepare($sql);
 
-        $query->bindParam(':id', $usuario_id, PDO::PARAM_INT);
+        $query->bindParam(
+            ':id',
+            $id,
+            PDO::PARAM_INT
+        );
 
         $query->execute();
 
         return $query->fetch(PDO::FETCH_ASSOC);
+
     }
 }
