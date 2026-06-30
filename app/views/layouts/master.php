@@ -1,5 +1,6 @@
 <?php
 
+$menu = $menu ?? '';
 $breadcrumb = $breadcrumb ?? '';
 $foto_usuario = $foto_usuario ?? '';
 $view = $view ?? '';
@@ -311,7 +312,7 @@ $nombre_usuario = $nombre_usuario ?? '';
               <!--end::Menu Body-->
               <!--begin::Menu Footer-->
               <li class="user-footer">
-                <a href="#" class="btn btn-outline-secondary">Profile</a>
+                <a href="<?= BASE_URL ?>perfil" class="btn btn-outline-secondary">Profile</a>
                 <a href="<?= BASE_URL ?>logout" class="btn btn-outline-danger float-end"> Cerrar sesión</a>
               </li>
               <!--end::Menu Footer-->
@@ -347,106 +348,7 @@ $nombre_usuario = $nombre_usuario ?? '';
       <div class="sidebar-wrapper">
         <nav class="mt-2">
           <!--begin::Sidebar Menu-->
-          <ul
-            class="nav sidebar-menu flex-column"
-            data-lte-toggle="treeview"
-            role="navigation"
-            aria-label="Main navigation"
-            data-accordion="false"
-            id="navigation">
-            <li class="nav-header">OPERACIONES</li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon bi bi-file-earmark-text"></i>
-                <p>
-                  Cotizaciones
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>cotizaciones/2026" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2026</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>cotizaciones/2025" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2025</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon bi bi-patch-check"></i>
-                <p>
-                  Adjudicados
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>adjudicados/2026" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2026</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>adjudicados/2025" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2025</p>
-                  </a>
-                </li>
-                <!--end::Menu Body-->
-                <!--begin::Menu Footer-->
-                <li class="user-footer">
-                  <a href="<?= BASE_URL ?>perfil" class="btn btn-outline-secondary">Profile</a>
-                  <a href="<?= BASE_URL ?>logout" class="btn btn-outline-danger float-end"> Cerrar sesión</a>
-              </ul>
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-                <i class="nav-icon bi bi-tools"></i>
-                <p>
-                  Servicios
-                  <i class="nav-arrow bi bi-chevron-right"></i>
-                </p>
-              </a>
-              <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>servicios/2026" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2026</p>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="<?= BASE_URL ?>servicios/2025" class="nav-link">
-                    <i class="nav-icon bi bi-calendar3"></i>
-                    <p>2025</p>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-header">CATALOGO</li>
-            <li class="nav-item">
-              <a href="<?= BASE_URL ?>proveedores" class="nav-link">
-                <i class="nav-icon bi bi-truck"></i>
-                <p>Proveedores</p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              <a href="<?= BASE_URL ?>contactos" class="nav-link">
-                <i class="nav-icon bi bi-people"></i>
-                <p>Contactos</p>
-              </a>
-            </li>
-
-          </ul>
+          <?= $menu  ?>
           <!--end::Sidebar Menu-->
         </nav>
       </div>
@@ -485,7 +387,7 @@ $nombre_usuario = $nombre_usuario ?? '';
       <!--begin::Copyright-->
       <strong>
         Copyright &copy; 2014-2026&nbsp;
-        <a href="https://adminlte.io" class="text-decoration-none">Administracion de Pandasoft</a>.
+        <a href="https://pandasoft.com.mx/" class="text-decoration-none">Administracion de Pandasoft</a>.
       </strong>
       All rights reserved.
       <!--end::Copyright-->

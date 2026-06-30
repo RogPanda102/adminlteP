@@ -5,6 +5,7 @@ require_once CONFIG_PATH . '/database.php';
 require_once APP_PATH . '/helpers/funciones_globales.php';
 require_once APP_PATH . '/helpers/permisos.php';
 require_once APP_PATH . '/helpers/historial.php';
+require_once APP_PATH . '/helpers/menu.php';
 
 class BaseController
 {
@@ -25,7 +26,7 @@ class BaseController
     // Renderizar vistas
     protected function render($vista, $datos = [])
     {
-
+        $datos['menu'] = crear_menu_panel();
         View::render(
             $vista,
             $datos
