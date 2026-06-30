@@ -2,6 +2,7 @@
 
 $nombre_usuario = $nombre_usuario ?? '';
 $foto_usuario = $foto_usuario ?? '';
+$usuario = $usuario ?? [];
 $estadisticas = $estadisticas ?? [];
 $actividad = $actividad ?? [];
 
@@ -226,7 +227,8 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="nombre"
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-4">
@@ -237,7 +239,8 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="apellido_paterno"
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            value="<?= htmlspecialchars($usuario['apellido_paterno'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-4">
@@ -248,7 +251,8 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="apellido_materno"
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            value="<?= htmlspecialchars($usuario['apellido_materno'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -260,7 +264,8 @@ $actividad = $actividad ?? [];
                                                             type="text"
                                                             name="usuario"
                                                             class="form-control"
-                                                            readonly>
+                                                            readonly
+                                                            value="<?= htmlspecialchars($usuario['usuario'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -271,7 +276,8 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="email"
                                                             name="correo"
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            value="<?= htmlspecialchars($usuario['correo'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -282,7 +288,8 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="telefono"
-                                                            class="form-control">
+                                                            class="form-control"
+                                                            value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>">
                                                     </div>
 
                                                     <div class="col-md-6">

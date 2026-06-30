@@ -82,13 +82,15 @@ class UsuarioController extends BaseController
         $modelo = new Usuario();
 
         $datos = $this->cargar_datos();
-
+        
         $datos['usuario'] = $modelo->buscarPorId( $_SESSION['usuario_id']);
+        
         $this->render(
             'usuario/perfil',
             $datos
         );
 
+        
     }
 
 }
