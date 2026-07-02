@@ -9,7 +9,6 @@ $actividad = $actividad ?? [];
 ?>
 
 <main class="app-main">
-
     <div class="app-content">
         <div class="container-fluid">
             <div class="row g-3">
@@ -28,28 +27,24 @@ $actividad = $actividad ?? [];
                                 <?= $nombre_usuario ?>
 
                             </h3>
-                            <p class="text-secondary mb-3">Product Designer</p>
+                            <p class="text-secondary mb-3">Estatus de cotizaciones</p>
                             <ul class="list-group list-group-flush text-start small">
                                 <li class="list-group-item d-flex justify-content-between px-0">
                                     <span class="text-secondary">Pendientes</span>
                                     <span class="fw-semibold">12</span>
                                 </li>
-
                                 <li class="list-group-item d-flex justify-content-between px-0">
                                     <span class="text-secondary">En proceso</span>
                                     <span class="fw-semibold">8</span>
                                 </li>
-
                                 <li class="list-group-item d-flex justify-content-between px-0">
                                     <span class="text-secondary">Completados</span>
                                     <span class="fw-semibold">154</span>
                                 </li>
                             </ul>
-
                         </div>
                     </div>
                 </div>
-
                 <!-- Tabbed content -->
                 <div class="col-md-9">
                     <div class="card">
@@ -133,71 +128,219 @@ $actividad = $actividad ?? [];
                                     id="timeline"
                                     role="tabpanel"
                                     aria-labelledby="timeline-tab">
-                                    <div class="row">
 
-                                        <div class="col-md-4">
-                                            <div class="small-box text-bg-primary">
+                                    <!-- COTIZACIONES -->
+                                    <h6 class="text-muted mb-3 fw-bold">
+                                        <i class="bi bi-file-earmark-text me-1"></i>
+                                        Cotizaciones
+                                    </h6>
+
+                                    <div class="row g-3 mb-4">
+
+                                        <!-- TOTAL -->
+                                        <div class="col-xl-3 col-md-6">
+
+                                            <div class="small-box text-bg-primary shadow-sm">
+
                                                 <div class="inner">
-                                                    <h3>125</h3>
-                                                    <p>Cotizaciones</p>
+
+                                                    <h3>
+                                                        <?= $estadisticas['total_cotizaciones'] ?? 0 ?>
+                                                    </h3>
+
+                                                    <p>
+                                                        Total realizadas
+                                                    </p>
+
                                                 </div>
+
+                                                <a 
+                                                    href="#"
+                                                    class="small-box-footer"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalCotizaciones">
+
+                                                    Ver detalle
+
+                                                    <i class="bi bi-arrow-right-circle ms-1"></i>
+
+                                                </a>
+
                                             </div>
+
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="small-box text-bg-success">
+
+                                        <!-- ENVIADAS -->
+                                        <div class="col-xl-3 col-md-6">
+
+                                            <div class="small-box text-bg-success shadow-sm">
+
                                                 <div class="inner">
-                                                    <h3>58</h3>
-                                                    <p>Pedidos</p>
+
+                                                    <h3>
+                                                        <?= $estadisticas['total_enviadas'] ?? 0 ?>
+                                                    </h3>
+
+                                                    <p>
+                                                        Enviadas
+                                                    </p>
+
                                                 </div>
+
+                                                <a href="#" class="small-box-footer">
+
+                                                    Ver detalle
+                                                    <i class="bi bi-arrow-right-circle ms-1"></i>
+
+                                                </a>
+
                                             </div>
+
                                         </div>
 
-                                        <div class="col-md-4">
-                                            <div class="small-box text-bg-warning">
+
+                                        <!-- PENDIENTES -->
+                                        <div class="col-xl-3 col-md-6">
+
+                                            <div class="small-box text-bg-warning shadow-sm">
+
                                                 <div class="inner">
-                                                    <h3>24</h3>
-                                                    <p>Servicios</p>
+
+                                                    <h3>
+                                                        <?= $estadisticas['total_pendientes'] ?? 0 ?>
+                                                    </h3>
+
+                                                    <p>
+                                                        Pendientes
+                                                    </p>
+
                                                 </div>
+
+                                                <a href="#" class="small-box-footer">
+
+                                                    Ver detalle
+                                                    <i class="bi bi-arrow-right-circle ms-1"></i>
+
+                                                </a>
+
                                             </div>
+
                                         </div>
+
+
+                                        <!-- RECHAZADAS -->
+                                        <div class="col-xl-3 col-md-6">
+
+                                            <div class="small-box text-bg-danger shadow-sm">
+
+                                                <div class="inner">
+
+                                                    <h3>
+                                                        <?= $estadisticas['total_rechazadas'] ?? 0 ?>
+                                                    </h3>
+
+                                                    <p>
+                                                        Rechazadas
+                                                    </p>
+
+                                                </div>
+
+                                                <a href="#" class="small-box-footer">
+
+                                                    Ver detalle
+                                                    <i class="bi bi-arrow-right-circle ms-1"></i>
+
+                                                </a>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
 
-                                    <div class="card mt-3">
+                                    <!-- ADJUDICADOS -->
+                                    <h6 class="text-muted mb-3">Adjudicados</h6>
+
+                                    <div class="row g-3 mb-4">
+
+                                        <div class="col-md-6">
+                                            <div class="small-box text-bg-info">
+                                                <div class="inner">
+                                                    <h3>58</h3>
+                                                    <p>Total adjudicados</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="bi bi-trophy"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <div class="small-box text-bg-primary">
+                                                <div class="inner">
+                                                    <h3>12</h3>
+                                                    <p>Adjudicados este año</p>
+                                                </div>
+                                                <div class="icon">
+                                                    <i class="bi bi-calendar-check"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- RESUMEN -->
+                                    <div class="card shadow-sm">
+
                                         <div class="card-header">
                                             <h3 class="card-title">
-                                                Resumen anual
+                                                Resumen general
                                             </h3>
                                         </div>
 
-                                        <div class="card-body">
+                                        <div class="card-body p-0">
 
-                                            <table class="table table-sm">
+                                            <table class="table table-striped mb-0">
 
-                                                <tr>
-                                                    <th>Cotizaciones 2026</th>
-                                                    <td>125</td>
-                                                </tr>
+                                                <tbody>
 
-                                                <tr>
-                                                    <th>Pedidos 2026</th>
-                                                    <td>58</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Cotizaciones totales</th>
+                                                        <td class="text-end">
+                                                            <?= $estadisticas['total_cotizaciones'] ?? 0 ?>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Servicios registrados</th>
-                                                    <td>24</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Enviadas</th>
+                                                        <td class="text-end">
+                                                            <?= $estadisticas['total_enviadas'] ?? 0 ?>
+                                                        </td>
+                                                    </tr>
 
-                                                <tr>
-                                                    <th>Monto gestionado</th>
-                                                    <td>$1,250,000.00</td>
-                                                </tr>
+                                                    <tr>
+                                                        <th>Pendientes</th>
+                                                        <td class="text-end">
+                                                            <?= $estadisticas['total_pendientes'] ?? 0 ?>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th>Rechazadas</th>
+                                                        <td class="text-end">
+                                                            <?= $estadisticas['total_rechazadas'] ?? 0 ?>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
 
                                             </table>
 
                                         </div>
+
                                     </div>
+
                                 </div>
 
                                 <!-- Ajustes tab -->
@@ -325,80 +468,79 @@ $actividad = $actividad ?? [];
 
                                     <!-- SEGUNDO FORMULARIO -->
 
-                                        <div class="card mt-3">
+                                    <div class="card mt-3">
 
-                                            <div class="card-header">
-                                                <h3 class="card-title">
-                                                    Seguridad
-                                                </h3>
-                                            </div>
+                                        <div class="card-header">
+                                            <h3 class="card-title">
+                                                Seguridad
+                                            </h3>
+                                        </div>
 
-                                            <form action="" method="POST">
+                                        <form action="" method="POST">
 
-                                                <div class="card-body">
+                                            <div class="card-body">
 
-                                                    <div class="row g-3">
+                                                <div class="row g-3">
 
-                                                        <div class="col-md-4">
+                                                    <div class="col-md-4">
 
-                                                            <label class="form-label">
-                                                                Contraseña actual
-                                                            </label>
+                                                        <label class="form-label">
+                                                            Contraseña actual
+                                                        </label>
 
-                                                            <input
-                                                                type="password"
-                                                                name="password_actual"
-                                                                class="form-control">
+                                                        <input
+                                                            type="password"
+                                                            name="password_actual"
+                                                            class="form-control">
 
-                                                        </div>
+                                                    </div>
 
-                                                        <div class="col-md-4">
+                                                    <div class="col-md-4">
 
-                                                            <label class="form-label">
-                                                                Nueva contraseña
-                                                            </label>
+                                                        <label class="form-label">
+                                                            Nueva contraseña
+                                                        </label>
 
-                                                            <input
-                                                                type="password"
-                                                                name="password"
-                                                                class="form-control">
+                                                        <input
+                                                            type="password"
+                                                            name="password"
+                                                            class="form-control">
 
-                                                        </div>
+                                                    </div>
 
-                                                        <div class="col-md-4">
+                                                    <div class="col-md-4">
 
-                                                            <label class="form-label">
-                                                                Confirmar contraseña
-                                                            </label>
+                                                        <label class="form-label">
+                                                            Confirmar contraseña
+                                                        </label>
 
-                                                            <input
-                                                                type="password"
-                                                                name="password_confirmacion"
-                                                                class="form-control">
-
-                                                        </div>
+                                                        <input
+                                                            type="password"
+                                                            name="password_confirmacion"
+                                                            class="form-control">
 
                                                     </div>
 
                                                 </div>
 
-                                                <div class="card-footer">
+                                            </div>
 
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-warning">
+                                            <div class="card-footer">
 
-                                                        Actualizar contraseña
+                                                <button
+                                                    type="submit"
+                                                    class="btn btn-warning">
 
-                                                    </button>
+                                                    Actualizar contraseña
 
-                                                </div>
+                                                </button>
 
-                                            </form>
+                                            </div>
 
-                                        </div>
+                                        </form>
 
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -407,3 +549,122 @@ $actividad = $actividad ?? [];
             </div>
         </div>
     </div>
+    </div>
+
+
+<!-- MODAL DETALLE COTIZACIONES -->
+<div class="modal fade" id="modalCotizaciones" tabindex="-1" aria-labelledby="modalCotizacionesLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCotizacionesLabel">
+                    Detalle de cotizaciones
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+
+                <!-- FILTROS -->
+                <div class="d-flex gap-2 mb-3">
+
+                    <!-- AÑO (DINÁMICO) -->
+                    <select id="filtro-anio-cotizaciones" class="form-select form-select-sm">
+                        <?php foreach ($anios as $anio): ?>
+                            <option value="<?= $anio['anio'] ?>">
+                                <?= $anio['anio'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+
+                    <!-- MES -->
+                    <select id="filtro-mes-cotizaciones" class="form-select form-select-sm">
+                        <option value="">Todos los meses</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+
+                </div>
+
+                <!-- RESUMEN -->
+                <div class="row g-3 mb-4">
+
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                               
+                            <small class="text-muted">Total año</small>
+                                <h3 class="fw-bold" id="total-anio">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <small class="text-muted">Promedio mensual</small>
+                                <h3 class="fw-bold" id="promedio-mensual">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <small class="text-muted">Mejor mes</small>
+                                <h3 class="fw-bold" id="mejor-mes">-</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- GRÁFICA -->
+                <div class="card shadow-sm">
+
+                    <div class="card-header">
+                        <h5 class="mb-0">Cotizaciones por mes</h5>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div style="height: 250px;">
+                            <canvas id="graficaCotizaciones"></canvas>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cerrar
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const BASE_URL = '<?= BASE_URL ?>';
+</script>
+<script src="<?= BASE_URL ?>assets/js/especificos/usuario/perfil.js"></script>

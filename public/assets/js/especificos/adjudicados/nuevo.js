@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
 });
 
 
@@ -102,14 +103,16 @@ configurarControlPago({
     diaPago: '#dia_pago'
 });
 
-
-// =====================================================
-// AUTOCOMPLETE DEPENDENCIA
-// =====================================================
-
 crearAutocomplete({
     input: '#dependencia',
-    resultados: '#resultados-dependencia',
-    url: 'adjudicados/buscar-dependencia',
+    resultados: '#lista-dependencia',
+    url: 'adjudicados/buscarCatalogoAjax',
     campo: 'dependencia'
+});
+
+crearAutocomplete({
+    input: '#analista',
+    resultados: '#lista-analista',
+    url: 'adjudicados/buscarCatalogoAjax',
+    campo: 'analista'
 });

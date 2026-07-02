@@ -31,28 +31,6 @@ class Adjudicados
     }
 
 
-
-    public function buscarDependencias($texto)
-    {
-        $sql = "
-            SELECT DISTINCT dependencia
-            FROM adjudicados
-            WHERE dependencia IS NOT NULL
-            AND dependencia <> ''
-            AND dependencia LIKE :texto
-            ORDER BY dependencia ASC
-            LIMIT 10
-        ";
-
-        $stmt = $this->db->prepare($sql);
-
-        $stmt->execute([
-            ':texto' => "%{$texto}%"
-        ]);
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
     // =========================
     // Actualizar adjudicación
     // =========================
@@ -226,6 +204,43 @@ class Adjudicados
 
         ]);
 
+    }
+
+
+    // =========================
+    // Buscar catálogo genérico
+    // =========================
+    public function buscarCatalogo($campo, $texto)
+    {
+        $camposPermitidos = [
+            'analista',
+            'dependencia',
+            'elaboro',
+            'partida'
+        ];
+
+        if (!in_array($campo, $camposPermitidos, true)) {
+            return [];
+        }
+
+        $sql = "
+            SELECT DISTINCT {$campo}
+            FROM cotizaciones
+            WHERE eliminado = 0
+            AND {$campo} <> ''
+            AND {$campo} IS NOT NULL
+            AND {$campo} LIKE :texto
+            ORDER BY {$campo}
+            LIMIT 10
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':texto' => '%' . $texto . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

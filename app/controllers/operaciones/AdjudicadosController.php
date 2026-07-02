@@ -140,14 +140,36 @@ class AdjudicadosController extends BaseController
         );
     }
 
-    public function buscarDependenciaAjax()
+    // =========================
+    // Buscar catálogo AJAX
+    // =========================
+    public function buscarCatalogoAjax()
     {
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+        $campo = $_GET['campo'] ?? '';
         $texto = trim($_GET['q'] ?? '');
+
+        if (strlen($texto) < 2) {
+
+            echo json_encode([]);
+
+            exit;
+        }
 
         $modelo = new Adjudicados();
 
-        $resultado =
-            $modelo->buscarDependencias($texto);
+        $resultado = $modelo->buscarCatalogo(
+            $campo,
+            $texto
+        );
 
         header('Content-Type: application/json');
 
@@ -230,12 +252,10 @@ class AdjudicadosController extends BaseController
     {
         header('Content-Type: application/json');
 
-
         $input = json_decode(
             file_get_contents('php://input'),
             true
         );
-
 
         if (!$input) {
 
@@ -247,23 +267,31 @@ class AdjudicadosController extends BaseController
             return;
         }
 
-
         $modelo = new Adjudicados();
-
 
         $datos = [
 
             'id' => $input['id'],
 
-            'req' => $input['req'],
+            'req' => limpiarTexto(
+                $input['req']
+            ),
 
-            'folio' => $input['folio'],
+            'folio' => limpiarTexto(
+                $input['folio']
+            ),
 
-            'elaboro' => $input['elaboro'],
+            'elaboro' => limpiarTextoMayusculas(
+                $input['elaboro']
+            ),
 
-            'partida' => $input['partida'],
+            'partida' => limpiarTextoMayusculas(
+                $input['partida']
+            ),
 
-            'analista' => $input['analista'],
+            'analista' => limpiarTextoMayusculas(
+                $input['analista']
+            ),
 
             'fecha_elaboracion' =>
             $input['fecha_elaboracion'] ?? null,
@@ -284,7 +312,9 @@ class AdjudicadosController extends BaseController
             $input['pago'],
 
             'dependencia' =>
-            $input['dependencia'],
+            limpiarTextoMayusculas(
+                $input['dependencia']
+            ),
 
             'cotizacion_id' =>
             $input['cotizacion_id'] ?? null,
@@ -297,8 +327,6 @@ class AdjudicadosController extends BaseController
 
         ];
 
-
-
         // =========================
         // HISTORIAL
         // =========================
@@ -307,21 +335,15 @@ class AdjudicadosController extends BaseController
             $datos['id']
         );
 
-
-
         $ok = $modelo->actualizar(
             $datos
         );
 
-
-
         if ($ok) {
-
 
             $despues = $modelo->buscarPorId(
                 $datos['id']
             );
-
 
             registrarHistorial(
                 'adjudicados',
@@ -331,7 +353,6 @@ class AdjudicadosController extends BaseController
                 $despues
             );
 
-
             echo json_encode([
 
                 'success' => true,
@@ -340,8 +361,8 @@ class AdjudicadosController extends BaseController
                 'Actualizado correctamente'
 
             ]);
-        } else {
 
+        } else {
 
             echo json_encode([
 

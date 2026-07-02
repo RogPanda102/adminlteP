@@ -168,7 +168,7 @@
                 </div>
 
                 <!-- ANALISTA -->
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3 position-relative">
 
                     <label class="form-label">
                         Analista
@@ -180,7 +180,19 @@
                         id="analista"
                         class="form-control"
                         maxlength="150"
+                        autocomplete="off"
                     >
+
+                    <div
+                        id="lista-analista"
+                        class="list-group position-absolute w-100 shadow-sm"
+                        style="
+                            z-index:1000;
+                            display:none;
+                            max-height:250px;
+                            overflow-y:auto;
+                        "
+                    ></div>
 
                 </div>
 
@@ -303,7 +315,7 @@
 
                     <!-- FUTURO AUTOCOMPLETE -->
                     <div
-                        id="resultados-dependencia"
+                        id="lista-dependencia"
                         class="list-group position-absolute w-100 shadow-sm"
                         style="
                             z-index:1000;
