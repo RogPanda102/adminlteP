@@ -47,7 +47,7 @@ class UsuarioController extends BaseController
         $modeloCotizacion = new Cotizacion();
 
         $datos = $this->cargar_datos();
-
+  
         $datos['estadisticas'] =
             $modeloCotizacion->obtenerEstadisticasUsuario(
                 $_SESSION['usuario_id']
