@@ -65,6 +65,12 @@ $router->get(
     'operaciones\CotizacionesController@buscarAjax'
 );
 
+$router->get(
+    '/cotizaciones/buscarCatalogoAjax',
+    'operaciones\CotizacionesController@buscarCatalogoAjax'
+);
+
+
 /*
 |------------------------------------------------------------------
 | OPERACIONES - ADJUDICADOS 2026 - 2025
@@ -103,8 +109,8 @@ $router->post(
 );
 
 $router->get(
-    '/adjudicados/buscar-dependencia',
-    'operaciones\AdjudicadosController@buscarDependenciaAjax'
+    '/adjudicados/buscarCatalogoAjax',
+    'operaciones\AdjudicadosController@buscarCatalogoAjax'
 );
 
 $router->post(
@@ -215,7 +221,7 @@ $router->post(
 
 /*
 |------------------------------------------------------------------
-| ADMINISTRACION - PERFIL
+| ADMINISTRACION - USUARIO - PERFIL
 |------------------------------------------------------------------
 */
 
@@ -223,6 +229,12 @@ $router->get(
     '/perfil',
     'operaciones\UsuarioController@perfil'
 );
+
+$router->get(
+    '/perfil/estadisticasCotizaciones',
+    'operaciones\UsuarioController@estadisticasCotizaciones'
+);
+
 /*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER

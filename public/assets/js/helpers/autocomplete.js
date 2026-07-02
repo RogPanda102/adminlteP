@@ -24,10 +24,14 @@ function crearAutocomplete(config) {
         }
 
         const respuesta = await fetch(
+
             BASE_URL +
             config.url +
-            '?q=' +
+            '?campo=' +
+            encodeURIComponent(config.campo) +
+            '&q=' +
             encodeURIComponent(texto)
+
         );
 
         const datos =

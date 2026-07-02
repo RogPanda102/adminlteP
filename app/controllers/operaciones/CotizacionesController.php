@@ -250,4 +250,43 @@ class CotizacionesController extends BaseController
         exit;
     }
 
+    // =========================
+    // Buscar catálogo AJAX
+    // =========================
+    public function buscarCatalogoAjax()
+    {
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+        $campo = trim($_GET['campo'] ?? '');
+
+        $texto = trim($_GET['q'] ?? '');
+
+        if (strlen($texto) < 2) {
+
+            echo json_encode([]);
+
+            exit;
+        }
+
+        $modelo = new Cotizacion();
+
+        $resultado = $modelo->buscarCatalogo(
+            $campo,
+            $texto
+        );
+
+        header('Content-Type: application/json');
+
+        echo json_encode($resultado);
+
+        exit;
+    }
+
 }
