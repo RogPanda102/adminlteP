@@ -112,4 +112,139 @@ class UsuarioController extends BaseController
 
         exit;
     }
+
+    // =========================
+    // Actualizar contraseña
+    // =========================
+    public function actualizarPassword()
+    {
+        if (!$this->permitido) {
+
+            redirect('login');
+
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            redirect('perfil');
+
+        }
+
+        $passwordActual = trim($_POST['password_actual'] ?? '');
+        $passwordNueva = trim($_POST['password'] ?? '');
+        $passwordConfirmacion = trim($_POST['password_confirmacion'] ?? '');
+
+        // Validar campos vacíos
+        if (
+            empty($passwordActual) ||
+            empty($passwordNueva) ||
+            empty($passwordConfirmacion)
+        ) {
+
+            mensaje(
+                'Todos los campos son obligatorios.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        // Validar coincidencia
+        if ($passwordNueva !== $passwordConfirmacion) {
+
+            mensaje(
+                'Las nuevas contraseñas no coinciden.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        // Longitud mínima
+        if (strlen($passwordNueva) < 8) {
+
+            mensaje(
+                'La contraseña debe tener al menos 8 caracteres.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        $modeloUsuario = new Usuario();
+
+        // Obtener usuario
+        $usuario = $modeloUsuario->buscarPorId(
+            $_SESSION['usuario_id']
+        );
+
+        // Validar contraseña actual
+        if (!password_verify(
+            $passwordActual,
+            $usuario['password']
+        )) {
+
+            mensaje(
+                'La contraseña actual es incorrecta.',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        // Evitar reutilizar la misma contraseña
+        if (password_verify(
+            $passwordNueva,
+            $usuario['password']
+        )) {
+
+            mensaje(
+                'La nueva contraseña debe ser diferente a la actual.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        $passwordHash = password_hash(
+            $passwordNueva,
+            PASSWORD_DEFAULT
+        );
+
+        $resultado = $modeloUsuario->actualizarPassword(
+            $_SESSION['usuario_id'],
+            $passwordHash,
+            $_SESSION['usuario_id']
+        );
+
+        if (!$resultado) {
+
+            mensaje(
+                'No fue posible actualizar la contraseña.',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        mensaje(
+            'Contraseña actualizada correctamente.',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        redirect('perfil');
+    }
 }
