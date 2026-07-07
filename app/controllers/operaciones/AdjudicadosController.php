@@ -207,15 +207,27 @@ class AdjudicadosController extends BaseController
                 $_POST['analista'] ?? ''
             ),
             'fecha_elaboracion' =>
-            $_POST['fecha_elaboracion'] ?? null,
+            !empty($_POST['fecha_elaboracion'])
+            ? $_POST['fecha_elaboracion']
+            : null,
+
             'fecha_inicio_entrega' =>
-            $_POST['fecha_inicio_entrega'] ?? null,
+            !empty($_POST['fecha_inicio_entrega'])
+            ? $_POST['fecha_inicio_entrega']
+            : null,
+
             'fecha_fin_entrega' =>
-            $_POST['fecha_fin_entrega'] ?? null,
+            !empty($_POST['fecha_fin_entrega'])
+            ? $_POST['fecha_fin_entrega']
+            : null,
             'total' =>
-            $_POST['total'] ?? 0,
+            !empty($_POST['total'])
+            ? $_POST['total']
+            : 0,
             'dia_pago' =>
-            $_POST['dia_pago'] ?? null,
+            !empty($_POST['dia_pago'])
+            ? $_POST['dia_pago']
+            : null,
             'pago' =>
             $_POST['pago'] ?? 'pendiente',
             'dependencia' =>
@@ -295,19 +307,29 @@ class AdjudicadosController extends BaseController
             ),
 
             'fecha_elaboracion' =>
-            $input['fecha_elaboracion'] ?? null,
+            !empty($input['fecha_elaboracion'])
+            ? $input['fecha_elaboracion']
+            : null,
 
             'fecha_inicio_entrega' =>
-            $input['fecha_inicio_entrega'] ?? null,
+            !empty($input['fecha_inicio_entrega'])
+            ? $input['fecha_inicio_entrega']
+            : null,
 
             'fecha_fin_entrega' =>
-            $input['fecha_fin_entrega'] ?? null,
+            !empty($input['fecha_fin_entrega'])
+            ? $input['fecha_fin_entrega']
+            : null,
 
             'total' =>
-            $input['total'] ?? 0,
+            !empty($input['total'])
+            ? $input['total']
+            : 0,
 
             'dia_pago' =>
-            $input['dia_pago'] ?? null,
+            !empty($input['dia_pago'])
+            ? $input['dia_pago']
+            : null,
 
             'pago' =>
             $input['pago'],
