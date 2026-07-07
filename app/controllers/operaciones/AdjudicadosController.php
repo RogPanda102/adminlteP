@@ -222,8 +222,9 @@ class AdjudicadosController extends BaseController
             limpiarTextoMayusculas(
                 $_POST['dependencia'] ?? ''
             ),
-            'cotizacion_id' =>
-            $_POST['cotizacion_id'] ?? null,
+            'cotizacion_id' => !empty($_POST['cotizacion_id'])
+            ? (int) $_POST['cotizacion_id']
+            : null,
             'anio' =>
             $_POST['anio'] ?? date('Y'),
             'creado_por' =>
