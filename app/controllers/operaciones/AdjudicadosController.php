@@ -225,7 +225,7 @@ class AdjudicadosController extends BaseController
             'cotizacion_id' =>
             $_POST['cotizacion_id'] ?? null,
             'anio' =>
-            date('Y'),
+            $_POST['anio'] ?? date('Y'),
             'creado_por' =>
             $_SESSION['usuario_id']
         ];
