@@ -476,7 +476,7 @@ $actividad = $actividad ?? [];
                                             </h3>
                                         </div>
 
-                                        <form action="<?BASE_URL?>/usuario/actualizar-password" method="POST">
+                                        <form action="<?= BASE_URL ?>perfil/actualizarPassword" method="post">
 
                                             <div class="card-body">
 
