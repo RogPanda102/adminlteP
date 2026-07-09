@@ -240,6 +240,11 @@ $router->post(
     'operaciones\UsuarioController@actualizarPassword'
 );
 
+$router->post(
+    '/perfil/actualizar',
+    'operaciones\UsuarioController@actualizar'
+);
+
 /*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER

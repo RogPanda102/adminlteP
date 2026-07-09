@@ -145,8 +145,6 @@
                 3000
             );
 
-            return false;
+            redirect('perfil');
         }
-
-        return true;
     }
