@@ -43,11 +43,16 @@ class UsuarioController extends BaseController
         if (!$this->permitido) {
             redirect('login');
         }
-
+        $modeloUsuario = new Usuario();
         $modeloCotizacion = new Cotizacion();
 
         $datos = $this->cargar_datos();
-  
+        
+        // Información del usuario
+        $datos['usuario'] = $modeloUsuario->buscarPorId(
+            $_SESSION['usuario_id']
+        );
+        // Estadísticas
         $datos['estadisticas'] =
             $modeloCotizacion->obtenerEstadisticasUsuario(
                 $_SESSION['usuario_id']
@@ -111,6 +116,156 @@ class UsuarioController extends BaseController
         ]);
 
         exit;
+    }
+    
+    // =========================
+    // Actualizar información personal
+    // =========================
+    public function actualizar()
+    {
+        
+        
+        if (!$this->permitido) {
+
+            redirect('login');
+
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            redirect('perfil');
+
+        }
+
+        $datos = [
+
+            'id' => $_SESSION['usuario_id'],
+
+            'nombre' => limpiarTexto(
+                $_POST['nombre'] ?? ''
+            ),
+
+            'apellido_paterno' => limpiarTexto(
+                $_POST['apellido_paterno'] ?? ''
+            ),
+
+            'apellido_materno' => limpiarTexto(
+                $_POST['apellido_materno'] ?? ''
+            ),
+
+            'correo' => trim(
+                $_POST['correo'] ?? ''
+            ),
+
+            'telefono' => trim(
+                $_POST['telefono'] ?? ''
+            ),
+
+            'actualizado_por' => $_SESSION['usuario_id']
+
+        ];
+
+        // =========================
+        // Validaciones
+        // =========================
+
+        validarRequerido(
+            $datos['nombre'],
+            'El nombre es obligatorio.'
+        );
+
+        validarRequerido(
+            $datos['apellido_paterno'],
+            'El apellido paterno es obligatorio.'
+        );
+
+        validarRequerido(
+            $datos['correo'],
+            'El correo es obligatorio.'
+        );
+
+        if (!filter_var(
+            $datos['correo'],
+            FILTER_VALIDATE_EMAIL
+        )) {
+
+            mensaje(
+                'El correo electrónico no es válido.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+        if (!preg_match("/^[\p{L}\s'’-]+$/u", $datos['nombre'])) {
+
+            mensaje(
+                'El nombre contiene caracteres no permitidos.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+        }
+        $modelo = new Usuario();
+
+        // =========================
+        // Validar correo duplicado
+        // =========================
+
+        if (
+            $modelo->correoExiste(
+                $datos['correo'],
+                $_SESSION['usuario_id']
+            )
+        ) {
+
+            mensaje(
+                'Ese correo electrónico ya está registrado por otro usuario.',
+                ALERT_WARNING,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+    
+        $resultado = $modelo->actualizar(
+            $datos
+        );
+
+        if (!$resultado) {
+
+            mensaje(
+                'No fue posible actualizar la información.',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('perfil');
+
+        }
+
+        // =========================
+        // Actualizar sesión
+        // =========================
+
+        $_SESSION['usuario_nombre'] =
+            $datos['nombre'] . ' ' .
+            $datos['apellido_paterno'];
+
+        $_SESSION['correo'] =
+            $datos['correo'];
+
+        mensaje(
+            'Información actualizada correctamente.',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        redirect('perfil');
+
     }
 
     // =========================
@@ -247,4 +402,6 @@ class UsuarioController extends BaseController
 
         redirect('perfil');
     }
+
+    
 }

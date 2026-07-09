@@ -5,6 +5,7 @@ $foto_usuario = $foto_usuario ?? '';
 $usuario = $usuario ?? [];
 $estadisticas = $estadisticas ?? [];
 $actividad = $actividad ?? [];
+$anios = $anios ?? [];
 
 ?>
 
@@ -24,7 +25,7 @@ $actividad = $actividad ?? [];
                                 height="100"
                                 alt="Foto de perfil" />
                             <h3 class="h5 mb-0">
-                                <?= $nombre_usuario ?>
+                                <?= htmlspecialchars($nombre_usuario ?? '', ENT_QUOTES, 'UTF-8') ?>
 
                             </h3>
                             <p class="text-secondary mb-3">Estatus de cotizaciones</p>
@@ -356,13 +357,13 @@ $actividad = $actividad ?? [];
                                             </h3>
                                         </div>
 
-                                        <form action="" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= BASE_URL ?>perfil/actualizar" method="POST" enctype="multipart/form-data">
 
                                             <div class="card-body">
 
                                                 <div class="row g-3">
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">
                                                             Nombre
                                                         </label>
@@ -374,7 +375,7 @@ $actividad = $actividad ?? [];
                                                             value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>">
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">
                                                             Apellido paterno
                                                         </label>
@@ -386,7 +387,7 @@ $actividad = $actividad ?? [];
                                                             value="<?= htmlspecialchars($usuario['apellido_paterno'] ?? '') ?>">
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">
                                                             Apellido materno
                                                         </label>
@@ -407,7 +408,7 @@ $actividad = $actividad ?? [];
                                                             type="text"
                                                             name="usuario"
                                                             class="form-control"
-                                                            readonly
+                                                            disabled
                                                             value="<?= htmlspecialchars($usuario['usuario'] ?? '') ?>">
                                                     </div>
 
@@ -435,16 +436,7 @@ $actividad = $actividad ?? [];
                                                             value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>">
                                                     </div>
 
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">
-                                                            Fotografía
-                                                        </label>
-
-                                                        <input
-                                                            type="file"
-                                                            name="foto"
-                                                            class="form-control">
-                                                    </div>
+                                                    
 
                                                 </div>
 
