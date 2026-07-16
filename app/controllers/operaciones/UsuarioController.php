@@ -61,10 +61,13 @@ class UsuarioController extends BaseController
         $datos['anios'] =
             $modeloCotizacion->obtenerAnios();
 
+        $datos['tab_activo'] = oldTab();
         $this->render(
             'usuario/perfil',
             $datos
         );
+        limpiarOld();
+        limpiarErrores();
     }
 
     // =========================
@@ -165,48 +168,63 @@ class UsuarioController extends BaseController
 
         ];
 
+        $errores = [];
+
         // =========================
         // Validaciones
         // =========================
 
-        validarRequerido(
-            $datos['nombre'],
-            'El nombre es obligatorio.'
-        );
+        if (empty($datos['nombre'])) {
 
-        validarRequerido(
-            $datos['apellido_paterno'],
-            'El apellido paterno es obligatorio.'
-        );
-
-        validarRequerido(
-            $datos['correo'],
-            'El correo es obligatorio.'
-        );
-
-        if (!filter_var(
-            $datos['correo'],
-            FILTER_VALIDATE_EMAIL
-        )) {
-
-            mensaje(
-                'El correo electrónico no es válido.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['nombre'] =
+                'El nombre es obligatorio.';
         }
-        if (!preg_match("/^[\p{L}\s'’-]+$/u", $datos['nombre'])) {
 
-            mensaje(
-                'El nombre contiene caracteres no permitidos.',
-                ALERT_WARNING,
-                3000
-            );
+        if (empty($datos['apellido_paterno'])) {
 
-            redirect('perfil');
+            $errores['apellido_paterno'] =
+                'El apellido paterno es obligatorio.';
+        }
+
+        if (empty($datos['apellido_materno'])) {
+
+            $errores['apellido_materno'] =
+                'El apellido materno es obligatorio.';
+        }
+
+        if (empty($datos['telefono'])) {
+
+            $errores['telefono'] =
+                'El teléfono es obligatorio.';
+        }
+
+        if (empty($datos['correo'])) {
+
+            $errores['correo'] =
+                'El correo es obligatorio.';
+        }
+        if (
+            !empty($datos['correo']) &&
+            !filter_var(
+                $datos['correo'],
+                FILTER_VALIDATE_EMAIL
+            )
+        ) {
+
+            $errores['correo'] =
+                'El correo electrónico no es válido.';
+        }
+        
+        if (
+            !empty($datos['nombre']) &&
+            !preg_match(
+                "/^[\p{L}\s'’-]+$/u",
+                $datos['nombre']
+            )
+        ) {
+
+            $errores['nombre'] =
+                'El nombre contiene caracteres no permitidos.';
         }
         $modelo = new Usuario();
 
@@ -221,16 +239,21 @@ class UsuarioController extends BaseController
             )
         ) {
 
-            mensaje(
-                'Ese correo electrónico ya está registrado por otro usuario.',
-                ALERT_WARNING,
-                3000
-            );
+            $errores['correo'] =
+                'Ese correo ya está registrado.';
+        }
+
+        if (!empty($errores)) {
+
+            guardarOld($datos);
+
+            guardarErrores($errores);
+
+            guardarTab('settings');
 
             redirect('perfil');
-
         }
-    
+
         $resultado = $modelo->actualizar(
             $datos
         );
@@ -244,9 +267,7 @@ class UsuarioController extends BaseController
             );
 
             redirect('perfil');
-
         }
-
         // =========================
         // Actualizar sesión
         // =========================

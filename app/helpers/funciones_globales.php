@@ -135,16 +135,7 @@
         header('Location: ' . BASE_URL . $ruta);
         exit;
     }
-    function validarRequerido($valor, $mensaje)
+    function validarRequerido($valor, $datos = [])
     {
-        if (empty(trim($valor))) {
-
-            mensaje(
-                $mensaje,
-                ALERT_DANGER,
-                3000
-            );
-
-            redirect('perfil');
-        }
-    }
+        return !empty(trim($valor));
+    }   
