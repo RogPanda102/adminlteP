@@ -523,7 +523,15 @@ $tab_activo = $tab_activo ?? 'activity';
                                                         <input
                                                             type="password"
                                                             name="password_actual"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password_actual') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password_actual')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password_actual') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 
@@ -536,7 +544,15 @@ $tab_activo = $tab_activo ?? 'activity';
                                                         <input
                                                             type="password"
                                                             name="password"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 
@@ -549,7 +565,15 @@ $tab_activo = $tab_activo ?? 'activity';
                                                         <input
                                                             type="password"
                                                             name="password_confirmacion"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password_confirmacion') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password_confirmacion')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password_confirmacion') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 

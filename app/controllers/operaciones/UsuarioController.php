@@ -311,46 +311,43 @@ class UsuarioController extends BaseController
         $passwordConfirmacion = trim($_POST['password_confirmacion'] ?? '');
 
         // Validar campos vacíos
-        if (
-            empty($passwordActual) ||
-            empty($passwordNueva) ||
-            empty($passwordConfirmacion)
-        ) {
+        if (empty($passwordActual)) {
 
-            mensaje(
-                'Todos los campos son obligatorios.',
-                ALERT_WARNING,
-                3000
-            );
+            $errores['password_actual'] =
+                'La contraseña actual es obligatoria.';
+        }
 
-            redirect('perfil');
+        if (empty($passwordNueva)) {
 
+            $errores['password'] =
+                'La nueva contraseña es obligatoria.';
+        }
+
+        if (empty($passwordConfirmacion)) {
+
+            $errores['password_confirmacion'] =
+                'Debe confirmar la contraseña.';
         }
 
         // Validar coincidencia
-        if ($passwordNueva !== $passwordConfirmacion) {
+        if (
+            !empty($passwordNueva) &&
+            !empty($passwordConfirmacion) &&
+            $passwordNueva !== $passwordConfirmacion
+        ) {
 
-            mensaje(
-                'Las nuevas contraseñas no coinciden.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password_confirmacion'] =
+                'Las contraseñas no coinciden.';
         }
 
         // Longitud mínima
-        if (strlen($passwordNueva) < 8) {
+        if (
+            !empty($passwordNueva) &&
+            strlen($passwordNueva) < 8
+        ) {
 
-            mensaje(
-                'La contraseña debe tener al menos 8 caracteres.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password'] =
+                'Debe contener al menos 8 caracteres.';
         }
 
         $modeloUsuario = new Usuario();
@@ -361,35 +358,29 @@ class UsuarioController extends BaseController
         );
 
         // Validar contraseña actual
-        if (!password_verify(
-            $passwordActual,
-            $usuario['password']
-        )) {
+        if (
+            empty($errores['password_actual']) &&
+            !password_verify(
+                $passwordActual,
+                $usuario['password']
+            )
+        ) {
 
-            mensaje(
-                'La contraseña actual es incorrecta.',
-                ALERT_DANGER,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password_actual'] =
+                'La contraseña actual es incorrecta.';
         }
 
         // Evitar reutilizar la misma contraseña
-        if (password_verify(
-            $passwordNueva,
-            $usuario['password']
-        )) {
+        if (
+            empty($errores['password']) &&
+            password_verify(
+                $passwordNueva,
+                $usuario['password']
+            )
+        ) {
 
-            mensaje(
-                'La nueva contraseña debe ser diferente a la actual.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password'] =
+                'Debe elegir una contraseña diferente.';
         }
 
         $passwordHash = password_hash(
@@ -403,16 +394,13 @@ class UsuarioController extends BaseController
             $_SESSION['usuario_id']
         );
 
-        if (!$resultado) {
+        if (!empty($errores)) {
 
-            mensaje(
-                'No fue posible actualizar la contraseña.',
-                ALERT_DANGER,
-                3000
-            );
+            guardarErrores($errores);
+
+            guardarTab('settings');
 
             redirect('perfil');
-
         }
 
         mensaje(
