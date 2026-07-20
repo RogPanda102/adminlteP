@@ -87,6 +87,45 @@
         // =========================
         private function obtenerTop($tabla, $campo, $anio, $limite = 10)
         {
+            // Caso especial: tablas con analista_id
+            if (
+                in_array($tabla, ['cotizaciones', 'adjudicados'], true)
+                && $campo === 'analista'
+            ) {
+
+                $sql = "
+                    SELECT
+                        TRIM(
+                            CONCAT(
+                                a.nombre,
+                                ' ',
+                                COALESCE(a.apellido_paterno, ''),
+                                ' ',
+                                COALESCE(a.apellido_materno, '')
+                            )
+                        ) AS analista,
+                        COUNT(*) AS total
+                    FROM {$tabla} t
+                    INNER JOIN analistas a
+                        ON a.id = t.analista_id
+                    WHERE t.anio = :anio
+                    AND t.analista_id IS NOT NULL
+                    GROUP BY t.analista_id,
+                            a.nombre,
+                            a.apellido_paterno,
+                            a.apellido_materno
+                    ORDER BY total DESC, analista ASC
+                    LIMIT {$limite}
+                ";
+
+                $stmt = $this->db->prepare($sql);
+
+                $stmt->execute([
+                    ':anio' => $anio
+                ]);
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
             $tablasPermitidas = [
                 'cotizaciones',
                 'adjudicados',
