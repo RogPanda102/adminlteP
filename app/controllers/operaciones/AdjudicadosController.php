@@ -203,9 +203,9 @@ class AdjudicadosController extends BaseController
             'partida' => limpiarTextoMayusculas(
                 $_POST['partida'] ?? ''
             ),
-            'analista' => limpiarTextoMayusculas(
-                $_POST['analista'] ?? ''
-            ),
+            'analista_id' => !empty($_POST['analista_id'])
+                ? (int) $_POST['analista_id']
+                : null,
             'fecha_elaboracion' =>
             $_POST['fecha_elaboracion'] ?? null,
             'fecha_inicio_entrega' =>
@@ -230,6 +230,7 @@ class AdjudicadosController extends BaseController
             'creado_por' =>
             $_SESSION['usuario_id']
         ];
+        
         $resultado = $modelo->guardar($datos);
         if ($resultado) {
             mensaje(

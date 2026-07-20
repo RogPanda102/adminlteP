@@ -89,6 +89,7 @@ class Servicio
                 inicio,
                 finalizacion,
                 dependencia,
+                adjudicado_id,
                 anio,
                 creado_por,
                 actualizado_por
@@ -105,6 +106,7 @@ class Servicio
                 :inicio,
                 :finalizacion,
                 :dependencia,
+                :adjudicado_id,
                 :anio,
                 :creado_por,
                 :actualizado_por
@@ -124,6 +126,8 @@ class Servicio
             ':inicio'              => $datos['inicio'],
             ':finalizacion'        => $datos['finalizacion'],
             ':dependencia'         => $datos['dependencia'],
+            ':adjudicado_id' => $datos['adjudicado_id'] ?? null,
+            // ':adjudicado_id' => $datos['adjudicado_id'], se comenta y se pone opcional null pues ahora puede marcar error el controlador al apuntar ningun dato
             ':anio'                => $datos['anio'],
             ':creado_por'          => $datos['creado_por'],
             ':actualizado_por'     => $datos['actualizado_por']

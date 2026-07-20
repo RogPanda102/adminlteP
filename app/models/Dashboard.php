@@ -107,18 +107,50 @@
                 return [];
             }
 
-            $sql = "
-                SELECT
-                    {$campo},
-                    COUNT(*) AS total
-                FROM {$tabla}
-                WHERE anio = :anio
-                AND {$campo} IS NOT NULL
-                AND {$campo} <> ''
-                GROUP BY {$campo}
-                ORDER BY total DESC, {$campo} ASC
-                LIMIT {$limite}
-            ";
+            // =========================
+            // Analistas
+            // =========================
+            if ($campo === 'analista') {
+
+                $sql = "
+                    SELECT
+                        CONCAT(
+                            a.nombre,
+                            ' ',
+                            a.apellido_paterno,
+                            IF(
+                                a.apellido_materno IS NULL
+                                OR a.apellido_materno = '',
+                                '',
+                                CONCAT(' ', a.apellido_materno)
+                            )
+                        ) AS analista,
+                        COUNT(*) AS total
+                    FROM {$tabla} t
+                    INNER JOIN analistas a
+                        ON t.analista_id = a.id
+                    WHERE t.anio = :anio
+                    GROUP BY t.analista_id
+                    ORDER BY total DESC, analista ASC
+                    LIMIT {$limite}
+                ";
+
+            } else {
+
+                $sql = "
+                    SELECT
+                        {$campo},
+                        COUNT(*) AS total
+                    FROM {$tabla}
+                    WHERE anio = :anio
+                    AND {$campo} IS NOT NULL
+                    AND {$campo} <> ''
+                    GROUP BY {$campo}
+                    ORDER BY total DESC, {$campo} ASC
+                    LIMIT {$limite}
+                ";
+
+            }
 
             $stmt = $this->db->prepare($sql);
 

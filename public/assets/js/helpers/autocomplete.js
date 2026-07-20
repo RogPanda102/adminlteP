@@ -10,18 +10,20 @@ function crearAutocomplete(config) {
         return;
     }
 
+
     input.addEventListener('keyup', async () => {
 
-        const texto =
-            input.value.trim();
+        const texto = input.value.trim();
+
 
         if (texto.length < 2) {
 
-            resultados.style.display =
-                'none';
+            resultados.style.display = 'none';
+            resultados.innerHTML = '';
 
             return;
         }
+
 
         const respuesta = await fetch(
 
@@ -34,71 +36,158 @@ function crearAutocomplete(config) {
 
         );
 
-        const datos =
-            await respuesta.json();
+
+        const datos = await respuesta.json();
+
 
         resultados.innerHTML = '';
 
+
+
+        // =========================
+        // SIN RESULTADOS
+        // =========================
         if (!datos.length) {
 
-            resultados.style.display =
-                'none';
+
+            const sinResultados =
+                document.createElement('div');
+
+
+            sinResultados.className =
+                'list-group-item text-muted';
+
+
+            sinResultados.innerHTML = `
+                <i class="bi bi-search me-2"></i>
+                Sin resultados
+            `;
+
+
+            resultados.appendChild(sinResultados);
+
+
+
+            if (config.onEmpty) {
+
+
+                const crear =
+                    document.createElement('a');
+
+
+                crear.href = '#';
+
+
+                crear.className =
+                    'list-group-item list-group-item-action text-primary fw-semibold';
+
+
+                crear.innerHTML = `
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Crear "${texto}"
+                `;
+
+
+                crear.addEventListener('click', e => {
+
+                    e.preventDefault();
+
+                    config.onEmpty(texto);
+
+                    resultados.style.display = 'none';
+
+                });
+
+
+                resultados.appendChild(crear);
+
+            }
+
+
+            resultados.style.display = 'block';
 
             return;
         }
 
+
+
+
+        // =========================
+        // RESULTADOS
+        // =========================
         datos.forEach(item => {
+
 
             const opcion =
                 document.createElement('a');
 
+
             opcion.href = '#';
+
 
             opcion.className =
                 'list-group-item list-group-item-action';
 
+
             opcion.textContent =
-                item[config.campo];
+                item.nombre;
 
-            opcion.addEventListener(
-                'click',
-                e => {
 
-                    e.preventDefault();
 
-                    input.value =
-                        item[config.campo];
+            opcion.addEventListener('click', e => {
 
-                    resultados.style.display =
-                        'none';
 
-                    if (config.onSelect) {
-                        config.onSelect(item);
-                    }
-                }
-            );
+                e.preventDefault();
 
-            resultados.appendChild(opcion);
 
-        });
+                input.value =
+                    item.nombre;
 
-        resultados.style.display =
-            'block';
-
-    });
-
-    document.addEventListener(
-        'click',
-        e => {
-
-            if (
-                !input.contains(e.target) &&
-                !resultados.contains(e.target)
-            ) {
 
                 resultados.style.display =
                     'none';
-            }
+
+
+
+                if (config.onSelect) {
+
+                    config.onSelect(item);
+
+                }
+
+
+            });
+
+
+            resultados.appendChild(opcion);
+
+
+        });
+
+
+
+        resultados.style.display = 'block';
+
+
+    });
+
+
+
+    document.addEventListener('click', e => {
+
+
+        if (
+            !input.contains(e.target) &&
+            !resultados.contains(e.target)
+        ) {
+
+
+            resultados.style.display = 'none';
+
+
         }
-    );
+
+
+    });
+
 }

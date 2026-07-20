@@ -55,4 +55,41 @@ class Analista
             ':correo'   => $datos['correo']
         ]);
     }
+
+    // =========================
+    // Guardar (Nuevo)
+    // =========================
+    public function guardarNuevo($datos)
+    {
+        $sql = "
+            INSERT INTO analistas
+            (
+                nombre,
+                apellido_paterno,
+                apellido_materno,
+                telefono
+            )
+            VALUES
+            (
+                :nombre,
+                :apellido_paterno,
+                :apellido_materno,
+                :telefono
+            )
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':nombre'             => $datos['nombre'],
+            ':apellido_paterno'   => $datos['apellido_paterno'],
+            ':apellido_materno'   => $datos['apellido_materno'],
+            ':telefono'           => $datos['telefono']
+        ]);
+
+        return $this->db->lastInsertId();
+    }
+
+
+
 } 

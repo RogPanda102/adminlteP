@@ -215,9 +215,16 @@ $router->post(
 );
 
 $router->post(
+    '/contactos/guardarAnalistaAjax',
+    'operaciones\ContactosController@guardarAnalistaAjax'
+);
+
+$router->post(
     '/contactos/guardarEncargado',
     'operaciones\ContactosController@guardarEncargado'
 );
+
+
 
 /*
 |------------------------------------------------------------------
