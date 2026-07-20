@@ -43,11 +43,16 @@ class UsuarioController extends BaseController
         if (!$this->permitido) {
             redirect('login');
         }
-
+        $modeloUsuario = new Usuario();
         $modeloCotizacion = new Cotizacion();
 
         $datos = $this->cargar_datos();
-  
+        
+        // Información del usuario
+        $datos['usuario'] = $modeloUsuario->buscarPorId(
+            $_SESSION['usuario_id']
+        );
+        // Estadísticas
         $datos['estadisticas'] =
             $modeloCotizacion->obtenerEstadisticasUsuario(
                 $_SESSION['usuario_id']
@@ -56,10 +61,13 @@ class UsuarioController extends BaseController
         $datos['anios'] =
             $modeloCotizacion->obtenerAnios();
 
+        $datos['tab_activo'] = oldTab();
         $this->render(
             'usuario/perfil',
             $datos
         );
+        limpiarOld();
+        limpiarErrores();
     }
 
     // =========================
@@ -112,6 +120,174 @@ class UsuarioController extends BaseController
 
         exit;
     }
+    
+    // =========================
+    // Actualizar información personal
+    // =========================
+    public function actualizar()
+    {
+        
+        
+        if (!$this->permitido) {
+
+            redirect('login');
+
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            redirect('perfil');
+
+        }
+
+        $datos = [
+
+            'id' => $_SESSION['usuario_id'],
+
+            'nombre' => limpiarTexto(
+                $_POST['nombre'] ?? ''
+            ),
+
+            'apellido_paterno' => limpiarTexto(
+                $_POST['apellido_paterno'] ?? ''
+            ),
+
+            'apellido_materno' => limpiarTexto(
+                $_POST['apellido_materno'] ?? ''
+            ),
+
+            'correo' => trim(
+                $_POST['correo'] ?? ''
+            ),
+
+            'telefono' => trim(
+                $_POST['telefono'] ?? ''
+            ),
+
+            'actualizado_por' => $_SESSION['usuario_id']
+
+        ];
+
+        $errores = [];
+
+        // =========================
+        // Validaciones
+        // =========================
+
+        if (empty($datos['nombre'])) {
+
+            $errores['nombre'] =
+                'El nombre es obligatorio.';
+        }
+
+        if (empty($datos['apellido_paterno'])) {
+
+            $errores['apellido_paterno'] =
+                'El apellido paterno es obligatorio.';
+        }
+
+        if (empty($datos['apellido_materno'])) {
+
+            $errores['apellido_materno'] =
+                'El apellido materno es obligatorio.';
+        }
+
+        if (empty($datos['telefono'])) {
+
+            $errores['telefono'] =
+                'El teléfono es obligatorio.';
+        }
+
+        if (empty($datos['correo'])) {
+
+            $errores['correo'] =
+                'El correo es obligatorio.';
+        }
+        if (
+            !empty($datos['correo']) &&
+            !filter_var(
+                $datos['correo'],
+                FILTER_VALIDATE_EMAIL
+            )
+        ) {
+
+            $errores['correo'] =
+                'El correo electrónico no es válido.';
+        }
+        
+        if (
+            !empty($datos['nombre']) &&
+            !preg_match(
+                "/^[\p{L}\s'’-]+$/u",
+                $datos['nombre']
+            )
+        ) {
+
+            $errores['nombre'] =
+                'El nombre contiene caracteres no permitidos.';
+        }
+        $modelo = new Usuario();
+
+        // =========================
+        // Validar correo duplicado
+        // =========================
+
+        if (
+            $modelo->correoExiste(
+                $datos['correo'],
+                $_SESSION['usuario_id']
+            )
+        ) {
+
+            $errores['correo'] =
+                'Ese correo ya está registrado.';
+        }
+
+        if (!empty($errores)) {
+
+            guardarOld($datos);
+
+            guardarErrores($errores);
+
+            guardarTab('settings');
+
+            redirect('perfil');
+        }
+
+        $resultado = $modelo->actualizar(
+            $datos
+        );
+
+        if (!$resultado) {
+
+            mensaje(
+                'No fue posible actualizar la información.',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('perfil');
+        }
+        // =========================
+        // Actualizar sesión
+        // =========================
+
+        $_SESSION['usuario_nombre'] =
+            $datos['nombre'] . ' ' .
+            $datos['apellido_paterno'];
+
+        $_SESSION['correo'] =
+            $datos['correo'];
+
+        mensaje(
+            'Información actualizada correctamente.',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        redirect('perfil');
+
+    }
 
     // =========================
     // Actualizar contraseña
@@ -135,46 +311,43 @@ class UsuarioController extends BaseController
         $passwordConfirmacion = trim($_POST['password_confirmacion'] ?? '');
 
         // Validar campos vacíos
-        if (
-            empty($passwordActual) ||
-            empty($passwordNueva) ||
-            empty($passwordConfirmacion)
-        ) {
+        if (empty($passwordActual)) {
 
-            mensaje(
-                'Todos los campos son obligatorios.',
-                ALERT_WARNING,
-                3000
-            );
+            $errores['password_actual'] =
+                'La contraseña actual es obligatoria.';
+        }
 
-            redirect('perfil');
+        if (empty($passwordNueva)) {
 
+            $errores['password'] =
+                'La nueva contraseña es obligatoria.';
+        }
+
+        if (empty($passwordConfirmacion)) {
+
+            $errores['password_confirmacion'] =
+                'Debe confirmar la contraseña.';
         }
 
         // Validar coincidencia
-        if ($passwordNueva !== $passwordConfirmacion) {
+        if (
+            !empty($passwordNueva) &&
+            !empty($passwordConfirmacion) &&
+            $passwordNueva !== $passwordConfirmacion
+        ) {
 
-            mensaje(
-                'Las nuevas contraseñas no coinciden.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password_confirmacion'] =
+                'Las contraseñas no coinciden.';
         }
 
         // Longitud mínima
-        if (strlen($passwordNueva) < 8) {
+        if (
+            !empty($passwordNueva) &&
+            strlen($passwordNueva) < 8
+        ) {
 
-            mensaje(
-                'La contraseña debe tener al menos 8 caracteres.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password'] =
+                'Debe contener al menos 8 caracteres.';
         }
 
         $modeloUsuario = new Usuario();
@@ -185,35 +358,29 @@ class UsuarioController extends BaseController
         );
 
         // Validar contraseña actual
-        if (!password_verify(
-            $passwordActual,
-            $usuario['password']
-        )) {
+        if (
+            empty($errores['password_actual']) &&
+            !password_verify(
+                $passwordActual,
+                $usuario['password']
+            )
+        ) {
 
-            mensaje(
-                'La contraseña actual es incorrecta.',
-                ALERT_DANGER,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password_actual'] =
+                'La contraseña actual es incorrecta.';
         }
 
         // Evitar reutilizar la misma contraseña
-        if (password_verify(
-            $passwordNueva,
-            $usuario['password']
-        )) {
+        if (
+            empty($errores['password']) &&
+            password_verify(
+                $passwordNueva,
+                $usuario['password']
+            )
+        ) {
 
-            mensaje(
-                'La nueva contraseña debe ser diferente a la actual.',
-                ALERT_WARNING,
-                3000
-            );
-
-            redirect('perfil');
-
+            $errores['password'] =
+                'Debe elegir una contraseña diferente.';
         }
 
         $passwordHash = password_hash(
@@ -227,16 +394,13 @@ class UsuarioController extends BaseController
             $_SESSION['usuario_id']
         );
 
-        if (!$resultado) {
+        if (!empty($errores)) {
 
-            mensaje(
-                'No fue posible actualizar la contraseña.',
-                ALERT_DANGER,
-                3000
-            );
+            guardarErrores($errores);
+
+            guardarTab('settings');
 
             redirect('perfil');
-
         }
 
         mensaje(
@@ -247,4 +411,6 @@ class UsuarioController extends BaseController
 
         redirect('perfil');
     }
+
+    
 }

@@ -5,6 +5,8 @@ $foto_usuario = $foto_usuario ?? '';
 $usuario = $usuario ?? [];
 $estadisticas = $estadisticas ?? [];
 $actividad = $actividad ?? [];
+$anios = $anios ?? [];
+$tab_activo = $tab_activo ?? 'activity';
 
 ?>
 
@@ -24,7 +26,7 @@ $actividad = $actividad ?? [];
                                 height="100"
                                 alt="Foto de perfil" />
                             <h3 class="h5 mb-0">
-                                <?= $nombre_usuario ?>
+                                <?= htmlspecialchars($nombre_usuario ?? '', ENT_QUOTES, 'UTF-8') ?>
 
                             </h3>
                             <p class="text-secondary mb-3">Estatus de cotizaciones</p>
@@ -52,7 +54,7 @@ $actividad = $actividad ?? [];
                             <ul class="nav nav-tabs" id="profile-tabs" role="tablist">
                                 <li class="nav-item" role="presentation">
                                     <button
-                                        class="nav-link active"
+                                        class="nav-link <?= $tab_activo == 'activity' ? 'active' : '' ?>"
                                         id="activity-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#activity"
@@ -64,7 +66,7 @@ $actividad = $actividad ?? [];
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button
-                                        class="nav-link"
+                                        class="nav-link <?= $tab_activo == 'timeline' ? 'active' : '' ?>"
                                         id="timeline-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#timeline"
@@ -76,7 +78,7 @@ $actividad = $actividad ?? [];
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button
-                                        class="nav-link"
+                                        class="nav-link <?= $tab_activo == 'settings' ? 'active' : '' ?>"
                                         id="settings-tab"
                                         data-bs-toggle="tab"
                                         data-bs-target="#settings"
@@ -92,7 +94,7 @@ $actividad = $actividad ?? [];
                             <div class="tab-content">
                                 <!-- Activity tab -->
                                 <div
-                                    class="tab-pane fade show active"
+                                    class="tab-pane fade <?= $tab_activo == 'activity' ? 'show active' : '' ?>"
                                     id="activity"
                                     role="tabpanel"
                                     aria-labelledby="activity-tab">
@@ -124,7 +126,7 @@ $actividad = $actividad ?? [];
 
                                 <!-- Estadisticas Tab -->
                                 <div
-                                    class="tab-pane fade"
+                                    class="tab-pane fade <?= $tab_activo == 'timeline' ? 'show active' : '' ?>"
                                     id="timeline"
                                     role="tabpanel"
                                     aria-labelledby="timeline-tab">
@@ -345,7 +347,7 @@ $actividad = $actividad ?? [];
 
                                 <!-- Ajustes tab -->
                                 <div
-                                    class="tab-pane fade"
+                                    class="tab-pane fade <?= $tab_activo == 'settings' ? 'show active' : '' ?>"
                                     id="settings"
                                     role="tabpanel"
                                     aria-labelledby="settings-tab">
@@ -356,13 +358,14 @@ $actividad = $actividad ?? [];
                                             </h3>
                                         </div>
 
-                                        <form action="" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= BASE_URL ?>perfil/actualizar" method="POST" enctype="multipart/form-data">
 
                                             <div class="card-body">
 
                                                 <div class="row g-3">
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
+
                                                         <label class="form-label">
                                                             Nombre
                                                         </label>
@@ -370,11 +373,20 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="nombre"
-                                                            class="form-control"
-                                                            value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>">
+                                                            class="form-control <?= error('nombre') ? 'is-invalid' : '' ?>"
+                                                            value="<?= old('nombre', $usuario['nombre'] ?? '') ?>">
+
+                                                        <?php if (error('nombre')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('nombre') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
+
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">
                                                             Apellido paterno
                                                         </label>
@@ -382,11 +394,17 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="apellido_paterno"
-                                                            class="form-control"
-                                                            value="<?= htmlspecialchars($usuario['apellido_paterno'] ?? '') ?>">
+                                                            class="form-control <?= error('apellido_paterno') ? 'is-invalid' : '' ?>"
+                                                            value="<?= old('apellido_paterno', $usuario['apellido_paterno'] ?? '') ?>">
+
+                                                        <?php if (error('apellido_paterno')): ?>
+                                                            <div class="invalid-feedback">
+                                                                <?= error('apellido_paterno') ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
 
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-6">
                                                         <label class="form-label">
                                                             Apellido materno
                                                         </label>
@@ -394,8 +412,16 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="apellido_materno"
-                                                            class="form-control"
-                                                            value="<?= htmlspecialchars($usuario['apellido_materno'] ?? '') ?>">
+                                                            class="form-control <?= error('apellido_materno') ? 'is-invalid' : '' ?>"
+                                                            value="<?= old('apellido_materno', $usuario['apellido_materno'] ?? '') ?>">
+
+                                                        <?php if (error('apellido_materno')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('apellido_materno') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -407,7 +433,7 @@ $actividad = $actividad ?? [];
                                                             type="text"
                                                             name="usuario"
                                                             class="form-control"
-                                                            readonly
+                                                            disabled
                                                             value="<?= htmlspecialchars($usuario['usuario'] ?? '') ?>">
                                                     </div>
 
@@ -418,9 +444,16 @@ $actividad = $actividad ?? [];
 
                                                         <input
                                                             type="email"
-                                                            name="correo"
-                                                            class="form-control"
-                                                            value="<?= htmlspecialchars($usuario['correo'] ?? '') ?>">
+                                                            name="correo"                                                            class="form-control"
+                                                            class="form-control <?= error('correo') ? 'is-invalid' : '' ?>"
+                                                            value="<?= old('correo', $usuario['correo'] ?? '') ?>">
+                                                        <?php if (error('correo')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('correo') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
                                                     </div>
 
                                                     <div class="col-md-6">
@@ -431,20 +464,19 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="text"
                                                             name="telefono"
-                                                            class="form-control"
-                                                            value="<?= htmlspecialchars($usuario['telefono'] ?? '') ?>">
+                                                            class="form-control <?= error('telefono') ? 'is-invalid' : '' ?>"
+                                                            value="<?= old('telefono', $usuario['telefono'] ?? '') ?>">
+
+                                                        <?php if (error('telefono')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('telefono') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
                                                     </div>
 
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">
-                                                            Fotografía
-                                                        </label>
-
-                                                        <input
-                                                            type="file"
-                                                            name="foto"
-                                                            class="form-control">
-                                                    </div>
+                                                    
 
                                                 </div>
 
@@ -476,7 +508,7 @@ $actividad = $actividad ?? [];
                                             </h3>
                                         </div>
 
-                                        <form action="<?BASE_URL?>/usuario/actualizar-password" method="POST">
+                                        <form action="<?= BASE_URL ?>perfil/actualizarPassword" method="post">
 
                                             <div class="card-body">
 
@@ -491,7 +523,15 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="password"
                                                             name="password_actual"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password_actual') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password_actual')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password_actual') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 
@@ -504,7 +544,15 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="password"
                                                             name="password"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 
@@ -517,7 +565,15 @@ $actividad = $actividad ?? [];
                                                         <input
                                                             type="password"
                                                             name="password_confirmacion"
-                                                            class="form-control">
+                                                            class="form-control <?= error('password_confirmacion') ? 'is-invalid' : '' ?>">
+
+                                                        <?php if (error('password_confirmacion')): ?>
+
+                                                            <div class="invalid-feedback">
+                                                                <?= error('password_confirmacion') ?>
+                                                            </div>
+
+                                                        <?php endif; ?>
 
                                                     </div>
 

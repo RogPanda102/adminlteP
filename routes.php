@@ -243,8 +243,13 @@ $router->get(
 );
 
 $router->post(
-    '/usuario/actualizar-password',
+    '/perfil/actualizarPassword',
     'operaciones\UsuarioController@actualizarPassword'
+);
+
+$router->post(
+    '/perfil/actualizar',
+    'operaciones\UsuarioController@actualizar'
 );
 
 /*

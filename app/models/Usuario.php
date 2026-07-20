@@ -169,4 +169,89 @@ class Usuario
 
     }
 
+    // =========================
+    // Actualizar información
+    // =========================
+    public function actualizar($datos)
+    {
+        
+        $sql = "
+
+            UPDATE usuarios
+
+            SET
+
+                nombre = :nombre,
+
+                apellido_paterno = :apellido_paterno,
+
+                apellido_materno = :apellido_materno,
+
+                correo = :correo,
+
+                telefono = :telefono,
+
+                actualizado_por = :actualizado_por
+
+            WHERE id = :id
+
+        ";
+
+        $query = $this->conexion->prepare($sql);
+
+        return $query->execute([
+
+            ':nombre' => $datos['nombre'],
+
+            ':apellido_paterno' => $datos['apellido_paterno'],
+
+            ':apellido_materno' => $datos['apellido_materno'],
+
+            ':correo' => $datos['correo'],
+
+            ':telefono' => $datos['telefono'],
+
+            ':actualizado_por' => $datos['actualizado_por'],
+
+            ':id' => $datos['id']
+
+        ]);
+
+    }
+
+    // =========================
+    // Buscar correo en otro usuario
+    // =========================
+    public function correoExiste($correo, $usuarioId)
+    {
+
+        $sql = "
+
+            SELECT id
+
+            FROM usuarios
+
+            WHERE correo = :correo
+
+            AND id <> :id
+
+            AND eliminado = 0
+
+            LIMIT 1
+
+        ";
+
+        $query = $this->conexion->prepare($sql);
+
+        $query->execute([
+
+            ':correo' => $correo,
+
+            ':id' => $usuarioId
+
+        ]);
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+
+    }
 }
