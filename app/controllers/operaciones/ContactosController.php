@@ -151,6 +151,74 @@ class ContactosController extends BaseController
         exit;
     }
 
+
+    // =========================
+    // Guardar analista AJAX
+    // =========================
+    public function guardarAnalistaAjax()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        if (!$this->permitido) {
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado'
+            ]);
+
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Método no permitido'
+            ]);
+
+            exit;
+        }
+
+        $datos = [
+
+            'nombre'             => trim($_POST['nombre'] ?? ''),
+            'apellido_paterno'   => trim($_POST['apellido_paterno'] ?? ''),
+            'apellido_materno'   => trim($_POST['apellido_materno'] ?? ''),
+            'telefono'           => trim($_POST['telefono'] ?? '')
+
+        ];
+
+        if ($datos['nombre'] === '') {
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'El nombre es obligatorio'
+            ]);
+
+            exit;
+        }
+
+        $modelo = new Analista();
+
+        $id = $modelo->guardarNuevo($datos);
+
+        echo json_encode([
+
+            'ok' => true,
+
+            'id' => $id,
+
+            'nombre' => trim(
+                $datos['nombre'] . ' ' .
+                $datos['apellido_paterno'] . ' ' .
+                $datos['apellido_materno']
+            )
+
+        ]);
+
+        exit;
+    }
+
     // =========================
     // Guardar encargado
     // =========================

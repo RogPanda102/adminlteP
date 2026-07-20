@@ -16,16 +16,37 @@ class Adjudicados
     public function obtenerPorAnio($anio)
     {
         $sql = "
-            SELECT *
-            FROM adjudicados
-            WHERE anio = ?
-            AND eliminado = 0
-            ORDER BY id DESC
+            SELECT
+                ad.*,
+
+                CONCAT(
+                    a.nombre,
+                    ' ',
+                    a.apellido_paterno,
+                    IF(
+                        a.apellido_materno IS NULL
+                        OR a.apellido_materno='',
+                        '',
+                        CONCAT(' ',a.apellido_materno)
+                    )
+                ) AS analista
+
+            FROM adjudicados ad
+
+            LEFT JOIN analistas a
+                ON a.id = ad.analista_id
+
+            WHERE ad.anio = :anio
+            AND ad.eliminado = 0
+
+            ORDER BY ad.id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->execute([$anio]);
+        $stmt->execute([
+            ':anio'=>$anio
+        ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -43,7 +64,7 @@ class Adjudicados
                 folio = :folio,
                 elaboro = :elaboro,
                 partida = :partida,
-                analista = :analista,
+                analista_id = :analista_id,
                 fecha_elaboracion = :fecha_elaboracion,
                 fecha_inicio_entrega = :fecha_inicio_entrega,
                 fecha_fin_entrega = :fecha_fin_entrega,
@@ -64,7 +85,7 @@ class Adjudicados
             ':folio' => $datos['folio'],
             ':elaboro' => $datos['elaboro'],
             ':partida' => $datos['partida'],
-            ':analista' => $datos['analista'],
+            ':analista_id' => $datos['analista_id'] ?? null,
             ':fecha_elaboracion' => $datos['fecha_elaboracion'],
             ':fecha_inicio_entrega' => $datos['fecha_inicio_entrega'],
             ':fecha_fin_entrega' => $datos['fecha_fin_entrega'],
@@ -85,15 +106,36 @@ class Adjudicados
     public function buscarPorId($id)
     {
         $sql = "
-            SELECT *
-            FROM adjudicados
-            WHERE id = ?
+            SELECT
+                ad.*,
+
+                CONCAT(
+                    a.nombre,
+                    ' ',
+                    a.apellido_paterno,
+                    IF(
+                        a.apellido_materno IS NULL
+                        OR a.apellido_materno = '',
+                        '',
+                        CONCAT(' ', a.apellido_materno)
+                    )
+                ) AS analista
+
+            FROM adjudicados ad
+
+            LEFT JOIN analistas a
+                ON a.id = ad.analista_id
+
+            WHERE ad.id = :id
+
             LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->execute([$id]);
+        $stmt->execute([
+            ':id' => $id
+        ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
@@ -104,7 +146,6 @@ class Adjudicados
     // =========================
     public function guardar($datos)
     {
-
         $sql = "
             INSERT INTO adjudicados
             (
@@ -112,7 +153,7 @@ class Adjudicados
                 folio,
                 elaboro,
                 partida,
-                analista,
+                analista_id,
                 fecha_elaboracion,
                 fecha_inicio_entrega,
                 fecha_fin_entrega,
@@ -130,7 +171,7 @@ class Adjudicados
                 :folio,
                 :elaboro,
                 :partida,
-                :analista,
+                :analista_id,
                 :fecha_elaboracion,
                 :fecha_inicio_entrega,
                 :fecha_fin_entrega,
@@ -144,66 +185,41 @@ class Adjudicados
             )
         ";
 
-
         $stmt = $this->db->prepare($sql);
-
 
         return $stmt->execute([
 
-            ':req' =>
-                $datos['req'],
+            ':req' => $datos['req'],
 
-            ':folio' =>
-                $datos['folio'],
+            ':folio' => $datos['folio'],
 
-            ':elaboro' =>
-                $datos['elaboro'],
+            ':elaboro' => $datos['elaboro'],
 
-            ':partida' =>
-                $datos['partida'],
+            ':partida' => $datos['partida'],
 
-            ':analista' =>
-                $datos['analista'],
+            ':analista_id' => $datos['analista_id'] ?? null,
 
+            ':fecha_elaboracion' => $datos['fecha_elaboracion'],
 
-            ':fecha_elaboracion' =>
-                $datos['fecha_elaboracion'],
+            ':fecha_inicio_entrega' => $datos['fecha_inicio_entrega'],
 
-            ':fecha_inicio_entrega' =>
-                $datos['fecha_inicio_entrega'],
+            ':fecha_fin_entrega' => $datos['fecha_fin_entrega'],
 
-            ':fecha_fin_entrega' =>
-                $datos['fecha_fin_entrega'],
+            ':total' => $datos['total'],
 
+            ':dia_pago' => $datos['dia_pago'],
 
-            ':total' =>
-                $datos['total'],
+            ':pago' => $datos['pago'],
 
-            ':dia_pago' =>
-                $datos['dia_pago'],
+            ':dependencia' => $datos['dependencia'],
 
+            ':cotizacion_id' => $datos['cotizacion_id'],
 
-            ':pago' =>
-                $datos['pago'],
+            ':anio' => $datos['anio'],
 
-
-            ':dependencia' =>
-                $datos['dependencia'],
-
-
-            ':cotizacion_id' =>
-                $datos['cotizacion_id'],
-
-
-            ':anio' =>
-                $datos['anio'],
-
-
-            ':creado_por' =>
-                $datos['creado_por']
+            ':creado_por' => $datos['creado_por']
 
         ]);
-
     }
 
 
@@ -213,7 +229,6 @@ class Adjudicados
     public function buscarCatalogo($campo, $texto)
     {
         $camposPermitidos = [
-            'analista',
             'dependencia',
             'elaboro',
             'partida'

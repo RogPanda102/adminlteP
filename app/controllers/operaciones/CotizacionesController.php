@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../BaseController.php';
 require_once __DIR__ . '/../../models/Cotizacion.php';
+require_once __DIR__ . '/../../models/Catalogo.php';
 
 class CotizacionesController extends BaseController
 {
@@ -191,7 +192,9 @@ class CotizacionesController extends BaseController
             'elaboro'    => limpiarTextoMayusculas($_POST['elaboro'] ?? ''),
             'partida'    => limpiarTextoMayusculas($_POST['partida'] ?? ''),
             'proveedor'  => limpiarTextoMayusculas($_POST['proveedor'] ?? ''),
-            'analista'   => limpiarTextoMayusculas($_POST['analista'] ?? ''),
+            'analista_id' => !empty($_POST['analista_id'])
+                ? (int) $_POST['analista_id']
+                : null,
             'estatus'    => $_POST['estatus'] ?? 'enviado',
             'reenviar'   => isset($_POST['reenviar']) ? 1 : 0,
 
@@ -275,9 +278,9 @@ class CotizacionesController extends BaseController
             exit;
         }
 
-        $modelo = new Cotizacion();
+        $modelo = new Catalogo();
 
-        $resultado = $modelo->buscarCatalogo(
+        $resultado = $modelo->buscar(
             $campo,
             $texto
         );
