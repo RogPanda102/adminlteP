@@ -265,11 +265,16 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!data) return;
 
         document.getElementById('edit-id').value = data.id || '';
+        document.getElementById('edit-cotizacion_id').value = data.cotizacion_id || '';
+        document.getElementById('edit-anio').value = data.anio || '';
+
+
         document.getElementById('edit-req').value = data.req || '';
         document.getElementById('edit-folio').value = data.folio || '';
         document.getElementById('edit-elaboro').value = data.elaboro || '';
         document.getElementById('edit-partida').value = data.partida || '';
         document.getElementById('edit-analista').value = data.analista || '';
+        document.getElementById('edit-analista_id').value = data.analista_id || '';
 
         document.getElementById('edit-fecha_elaboracion').value = data.fecha_elaboracion || '';
         document.getElementById('edit-fecha_inicio_entrega').value = data.fecha_inicio_entrega || '';
@@ -337,21 +342,33 @@ document.addEventListener('DOMContentLoaded', function () {
         const payload = {
 
             id: document.getElementById('edit-id').value,
+
             req: document.getElementById('edit-req').value,
+
             folio: document.getElementById('edit-folio').value,
+
             elaboro: document.getElementById('edit-elaboro').value,
+
             partida: document.getElementById('edit-partida').value,
-            analista: document.getElementById('edit-analista').value,
+
+            analista_id: document.getElementById('edit-analista_id').value,
+
+            cotizacion_id: document.getElementById('edit-cotizacion_id').value,
 
             fecha_elaboracion: document.getElementById('edit-fecha_elaboracion').value,
+
             fecha_inicio_entrega: document.getElementById('edit-fecha_inicio_entrega').value,
+
             fecha_fin_entrega: document.getElementById('edit-fecha_fin_entrega').value,
 
             total: document.getElementById('edit-total').value,
+
             dia_pago: document.getElementById('edit-dia_pago').value,
+
             pago: document.getElementById('edit-pago').value,
 
             dependencia: document.getElementById('edit-dependencia').value
+
         };
 
         fetch(BASE_URL + 'adjudicados/update', {

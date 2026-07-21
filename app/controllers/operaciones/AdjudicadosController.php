@@ -287,67 +287,56 @@ class AdjudicadosController extends BaseController
 
             'id' => $input['id'],
 
-            'req' => limpiarTexto(
-                $input['req']
-            ),
+            'req' => limpiarTexto($input['req']),
 
-            'folio' => limpiarTexto(
-                $input['folio']
-            ),
+            'folio' => limpiarTexto($input['folio']),
 
-            'elaboro' => limpiarTextoMayusculas(
-                $input['elaboro']
-            ),
+            'elaboro' => limpiarTextoMayusculas($input['elaboro']),
 
-            'partida' => limpiarTextoMayusculas(
-                $input['partida']
-            ),
+            'partida' => limpiarTextoMayusculas($input['partida']),
 
-            'analista' => limpiarTextoMayusculas(
-                $input['analista']
-            ),
+            'analista_id' => !empty($input['analista_id'])
+                ? (int)$input['analista_id']
+                : null,
 
             'fecha_elaboracion' =>
-            !empty($input['fecha_elaboracion'])
-            ? $input['fecha_elaboracion']
-            : null,
+                !empty($input['fecha_elaboracion'])
+                ? $input['fecha_elaboracion']
+                : null,
 
             'fecha_inicio_entrega' =>
-            !empty($input['fecha_inicio_entrega'])
-            ? $input['fecha_inicio_entrega']
-            : null,
+                !empty($input['fecha_inicio_entrega'])
+                ? $input['fecha_inicio_entrega']
+                : null,
 
             'fecha_fin_entrega' =>
-            !empty($input['fecha_fin_entrega'])
-            ? $input['fecha_fin_entrega']
-            : null,
+                !empty($input['fecha_fin_entrega'])
+                ? $input['fecha_fin_entrega']
+                : null,
 
             'total' =>
-            !empty($input['total'])
-            ? $input['total']
-            : 0,
+                !empty($input['total'])
+                ? $input['total']
+                : 0,
 
             'dia_pago' =>
-            !empty($input['dia_pago'])
-            ? $input['dia_pago']
-            : null,
+                !empty($input['dia_pago'])
+                ? $input['dia_pago']
+                : null,
 
-            'pago' =>
-            $input['pago'],
+            'pago' => $input['pago'],
 
-            'dependencia' =>
-            limpiarTextoMayusculas(
+            'dependencia' => limpiarTextoMayusculas(
                 $input['dependencia']
             ),
 
-            'cotizacion_id' =>
-            $input['cotizacion_id'] ?? null,
+            'cotizacion_id' => !empty($input['cotizacion_id'])
+                ? (int)$input['cotizacion_id']
+                : null,
 
-            'anio' =>
-            date('Y'),
+            'anio' => date('Y'),
 
-            'actualizado_por' =>
-            $_SESSION['usuario_id']
+            'actualizado_por' => $_SESSION['usuario_id']
 
         ];
 
