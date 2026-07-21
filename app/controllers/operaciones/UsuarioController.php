@@ -164,8 +164,6 @@ class UsuarioController extends BaseController
                 $_POST['telefono'] ?? ''
             ),
 
-            'actualizado_por' => $_SESSION['usuario_id']
-
         ];
 
         $errores = [];
