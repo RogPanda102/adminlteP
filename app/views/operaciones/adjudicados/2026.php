@@ -291,127 +291,353 @@ $adjudicados = $adjudicados ?? [];
             <div class="modal-header bg-primary text-white">
                 <div>
                     <h5 class="modal-title mb-1">
-                        <i class="bi bi-pencil-square me-2"></i>Editar adjudicación
+                        <i class="bi bi-pencil-square me-2"></i>
+                        Editar adjudicación
                     </h5>
                     <small>Modificación de información administrativa</small>
                 </div>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+
+                <button
+                    type="button"
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+                </button>
             </div>
 
             <form id="formEditarAdjudicacion">
 
                 <div class="modal-body p-2">
 
+                    <!-- IDS -->
                     <input type="hidden" id="edit-id">
                     <input type="hidden" id="edit-cotizacion_id">
                     <input type="hidden" id="edit-anio">
+                    <input type="hidden" id="edit-analista_id">
 
-                    <!-- GENERAL -->
+                    <!-- ===================================================== -->
+                    <!-- INFORMACIÓN GENERAL -->
+                    <!-- ===================================================== -->
+
                     <div class="card mb-1">
-                        <div class="card-header bg-light py-2 section-toggle" data-target="#sec-general">
-                            <strong><i class="bi bi-info-circle me-1"></i>Información general</strong>
+
+                        <div
+                            class="card-header bg-light py-2 section-toggle"
+                            data-target="#sec-general">
+
+                            <strong>
+                                <i class="bi bi-info-circle me-1"></i>
+                                Información general
+                            </strong>
+
                         </div>
+
                         <div class="collapse show" id="sec-general">
+
                             <div class="card-body py-2">
+
                                 <div class="row g-2">
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">REQ</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-req">
+
+                                        <label class="form-label mb-0">
+                                            REQ
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-req">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Folio</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-folio" maxlength="4">
+
+                                        <label class="form-label mb-0">
+                                            Folio
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-folio"
+                                            maxlength="4">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Elaboró</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-elaboro">
+
+                                        <label class="form-label mb-0">
+                                            Elaboró
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-elaboro">
+
                                     </div>
+
                                     <div class="col-md-6">
-                                        <label class="form-label mb-0">Partida</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-partida">
+
+                                        <label class="form-label mb-0">
+                                            Partida
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-partida">
+
                                     </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label mb-0">Analista</label>
-                                        <input type="text" class="form-control form-control-sm" id="edit-analista">
+
+                                    <!-- ANALISTA -->
+                                    <div class="col-md-6 position-relative">
+
+                                        <label class="form-label mb-0">
+                                            Analista
+                                        </label>
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-analista"
+                                            autocomplete="off">
+
+                                        <!-- ID REAL -->
+                                        <input
+                                            type="hidden"
+                                            id="edit-analista_id">
+
+                                        <!-- LISTA AUTOCOMPLETE -->
+                                        <div
+                                            id="lista-edit-analista"
+                                            class="list-group position-absolute w-100 shadow"
+                                            style="
+                                                z-index:1065;
+                                                display:none;
+                                                max-height:220px;
+                                                overflow-y:auto;
+                                            ">
+                                        </div>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+                    <!-- ===================================================== -->
                     <!-- FECHAS -->
+                    <!-- ===================================================== -->
+
                     <div class="card mb-1">
-                        <div class="card-header bg-light py-2 section-toggle" data-target="#sec-fechas">
-                            <strong><i class="bi bi-calendar me-1"></i>Fechas</strong>
+
+                        <div
+                            class="card-header bg-light py-2 section-toggle"
+                            data-target="#sec-fechas">
+
+                            <strong>
+                                <i class="bi bi-calendar me-1"></i>
+                                Fechas
+                            </strong>
+
                         </div>
+
                         <div class="collapse" id="sec-fechas">
+
                             <div class="card-body py-2">
+
                                 <div class="row g-2">
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Elaboración</label>
-                                        <input type="date" class="form-control form-control-sm" id="edit-fecha_elaboracion">
+
+                                        <label class="form-label mb-0">
+                                            Elaboración
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            class="form-control form-control-sm"
+                                            id="edit-fecha_elaboracion">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Inicio</label>
-                                        <input type="date" class="form-control form-control-sm" id="edit-fecha_inicio_entrega">
+
+                                        <label class="form-label mb-0">
+                                            Inicio
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            class="form-control form-control-sm"
+                                            id="edit-fecha_inicio_entrega">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Fin</label>
-                                        <input type="date" class="form-control form-control-sm" id="edit-fecha_fin_entrega">
+
+                                        <label class="form-label mb-0">
+                                            Fin
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            class="form-control form-control-sm"
+                                            id="edit-fecha_fin_entrega">
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
-                    <!-- PAGOS -->
+                    <!-- ===================================================== -->
+                    <!-- PAGO -->
+                    <!-- ===================================================== -->
+
                     <div class="card mb-1">
-                        <div class="card-header bg-light py-2 section-toggle" data-target="#sec-pago">
-                            <strong><i class="bi bi-cash-coin me-1"></i>Pago</strong>
+
+                        <div
+                            class="card-header bg-light py-2 section-toggle"
+                            data-target="#sec-pago">
+
+                            <strong>
+                                <i class="bi bi-cash-coin me-1"></i>
+                                Pago
+                            </strong>
+
                         </div>
+
                         <div class="collapse" id="sec-pago">
+
                             <div class="card-body py-2">
+
                                 <div class="row g-2">
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Total</label>
-                                        <input type="number" step="0.01" class="form-control form-control-sm" id="edit-total">
+
+                                        <label class="form-label mb-0">
+                                            Total
+                                        </label>
+
+                                        <input
+                                            type="number"
+                                            step="0.01"
+                                            class="form-control form-control-sm"
+                                            id="edit-total">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Día pago</label>
-                                        <input type="date" class="form-control form-control-sm" id="edit-dia_pago">
+
+                                        <label class="form-label mb-0">
+                                            Día pago
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            class="form-control form-control-sm"
+                                            id="edit-dia_pago">
+
                                     </div>
+
                                     <div class="col-md-4">
-                                        <label class="form-label mb-0">Pago</label>
-                                        <select class="form-select form-select-sm" id="edit-pago">
-                                            <option value="pendiente">Pendiente</option>
-                                            <option value="pagado">Pagado</option>
-                                            <option value="cancelado">Cancelado</option>
+
+                                        <label class="form-label mb-0">
+                                            Pago
+                                        </label>
+
+                                        <select
+                                            class="form-select form-select-sm"
+                                            id="edit-pago">
+
+                                            <option value="pendiente">
+                                                Pendiente
+                                            </option>
+
+                                            <option value="pagado">
+                                                Pagado
+                                            </option>
+
+                                            <option value="cancelado">
+                                                Cancelado
+                                            </option>
+
                                         </select>
+
                                     </div>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
 
+                    <!-- ===================================================== -->
                     <!-- DEPENDENCIA -->
+                    <!-- ===================================================== -->
+
                     <div class="card mb-1">
-                        <div class="card-header bg-light py-2 section-toggle" data-target="#sec-dep">
-                            <strong><i class="bi bi-building me-1"></i>Dependencia</strong>
+
+                        <div
+                            class="card-header bg-light py-2 section-toggle"
+                            data-target="#sec-dep">
+
+                            <strong>
+                                <i class="bi bi-building me-1"></i>
+                                Dependencia
+                            </strong>
+
                         </div>
+
                         <div class="collapse" id="sec-dep">
+
                             <div class="card-body py-2">
-                                <input type="text" class="form-control form-control-sm" id="edit-dependencia">
+
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="edit-dependencia">
+
                             </div>
+
                         </div>
+
                     </div>
 
                 </div>
 
                 <div class="modal-footer py-2">
-                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-sm btn-primary">
-                        <i class="bi bi-save me-1"></i>Guardar
+
+                    <button
+                        type="button"
+                        class="btn btn-sm btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
                     </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-sm btn-primary">
+
+                        <i class="bi bi-save me-1"></i>
+                        Guardar
+
+                    </button>
+
                 </div>
 
             </form>
