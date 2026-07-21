@@ -125,22 +125,19 @@ class Usuario
 
     public function actualizarPassword(
         $usuarioId,
-        $password,
-        $actualizadoPor
+        $password
     )
     {
 
         $sql = "UPDATE usuarios
                 SET
-                    password = :password,
-                    actualizado_por = :actualizado_por
+                    password = :password
                 WHERE id = :id";
 
         $query = $this->conexion->prepare($sql);
 
         return $query->execute([
             ':password' => $password,
-            ':actualizado_por' => $actualizadoPor,
             ':id' => $usuarioId
         ]);
 
@@ -189,9 +186,7 @@ class Usuario
 
                 correo = :correo,
 
-                telefono = :telefono,
-
-                actualizado_por = :actualizado_por
+                telefono = :telefono
 
             WHERE id = :id
 
@@ -210,8 +205,6 @@ class Usuario
             ':correo' => $datos['correo'],
 
             ':telefono' => $datos['telefono'],
-
-            ':actualizado_por' => $datos['actualizado_por'],
 
             ':id' => $datos['id']
 
