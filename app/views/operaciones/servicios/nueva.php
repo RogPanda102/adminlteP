@@ -1,98 +1,98 @@
 <div class="card shadow-sm">
-
     <div class="card-header bg-primary text-white">
-
         <h3 class="card-title mb-0">
             <i class="bi bi-gear-wide-connected me-2"></i>
             Nuevo Servicio
         </h3>
-
     </div>
-
-
     <form action="<?= BASE_URL ?>servicios/guardar" method="POST">
-
-
         <div class="card-body">
+            <!-- ========================================================= -->
+            <!-- BUSCAR REQUISICIÓN -->
+            <!-- ========================================================= -->
 
+            <div class="border rounded-3 p-3 mb-4 bg-light">
 
-            <!-- =========================
-                 BUSCADOR PREDICTIVO REQ
-            ========================== -->
+                <div class="d-flex align-items-center mb-3">
 
-            <div class="row mb-3">
+                    <i class="bi bi-search text-primary fs-4 me-2"></i>
 
-                <div class="col-md-12 position-relative">
+                    <div>
 
+                        <h6 class="fw-bold text-primary mb-0">
+                            Buscar requisición
+                        </h6>
 
-                    <label class="form-label fw-bold">
-                        Buscar requisición existente
-                    </label>
+                        <small class="text-muted">
+                            Carga automáticamente una requisición existente.
+                        </small>
 
+                    </div>
 
-                    <input
-                        type="text"
-                        id="buscar-servicio"
-                        class="form-control"
-                        placeholder="Buscar por REQ o folio..."
-                        autocomplete="off"
-                    >
+                </div>
 
+                <div class="position-relative">
+
+                    <div class="input-group">
+
+                        <span class="input-group-text">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            id="buscar-servicio"
+                            class="form-control"
+                            placeholder="Buscar por REQ o Folio..."
+                            autocomplete="off">
+
+                    </div>
 
                     <div
                         id="resultados-servicio"
-                        class="list-group position-absolute w-100 shadow"
+                        class="list-group position-absolute w-100 shadow rounded-3 mt-1"
                         style="
-                            z-index:1000;
+                            z-index:1050;
                             display:none;
                             max-height:250px;
                             overflow-y:auto;
-                        "
-                    ></div>
-
-
-                    <small class="text-muted">
-                        Escribe una requisición para autocompletar información.
-                    </small>
-
+                        ">
+                    </div>
 
                 </div>
-
 
             </div>
 
-
             <hr>
 
+            <!-- ========================================================= -->
+            <!-- INFORMACIÓN GENERAL -->
+            <!-- ========================================================= -->
 
-            <!-- =========================
-                 DATOS GENERALES
-            ========================== -->
+            <div class="border rounded-3 p-3 mb-4 bg-light">
 
+                <h6 class="fw-bold text-primary mb-3">
 
-            <div class="card mb-3">
+                    <i class="bi bi-info-circle me-2"></i>
 
+                    Información General
 
-                <div class="card-header bg-light">
+                </h6>
 
-                    <i class="bi bi-info-circle me-1"></i>
+                <div class="row g-3">
 
-                    Información general
+                    <!-- AÑO -->
+                    <div class="col-md-3">
 
-                </div>
+                        <label class="form-label fw-semibold">
+                            Año
+                        </label>
 
+                        <div class="input-group">
 
-                <div class="card-body">
-
-
-                    <div class="row">
-
-
-                        <div class="col-md-3 mb-3">
-
-                            <label class="form-label">
-                                Año
-                            </label>
+                            <span class="input-group-text">
+                                <i class="bi bi-calendar-range"></i>
+                            </span>
 
                             <input
                                 type="number"
@@ -100,252 +100,261 @@
                                 id="anio"
                                 class="form-control"
                                 value="<?= date('Y') ?>"
-                                required
-                            >
+                                required>
 
                         </div>
 
+                    </div>
 
+                    <!-- REQ -->
+                    <div class="col-md-3">
 
-                        <div class="col-md-3 mb-3">
+                        <label class="form-label fw-semibold">
+                            REQ
+                        </label>
 
-                            <label class="form-label">
-                                REQ
-                            </label>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-hash"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="req"
                                 id="req"
-                                class="form-control"
-                            >
+                                class="form-control">
 
                         </div>
 
+                    </div>
 
+                    <!-- FOLIO -->
+                    <div class="col-md-3">
 
-                        <div class="col-md-3 mb-3">
+                        <label class="form-label fw-semibold">
+                            Folio
+                        </label>
 
-                            <label class="form-label">
-                                Folio
-                            </label>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="folio"
                                 id="folio"
-                                class="form-control"
-                            >
+                                class="form-control">
 
                         </div>
 
+                    </div>
 
+                    <!-- ELABORÓ -->
+                    <div class="col-md-3">
 
-                        <div class="col-md-3 mb-3">
+                        <label class="form-label fw-semibold">
+                            Elaboró
+                        </label>
 
-                            <label class="form-label">
-                                Elaboró
-                            </label>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="elaboro"
                                 id="elaboro"
                                 value="<?= $_SESSION['usuario'] ?>"
-                                class="form-control"
-                            >
+                                class="form-control">
 
                         </div>
 
-
                     </div>
 
+                    <!-- PARTIDA -->
+                    <div class="col-md-6">
 
+                        <label class="form-label fw-semibold">
+                            Partida
+                        </label>
 
-                    <div class="row">
+                        <div class="input-group">
 
-
-                        <div class="col-md-6 mb-3">
-
-                            <label class="form-label">
-                                Partida
-                            </label>
+                            <span class="input-group-text">
+                                <i class="bi bi-box-seam"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="partida"
                                 id="partida"
-                                class="form-control"
-                            >
+                                class="form-control">
 
                         </div>
 
+                    </div>
 
+                    <!-- ANALISTA -->
+                    <div class="col-md-6">
 
-                        <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">
+                            Analista
+                        </label>
 
-                            <label class="form-label">
-                                Analista
-                            </label>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-person-badge"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="analista"
                                 id="analista"
-                                class="form-control"
-                            >
+                                class="form-control">
 
                         </div>
 
-
                     </div>
 
-
                 </div>
-
 
             </div>
 
+            <!-- ========================================================= -->
+            <!-- DATOS DE CONTRATACIÓN -->
+            <!-- ========================================================= -->
 
+            <div class="border rounded-3 p-3 mb-4 bg-light">
 
+                <h6 class="fw-bold text-warning mb-3">
 
-            <!-- =========================
-                 CONTRATACIÓN
-            ========================== -->
+                    <i class="bi bi-calendar-event me-2"></i>
 
+                    Datos de Contratación
 
-            <div class="card mb-3">
+                </h6>
 
+                <div class="row g-3">
 
-                <div class="card-header bg-light">
+                    <!-- TIEMPO CONTRATACIÓN -->
+                    <div class="col-md-6">
 
-                    <i class="bi bi-calendar-event me-1"></i>
+                        <label class="form-label fw-semibold">
+                            Tiempo de contratación
+                        </label>
 
-                    Datos de contratación
+                        <div class="input-group">
 
-                </div>
-
-
-                <div class="card-body">
-
-
-                    <div class="row">
-
-
-                        <div class="col-md-6 mb-3">
-
-
-                            <label class="form-label">
-                                Tiempo contratación
-                            </label>
-
+                            <span class="input-group-text">
+                                <i class="bi bi-hourglass-split"></i>
+                            </span>
 
                             <input
                                 type="text"
                                 name="tiempo_contratacion"
-                                class="form-control"
-                            >
-
+                                class="form-control">
 
                         </div>
 
+                    </div>
 
+                    <!-- FECHA CONTRATACIÓN -->
+                    <div class="col-md-6">
 
-                        <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">
+                            Fecha de contratación
+                        </label>
 
+                        <div class="input-group">
 
-                            <label class="form-label">
-                                Fecha contratación
-                            </label>
-
+                            <span class="input-group-text">
+                                <i class="bi bi-calendar-check"></i>
+                            </span>
 
                             <input
                                 type="date"
                                 name="fecha_contratacion"
-                                class="form-control"
-                            >
-
+                                class="form-control">
 
                         </div>
 
-
                     </div>
 
+                    <!-- INICIO -->
+                    <div class="col-md-6">
 
+                        <label class="form-label fw-semibold">
+                            Inicio
+                        </label>
 
-                    <div class="row">
+                        <div class="input-group">
 
-
-                        <div class="col-md-6 mb-3">
-
-
-                            <label class="form-label">
-                                Inicio
-                            </label>
-
+                            <span class="input-group-text">
+                                <i class="bi bi-play-circle"></i>
+                            </span>
 
                             <input
                                 type="date"
                                 name="inicio"
-                                class="form-control"
-                            >
-
+                                class="form-control">
 
                         </div>
 
+                    </div>
 
+                    <!-- FINALIZACIÓN -->
+                    <div class="col-md-6">
 
-                        <div class="col-md-6 mb-3">
+                        <label class="form-label fw-semibold">
+                            Finalización
+                        </label>
 
+                        <div class="input-group">
 
-                            <label class="form-label">
-                                Finalización
-                            </label>
-
+                            <span class="input-group-text">
+                                <i class="bi bi-stop-circle"></i>
+                            </span>
 
                             <input
                                 type="date"
                                 name="finalizacion"
-                                class="form-control"
-                            >
-
+                                class="form-control">
 
                         </div>
 
-
                     </div>
 
-
                 </div>
-
 
             </div>
 
+            <!-- ========================================================= -->
+            <!-- DEPENDENCIA -->
+            <!-- ========================================================= -->
 
+            <div class="border rounded-3 p-3 mb-4">
 
+                <h6 class="fw-bold text-danger mb-3">
 
-            <!-- =========================
-                 DEPENDENCIA
-            ========================== -->
-
-
-            <div class="card">
-
-
-                <div class="card-header bg-light">
-
-                    <i class="bi bi-building me-1"></i>
+                    <i class="bi bi-building me-2"></i>
 
                     Dependencia
 
-                </div>
+                </h6>
 
+                <div class="position-relative">
 
-                <div class="card-body">
+                    <div class="input-group">
 
-
-                    <div class="position-relative">
-
+                        <span class="input-group-text">
+                            <i class="bi bi-building"></i>
+                        </span>
 
                         <input
                             type="text"
@@ -353,76 +362,47 @@
                             id="dependencia"
                             class="form-control"
                             autocomplete="off"
-                        >
-
-
-                        <div
-                            id="resultados-dependencia"
-                            class="list-group position-absolute w-100 shadow"
-                            style="
-                                z-index:1000;
-                                display:none;
-                            "
-                        ></div>
-
+                            placeholder="Buscar dependencia...">
 
                     </div>
 
+                    <div
+                        id="resultados-dependencia"
+                        class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                        style="
+                            z-index:1050;
+                            display:none;
+                            max-height:250px;
+                            overflow-y:auto;
+                        ">
+                    </div>
 
                 </div>
 
-
             </div>
-
-
-
         </div>
-
-
-
-
+        <!-- =========================
+                    FOOTER
+        ========================== -->
         <div class="card-footer d-flex justify-content-between">
-
-
             <a
                 href="<?= BASE_URL ?>servicios/2026"
                 class="btn btn-secondary"
             >
-
                 <i class="bi bi-arrow-left"></i>
-
                 Regresar
-
             </a>
-
-
-
             <button
                 class="btn btn-success"
             >
-
                 <i class="bi bi-save"></i>
-
                 Guardar servicio
-
             </button>
-
-
         </div>
-
-
     </form>
-
-
 </div>
-
-
-
 <script>
 const BASE_URL = '<?= BASE_URL ?>';
 </script>
-
-
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
-
 <script src="<?= BASE_URL ?>assets/js/especificos/servicios/nuevo.js"></script>

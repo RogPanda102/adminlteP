@@ -8,52 +8,167 @@
   crossorigin="anonymous"
 />
 
+<style>
+    #tabla-adjudicados .tabulator-row {
+        cursor: pointer;
+    }
+
+    #tabla-adjudicados .tabulator-row:hover {
+        background-color: rgba(13, 110, 253, 0.08);
+    }
+    /* ===============================
+    FILAS ERP STYLE
+    ================================*/
+    .tabulator-row {
+        border-left: 4px solid transparent;
+        transition: all .2s ease;
+    }
+
+    .tabulator-row:hover {
+        background: #f8fafc !important;
+    }
+
+    /* estados */
+    .row-pagado {
+        border-left: 4px solid #16a34a;
+    }
+
+    .row-pendiente {
+        border-left: 4px solid #f59e0b;
+    }
+
+    .row-cancelado {
+        border-left: 4px solid #dc2626;
+    }
+
+    /* ===============================
+    FOLIO BADGE (KEY ERP DATA)
+    ================================*/
+    .folio-badge {
+        background: #1f4b99;
+        color: #fff;
+        padding: 3px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+    }
+
+    /* ===============================
+    CELDA PRINCIPAL
+    ================================*/
+    .erp-main-cell {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .erp-title {
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .erp-sub {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* ===============================
+    FECHA
+    ================================*/
+    .erp-date {
+        font-size: 13px;
+        color: #374151;
+    }
+
+    /* ===============================
+    TOTAL (IMPORTANTE VISUAL)
+    ================================*/
+    .erp-total {
+        font-weight: 700;
+        color: #0f172a;
+    }
+
+
+</style>
+
 <main class="app-main">
+
     <div class="app-content">
+
         <div class="container-fluid">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        Servicios 2026
-                    </h3>
 
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 16rem">
-                            <span class="input-group-text">
-                                <i class="bi bi-search"></i>
-                            </span>
+            <div class="card shadow-sm border-0">
 
-                            <input
-                                id="table-filter"
-                                type="search"
-                                class="form-control"
-                                placeholder="Buscar..."
-                            />
+                <!-- ========================================= -->
+                <!-- HEADER -->
+                <!-- ========================================= -->
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+
+                        <div>
+
+                            <h3 class="card-title mb-1 fw-semibold">
+
+                                <i class="bi bi-gear-wide-connected text-primary me-2"></i>
+
+                                Servicios 2026
+
+                            </h3>
+
                         </div>
+
+                        <div class="card-tools">
+
+                            <div class="input-group input-group-sm" style="width:260px;">
+
+                                <span class="input-group-text bg-white">
+
+                                    <i class="bi bi-search"></i>
+
+                                </span>
+
+                                <input
+                                    id="table-filter"
+                                    type="search"
+                                    class="form-control"
+                                    placeholder="Buscar servicio...">
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </div>
+
+                <!-- ========================================= -->
+                <!-- BODY -->
+                <!-- ========================================= -->
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between mb-3">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
 
-                        <!-- NUEVO SERVICIO -->
                         <a
                             href="<?= BASE_URL ?>servicios/nueva"
-                            class="btn btn-sm btn-success"
-                        >
+                            class="btn btn-success">
+
                             <i class="bi bi-plus-circle me-1"></i>
+
                             Nuevo servicio
+
                         </a>
 
-                        <!-- EXPORTAR -->
                         <button
                             id="export-csv"
                             type="button"
-                            class="btn btn-sm btn-outline-success"
-                        >
+                            class="btn btn-outline-success">
+
                             <i class="bi bi-filetype-csv me-1"></i>
-                            CSV Exportar
+
+                            Exportar CSV
+
                         </button>
 
                     </div>
@@ -61,9 +176,13 @@
                     <div id="tabla-servicios"></div>
 
                 </div>
+
             </div>
+
         </div>
+
     </div>
+
 </main>
 
 <!-- TABULATOR JS -->
@@ -73,118 +192,261 @@
 ></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded',function(){
 
-document.addEventListener('DOMContentLoaded', function () {
+        const tabla=new Tabulator('#tabla-servicios',{
 
-    const tabla = new Tabulator('#tabla-servicios', {
+            layout:'fitColumns',
 
-        layout: 'fitColumns',
+            responsiveLayout:"collapse",
 
-        pagination: true,
+            movableColumns:true,
 
-        paginationSize: 10,
+            pagination:true,
 
-        columns: [
+            paginationSize:10,
 
-            {
-                title: 'REQ',
-                field: 'req'
-            },
+            columns:[
 
-            {
-                title: 'Folio',
-                field: 'folio'
-            },
+                {
+                    title:'REQ',
+                    field:'req',
 
-            {
-                title: 'Elaboró',
-                field: 'elaboro'
-            },
+                    formatter:function(cell){
 
-            {
-                title: 'Partida',
-                field: 'partida'
-            },
+                        return `
+                            <span class="fw-semibold">
+                                ${cell.getValue() || ''}
+                            </span>
+                        `;
 
-            {
-                title: 'Analista',
-                field: 'analista'
-            },
+                    }
 
-            {
-                title: 'Tiempo Contratación',
-                field: 'tiempo_contratacion'
-            },
+                },
 
-            {
-                title: 'Fecha Contratación',
-                field: 'fecha_contratacion'
-            },
+                {
+                    title:'Folio',
+                    field:'folio',
+                    hozAlign:'center',
 
-            {
-                title: 'Inicio',
-                field: 'inicio'
-            },
+                    formatter:function(cell){
 
-            {
-                title: 'Finalización',
-                field: 'finalizacion'
-            },
+                        return `
+                            <span class="folio-badge">
+                                ${cell.getValue() || ''}
+                            </span>
+                        `;
 
-            {
-                title: 'Dependencia',
-                field: 'dependencia'
-            }
+                    }
 
-        ],
+                },
 
-        data: <?= json_encode($servicios) ?>
+                {
+                    title:'Elaboró',
+                    field:'elaboro',
+
+                    formatter:function(cell){
+
+                        return `
+                            <div class="erp-main-cell">
+                                <div class="erp-title">
+                                    ${cell.getValue() || ''}
+                                </div>
+                            </div>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Partida',
+                    field:'partida',
+
+                    formatter:function(cell){
+
+                        return `
+                            <span class="erp-sub">
+                                ${cell.getValue() || ''}
+                            </span>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Analista',
+                    field:'analista',
+
+                    formatter:function(cell){
+
+                        return `
+                            <span class="erp-sub">
+                                ${cell.getValue() || ''}
+                            </span>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Tiempo',
+                    field:'tiempo_contratacion',
+
+                    formatter:function(cell){
+
+                        return `
+                            <span class="badge bg-info">
+                                ${cell.getValue() || ''}
+                            </span>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Contratación',
+                    field:'fecha_contratacion',
+                    hozAlign:'center',
+
+                    formatter:function(cell){
+
+                        const v=cell.getValue();
+
+                        if(!v) return '';
+
+                        const f=new Date(v+"T00:00:00");
+
+                        return `
+                            <div class="erp-date">
+                                ${f.toLocaleDateString('es-MX',{
+                                    day:'2-digit',
+                                    month:'short',
+                                    year:'numeric'
+                                })}
+                            </div>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Inicio',
+                    field:'inicio',
+                    hozAlign:'center',
+
+                    formatter:function(cell){
+
+                        const v=cell.getValue();
+
+                        if(!v) return '';
+
+                        const f=new Date(v+"T00:00:00");
+
+                        return `
+                            <div class="erp-date">
+                                ${f.toLocaleDateString('es-MX',{
+                                    day:'2-digit',
+                                    month:'short'
+                                })}
+                            </div>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Finalización',
+                    field:'finalizacion',
+                    hozAlign:'center',
+
+                    formatter:function(cell){
+
+                        const v=cell.getValue();
+
+                        if(!v) return '';
+
+                        const f=new Date(v+"T00:00:00");
+
+                        return `
+                            <div class="erp-date">
+                                ${f.toLocaleDateString('es-MX',{
+                                    day:'2-digit',
+                                    month:'short'
+                                })}
+                            </div>
+                        `;
+
+                    }
+
+                },
+
+                {
+                    title:'Dependencia',
+                    field:'dependencia',
+
+                    formatter:function(cell){
+
+                        return `
+                            <div class="erp-main-cell">
+
+                                <div class="erp-title">
+                                    ${cell.getValue() || ''}
+                                </div>
+
+                            </div>
+                        `;
+
+                    }
+
+                }
+
+            ],
+
+            data:<?= json_encode($servicios) ?>
+
+        });
+
+        //=====================================
+        // FILTRO GLOBAL
+        //=====================================
+
+        document
+            .getElementById('table-filter')
+            .addEventListener('keyup',function(){
+
+                tabla.setFilter(function(data){
+
+                    const texto=this.value.toLowerCase();
+
+                    return Object.values(data).some(valor=>
+
+                        String(valor ?? '')
+                        .toLowerCase()
+                        .includes(texto)
+
+                    );
+
+                }.bind(this));
+
+            });
+
+        //=====================================
+        // EXPORTAR
+        //=====================================
+
+        document
+            .getElementById('export-csv')
+            .addEventListener('click',function(){
+
+                tabla.download('csv','servicios_2026.csv');
+
+            });
 
     });
-
-    // FILTRO
-    document
-        .getElementById('table-filter')
-        .addEventListener('keyup', function () {
-
-            tabla.setFilter([
-                [
-                    {
-                        field: 'req',
-                        type: 'like',
-                        value: this.value
-                    }
-                ],
-                [
-                    {
-                        field: 'folio',
-                        type: 'like',
-                        value: this.value
-                    }
-                ],
-                [
-                    {
-                        field: 'dependencia',
-                        type: 'like',
-                        value: this.value
-                    }
-                ]
-            ]);
-
-        });
-
-    // EXPORTAR CSV
-    document
-        .getElementById('export-csv')
-        .addEventListener('click', function () {
-
-            tabla.download(
-                'csv',
-                'servicios_2026.csv'
-            );
-
-        });
-
-});
-
 </script>
