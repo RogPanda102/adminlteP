@@ -80,6 +80,31 @@ class Notificacion
     }
 
     // =========================
+    // Buscar por ID
+    // =========================
+    public function buscarPorId($id)
+    {
+
+        $sql = "SELECT *
+                FROM notificaciones
+                WHERE id = :id
+                LIMIT 1";
+
+        $query = $this->conexion->prepare($sql);
+
+        $query->bindParam(
+            ':id',
+            $id,
+            PDO::PARAM_INT
+        );
+
+        $query->execute();
+
+        return $query->fetch(PDO::FETCH_ASSOC);
+
+    }
+
+    // =========================
     // Contar no leídas
     // =========================
     public function contarNoLeidas($usuarioId)
