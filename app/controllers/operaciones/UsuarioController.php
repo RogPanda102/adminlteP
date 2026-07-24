@@ -381,17 +381,6 @@ class UsuarioController extends BaseController
                 'Debe elegir una contraseña diferente.';
         }
 
-        $passwordHash = password_hash(
-            $passwordNueva,
-            PASSWORD_DEFAULT
-        );
-
-        $resultado = $modeloUsuario->actualizarPassword(
-            $_SESSION['usuario_id'],
-            $passwordHash,
-            $_SESSION['usuario_id']
-        );
-
         if (!empty($errores)) {
 
             guardarErrores($errores);
@@ -401,6 +390,31 @@ class UsuarioController extends BaseController
             redirect('perfil');
         }
 
+        $passwordHash = password_hash(
+            $passwordNueva,
+            PASSWORD_DEFAULT
+        );
+
+        $resultado = $modeloUsuario->actualizarPassword(
+            $_SESSION['usuario_id'],
+            $passwordHash,
+        );
+
+        if ($resultado) {
+
+            notificar(
+
+                'Contraseña actualizada',
+
+                'Tu contraseña fue actualizada correctamente.',
+
+                '/perfil',
+
+                'success'
+
+            );
+
+        }
         mensaje(
             'Contraseña actualizada correctamente.',
             ALERT_SUCCESS,

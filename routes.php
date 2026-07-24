@@ -254,6 +254,22 @@ $router->post(
 
 /*
 |--------------------------------------------------------------------------
+| NOTIFICACIONES
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/notificaciones',
+    'operaciones\NotificacionesController@index'
+);
+
+$router->get(
+    '/notificaciones/abrir',
+    'operaciones\NotificacionesController@abrir'
+);
+
+/*
+|--------------------------------------------------------------------------
 | EJECUTAR ROUTER
 |--------------------------------------------------------------------------
 */
