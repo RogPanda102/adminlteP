@@ -283,6 +283,118 @@ class Cotizacion
 
     }
 
+    // =========================
+    // actualizar cotización
+    // =========================
+
+
+    public function actualizar($datos)
+    {
+        $sql = "
+
+            UPDATE cotizaciones
+
+            SET
+
+                fecha = :fecha,
+
+                req = :req,
+
+                folio = :folio,
+
+                elaboro = :elaboro,
+
+                partida = :partida,
+
+                proveedor = :proveedor,
+
+                analista_id = :analista_id,
+
+                dependencia = :dependencia,
+
+                estatus = :estatus,
+
+                reenviar = :reenviar,
+
+                anio = :anio,
+
+                actualizado_por = :actualizado_por
+
+            WHERE id = :id
+
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+
+            ':fecha' => $datos['fecha'],
+
+            ':req' => $datos['req'],
+
+            ':folio' => $datos['folio'],
+
+            ':elaboro' => $datos['elaboro'],
+
+            ':partida' => $datos['partida'],
+
+            ':proveedor' => $datos['proveedor'],
+
+            ':analista_id' => $datos['analista_id'],
+
+            ':dependencia' => $datos['dependencia'],
+
+            ':estatus' => $datos['estatus'],
+
+            ':reenviar' => $datos['reenviar'],
+
+            ':anio' => $datos['anio'],
+
+            ':actualizado_por' => $datos['actualizado_por'],
+
+            ':id' => $datos['id']
+
+        ]);
+    }
+
+    // =========================
+    // Buscar por ID
+    // =========================
+    public function buscarPorId($id)
+    {
+        $sql = "
+            SELECT
+                c.*,
+
+                CONCAT(
+                    a.nombre,
+                    ' ',
+                    a.apellido_paterno,
+                    IF(
+                        a.apellido_materno IS NULL
+                        OR a.apellido_materno = '',
+                        '',
+                        CONCAT(' ', a.apellido_materno)
+                    )
+                ) AS analista
+
+            FROM cotizaciones c
+
+            LEFT JOIN analistas a
+                ON a.id = c.analista_id
+
+            WHERE c.id = :id
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
 
 
@@ -339,10 +451,6 @@ class Cotizacion
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-
-
-
 
     // =========================
     // Buscar catálogo genérico

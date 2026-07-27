@@ -291,5 +291,105 @@ class CotizacionesController extends BaseController
 
         exit;
     }
+    // =========================
+    // Actualizar cotizacion
+    // =========================
+    public function update()
+    {
+        header('Content-Type: application/json');
+
+        $input = json_decode(
+            file_get_contents('php://input'),
+            true
+        );
+
+        if (!$input) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Datos inválidos'
+            ]);
+
+            return;
+        }
+
+        $modelo = new Cotizacion();
+
+        $datos = [
+
+            'id' => (int)$input['id'],
+
+            'fecha' => !empty($input['fecha'])
+                ? $input['fecha']
+                : null,
+
+            'req' => limpiarTexto($input['req']),
+
+            'folio' => limpiarTexto($input['folio']),
+
+            'elaboro' => limpiarTextoMayusculas($input['elaboro']),
+
+            'partida' => limpiarTextoMayusculas($input['partida']),
+
+            'proveedor' => limpiarTextoMayusculas($input['proveedor']),
+
+            'analista_id' => !empty($input['analista_id'])
+                ? (int)$input['analista_id']
+                : null,
+
+            'dependencia' => limpiarTextoMayusculas(
+                $input['dependencia']
+            ),
+
+            'estatus' => $input['estatus'],
+
+            'reenviar' => !empty($input['reenviar']) ? 1 : 0,
+
+            'anio' => (int)$input['anio'],
+
+            'actualizado_por' => $_SESSION['usuario_id']
+
+        ];
+
+        // =========================
+        // HISTORIAL
+        // =========================
+
+        $antes = $modelo->buscarPorId(
+            $datos['id']
+        );
+
+        $ok = $modelo->actualizar(
+            $datos
+        );
+
+        if ($ok) {
+
+            $despues = $modelo->buscarPorId(
+                $datos['id']
+            );
+
+            registrarHistorial(
+                'cotizaciones',
+                $datos['id'],
+                'UPDATE',
+                $antes,
+                $despues
+            );
+
+            echo json_encode([
+                'success' => true,
+                'message' => 'Actualizado correctamente'
+            ]);
+
+        } else {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar'
+            ]);
+
+        }
+    }
 
 }
