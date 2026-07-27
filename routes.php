@@ -44,6 +44,11 @@ $router->get(
     'operaciones\CotizacionesController@cotizaciones2026'
 );
 
+$router->get(
+    '/historial/cotizaciones',
+    'operaciones\HistorialController@cotizaciones'
+);
+
 /*
 |------------------------------------------------------------------
 | OPERACIONES - COTIZACIONES / FORMULARIO / GUARDAR FORMULARIO
@@ -58,6 +63,11 @@ $router->get(
 $router->post(
     '/cotizaciones/guardar',
     'operaciones\CotizacionesController@guardar'
+);
+
+$router->post(
+    '/cotizaciones/update',
+    'operaciones\CotizacionesController@update'
 );
 
 $router->get(

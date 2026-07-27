@@ -24,4 +24,32 @@ class HistorialController
             'data' => $data
         ]);
     }
+    public function cotizaciones()
+    {
+        header('Content-Type: application/json');
+
+        $id = $_GET['id'] ?? null;
+
+        $model = new Historial();
+
+        $data = $model->obtener('cotizaciones', $id);
+
+        foreach ($data as &$h) {
+
+            $h['datos_anteriores'] = json_decode(
+                $h['datos_anteriores'],
+                true
+            );
+
+            $h['datos_nuevos'] = json_decode(
+                $h['datos_nuevos'],
+                true
+            );
+        }
+
+        echo json_encode([
+            'success' => true,
+            'data' => $data
+        ]);
+    }
 }
