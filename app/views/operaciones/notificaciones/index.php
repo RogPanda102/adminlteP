@@ -31,9 +31,9 @@
 
                     <?php
 
-                        $color = colorNotificacion($notificacion['tipo']);
+                        $color = notificacionColor($notificacion['tipo']);
 
-                        $icono = iconoNotificacion($notificacion['tipo']);
+                        $icono = notificacionIcono($notificacion['tipo']);
 
                         $esLeida = (int)$notificacion['leida'] === 1;
 
@@ -84,7 +84,7 @@
 
                                         <i class="far fa-clock me-1"></i>
 
-                                        <?php echo fechaNotificacion(
+                                        <?php echo notificacionFecha(
                                             $notificacion['fecha_creacion']
                                         ); ?>
 
