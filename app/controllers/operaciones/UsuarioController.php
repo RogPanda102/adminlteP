@@ -263,7 +263,7 @@ class UsuarioController extends BaseController
                 ALERT_DANGER,
                 3000
             );
-
+        
             redirect('perfil');
         }
         // =========================
@@ -402,16 +402,11 @@ class UsuarioController extends BaseController
 
         if ($resultado) {
 
-            notificar(
-
+            notificarExito(
+                $_SESSION['usuario_id'],
                 'Contraseña actualizada',
-
                 'Tu contraseña fue actualizada correctamente.',
-
-                '/perfil',
-
-                'success'
-
+                '/perfil'
             );
 
         }

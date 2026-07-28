@@ -14,11 +14,11 @@ require_once APP_PATH . '/models/Notificacion.php';
  * @return bool
  */
 function notificar(
-    $titulo,
-    $mensaje,
+    $usuarioId = null,
+    $titulo = '',
+    $mensaje = '',
     $url = '',
     $tipo = 'info',
-    $usuarioId = null
 ) {
 
     if ($usuarioId === null) {
@@ -42,7 +42,7 @@ function notificar(
 
     ]);
 }
-function iconoNotificacion($tipo)
+function notificacionIcono($tipo)
 {
 
     switch ($tipo) {
@@ -62,7 +62,7 @@ function iconoNotificacion($tipo)
     }
 
 }
-function colorNotificacion($tipo)
+function notificacionColor($tipo)
 {
 
     switch ($tipo) {
@@ -82,7 +82,7 @@ function colorNotificacion($tipo)
     }
 
 }
-function fechaNotificacion($fecha)
+function notificacionFecha($fecha)
 {
 
     $fecha = new DateTime($fecha);
@@ -109,3 +109,69 @@ function fechaNotificacion($fecha)
     return $fecha->format('d/m/Y H:i');
 
 }
+
+function notificarExito(
+    $usuarioId = null,
+    $titulo = '',
+    $mensaje = '',
+    $url = ''
+) {
+
+    return notificar(
+        $usuarioId,
+        $titulo,
+        $mensaje,
+        $url,
+        'success'
+    );
+
+}
+function notificarInfo(
+    $usuarioId = null,
+    $titulo = '',
+    $mensaje = '',
+    $url = ''
+) {
+
+    return notificar(
+        $usuarioId,
+        $titulo,
+        $mensaje,
+        $url,
+        'info'
+    );
+
+}
+function notificarAdvertencia(
+    $usuarioId = null,
+    $titulo = '',
+    $mensaje = '',
+    $url = ''
+) {
+
+    return notificar(
+        $usuarioId,
+        $titulo,
+        $mensaje,
+        $url,
+        'warning'
+    );
+
+}
+function notificarError(
+    $usuarioId = null,
+    $titulo = '',
+    $mensaje = '',
+    $url = ''
+) {
+
+    return notificar(
+        $usuarioId,
+        $titulo,
+        $mensaje,
+        $url,
+        'danger'
+    );
+
+}
+

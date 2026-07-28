@@ -358,7 +358,7 @@ $tab_activo = $tab_activo ?? 'activity';
                                             </h3>
                                         </div>
 
-                                        <form action="<?= BASE_URL ?>perfil/actualizar" method="POST" enctype="multipart/form-data">
+                                        <form action="<?= BASE_URL ?>perfil/actualizar" method="POST" enctype="multipart/form-data" novalidate>
 
                                             <div class="card-body">
 
@@ -444,12 +444,12 @@ $tab_activo = $tab_activo ?? 'activity';
 
                                                         <input
                                                             type="email"
-                                                            name="correo"                                                            class="form-control"
+                                                            name="correo"
                                                             class="form-control <?= error('correo') ? 'is-invalid' : '' ?>"
                                                             value="<?= old('correo', $usuario['correo'] ?? '') ?>">
                                                         <?php if (error('correo')): ?>
 
-                                                            <div class="invalid-feedback">
+                                                            <div style="color:red;font-weight:normal">
                                                                 <?= error('correo') ?>
                                                             </div>
 
