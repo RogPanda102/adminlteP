@@ -29,6 +29,9 @@ class BaseController
     protected function render($vista, $datos = [])
     {
         $datos['menu'] = crear_menu_panel();
+        $datos['navbarNotificaciones'] =
+        obtenerNotificacionesNavbar();
+
         View::render(
             $vista,
             $datos

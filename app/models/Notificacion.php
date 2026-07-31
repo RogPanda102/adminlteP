@@ -80,6 +80,37 @@ class Notificacion
     }
 
     // =========================
+    // Obtener para Navbar
+    // =========================
+    public function obtenerParaNavbar(
+        $usuarioId,
+        $limite = 5
+    )
+    {
+
+        $sql = "SELECT *
+                FROM notificaciones
+                WHERE usuario_id = :usuario_id
+                ORDER BY
+                    leida ASC,
+                    fecha_creacion DESC
+                LIMIT $limite";
+
+        $query = $this->conexion->prepare($sql);
+
+        $query->bindParam(
+            ':usuario_id',
+            $usuarioId,
+            PDO::PARAM_INT
+        );
+
+        $query->execute();
+
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
+    // =========================
     // Buscar por ID
     // =========================
     public function buscarPorId($id)

@@ -21,9 +21,19 @@ function notificar(
     $tipo = 'info',
 ) {
 
-    if ($usuarioId === null) {
+    if (
+        $usuarioId === null &&
+        isset($_SESSION['usuario_id'])
+    ) {
 
         $usuarioId = $_SESSION['usuario_id'];
+
+    }
+
+    if ($usuarioId === null) {
+
+        return false;
+
     }
 
     $notificacion = new Notificacion();
@@ -174,4 +184,42 @@ function notificarError(
     );
 
 }
+// =========================
+// Notificaciones Navbar
+// =========================
+function obtenerNotificacionesNavbar(
+    $limite = 5
+) {
 
+    if (
+        empty($_SESSION['usuario_id'])
+    ) {
+
+        return [
+
+            'total' => 0,
+
+            'notificaciones' => []
+
+        ];
+
+    }
+
+    $modelo = new Notificacion();
+
+    $total = $modelo->contarNoLeidas(
+        $_SESSION['usuario_id']
+    );
+
+    return [
+
+        'total' => (int)$total['total'],
+
+        'notificaciones' => $modelo->obtenerParaNavbar(
+            $_SESSION['usuario_id'],
+            $limite
+        )
+
+    ];
+
+}
