@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../BaseController.php';
 require_once __DIR__ . '/../../models/Servicios.php';
+require_once __DIR__ . '/../../models/Adjudicados.php';
 
 class ServiciosController extends BaseController
 {
@@ -146,7 +147,7 @@ class ServiciosController extends BaseController
     }
 
     // =========================
-    // Buscar servicios predictivo
+    // Buscar adjudicación predictivo
     // =========================
     public function buscar()
     {
@@ -157,11 +158,7 @@ class ServiciosController extends BaseController
             exit;
         }
 
-
-        $texto = trim(
-            $_GET['q'] ?? ''
-        );
-
+        $texto = trim($_GET['q'] ?? '');
 
         if ($texto === '') {
 
@@ -170,24 +167,13 @@ class ServiciosController extends BaseController
             exit;
         }
 
+        $modelo = new Adjudicados();
 
-        $modelo = new Servicio();
+        $resultado = $modelo->buscarParaServicio($texto);
 
+        header('Content-Type: application/json');
 
-        $resultado = $modelo->buscarPredictivo(
-            $texto
-        );
-
-
-        header(
-            'Content-Type: application/json'
-        );
-
-
-        echo json_encode(
-            $resultado
-        );
-
+        echo json_encode($resultado);
 
         exit;
     }
@@ -265,12 +251,25 @@ class ServiciosController extends BaseController
             'folio'               => trim($_POST['folio'] ?? ''),
             'elaboro'             => trim($_POST['elaboro'] ?? ''),
             'partida'             => trim($_POST['partida'] ?? ''),
-            'analista'            => trim($_POST['analista'] ?? ''),
+
+            'analista_id'         => !empty($_POST['analista_id'])
+                ? (int) $_POST['analista_id']
+                : null,
+
+            'tipo_servicio_id'    => !empty($_POST['tipo_servicio_id'])
+                ? (int) $_POST['tipo_servicio_id']
+                : null,
+
             'tiempo_contratacion' => trim($_POST['tiempo_contratacion'] ?? ''),
             'fecha_contratacion'  => $_POST['fecha_contratacion'] ?? null,
             'inicio'              => $_POST['inicio'] ?? null,
             'finalizacion'        => $_POST['finalizacion'] ?? null,
             'dependencia'         => trim($_POST['dependencia'] ?? ''),
+
+            'adjudicado_id'       => !empty($_POST['adjudicado_id'])
+                ? (int) $_POST['adjudicado_id']
+                : null,
+
             'anio'                => $_POST['anio'] ?? null,
             'creado_por'          => $_SESSION['usuario_id'] ?? null,
             'actualizado_por'     => null

@@ -258,4 +258,55 @@ class Adjudicados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // =========================
+    // Buscar adjudicaciones para Servicios
+    // =========================
+    public function buscarParaServicio($texto)
+    {
+        $sql = "
+            SELECT
+                ad.id,
+                ad.req,
+                ad.folio,
+                ad.elaboro,
+                ad.partida,
+                ad.analista_id,
+                ad.dependencia,
+
+                CONCAT(
+                    a.nombre,
+                    ' ',
+                    a.apellido_paterno,
+                    IF(
+                        a.apellido_materno IS NULL
+                        OR a.apellido_materno = '',
+                        '',
+                        CONCAT(' ', a.apellido_materno)
+                    )
+                ) AS analista
+
+            FROM adjudicados ad
+
+            LEFT JOIN analistas a
+                ON a.id = ad.analista_id
+
+            WHERE ad.eliminado = 0
+            AND (
+                ad.req LIKE :texto
+                OR ad.folio LIKE :texto
+            )
+
+            ORDER BY ad.id DESC
+            LIMIT 10
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':texto' => '%' . $texto . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

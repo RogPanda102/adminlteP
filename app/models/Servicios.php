@@ -17,15 +17,42 @@ class Servicio
     public function obtenerPorAnio($anio)
     {
         $sql = "
-            SELECT *
-            FROM servicios
-            WHERE anio = ?
-            ORDER BY id DESC
+            SELECT
+
+                s.*,
+
+                CONCAT(
+                    a.nombre,
+                    ' ',
+                    a.apellido_paterno,
+                    IF(
+                        a.apellido_materno IS NULL
+                        OR a.apellido_materno = '',
+                        '',
+                        CONCAT(' ', a.apellido_materno)
+                    )
+                ) AS analista,
+
+                ts.nombre AS tipo_servicio
+
+            FROM servicios s
+
+            LEFT JOIN analistas a
+                ON a.id = s.analista_id
+
+            LEFT JOIN tipos_servicio ts
+                ON ts.id = s.tipo_servicio_id
+
+            WHERE s.anio = :anio
+
+            ORDER BY s.id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
 
-        $stmt->execute([$anio]);
+        $stmt->execute([
+            ':anio' => $anio
+        ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -83,7 +110,7 @@ class Servicio
                 folio,
                 elaboro,
                 partida,
-                analista,
+                analista_id,
                 tiempo_contratacion,
                 fecha_contratacion,
                 inicio,
@@ -100,7 +127,7 @@ class Servicio
                 :folio,
                 :elaboro,
                 :partida,
-                :analista,
+                :analista_id,
                 :tiempo_contratacion,
                 :fecha_contratacion,
                 :inicio,
@@ -116,21 +143,27 @@ class Servicio
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
+
             ':req'                 => $datos['req'],
             ':folio'               => $datos['folio'],
             ':elaboro'             => $datos['elaboro'],
             ':partida'             => $datos['partida'],
-            ':analista'            => $datos['analista'],
+
+            ':analista_id'         => $datos['analista_id'] ?? null,
+            // ':tipo_servicio_id'    => $datos['tipo_servicio_id'] ?? null,
+
             ':tiempo_contratacion' => $datos['tiempo_contratacion'],
             ':fecha_contratacion'  => $datos['fecha_contratacion'],
             ':inicio'              => $datos['inicio'],
             ':finalizacion'        => $datos['finalizacion'],
             ':dependencia'         => $datos['dependencia'],
-            ':adjudicado_id' => $datos['adjudicado_id'] ?? null,
-            // ':adjudicado_id' => $datos['adjudicado_id'], se comenta y se pone opcional null pues ahora puede marcar error el controlador al apuntar ningun dato
+
+            ':adjudicado_id'       => $datos['adjudicado_id'] ?? null,
+
             ':anio'                => $datos['anio'],
             ':creado_por'          => $datos['creado_por'],
             ':actualizado_por'     => $datos['actualizado_por']
+
         ]);
     }
 

@@ -20,11 +20,11 @@
                     <div>
 
                         <h6 class="fw-bold text-primary mb-0">
-                            Buscar requisición
+                            Buscar adjudicación
                         </h6>
 
                         <small class="text-muted">
-                            Carga automáticamente una requisición existente.
+                            Carga automáticamente los datos de una adjudicación existente.
                         </small>
 
                     </div>
@@ -43,8 +43,8 @@
                             type="text"
                             id="buscar-servicio"
                             class="form-control"
-                            placeholder="Buscar por REQ o Folio..."
-                            autocomplete="off">
+                            placeholder="Buscar adjudicación por REQ o Folio..."
+                            autocomplete="on">
 
                     </div>
 
@@ -217,6 +217,44 @@
                                 name="analista"
                                 id="analista"
                                 class="form-control">
+
+                            <input
+                                type="hidden"
+                                name="analista_id"
+                                id="analista_id">
+
+                        </div>
+
+                    </div>
+
+                    <!-- TIPO DE SERVICIO -->
+                    <div class="col-md-6">
+
+                        <label class="form-label fw-semibold">
+                            Tipo de servicio
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-tags"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="tipo_servicio"
+                                id="tipo_servicio"
+                                class="form-control"
+                                autocomplete="off">
+
+                            <input
+                                type="hidden"
+                                name="tipo_servicio_id"
+                                id="tipo_servicio_id">
+                            <input
+                                type="hidden"
+                                name="adjudicado_id"
+                                id="adjudicado_id">
 
                         </div>
 
