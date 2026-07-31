@@ -119,4 +119,50 @@ class NotificacionesController extends BaseController
 
     }
 
+    // =========================
+    // AJAX Navbar
+    // =========================
+    public function ajax()
+    {
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            exit;
+
+        }
+
+        $modelo = new Notificacion();
+
+        $total = $modelo->contarNoLeidas(
+            $_SESSION['usuario_id']
+        );
+
+        $notificaciones = $modelo->obtenerParaNavbar(
+            $_SESSION['usuario_id'],
+            5
+        );
+
+        ob_start();
+
+        require APP_PATH .
+            '/views/partials/navbar/notificaciones.php';
+
+        $html = ob_get_clean();
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+
+            'total' => (int)$total['total'],
+
+            'html' => $html
+
+        ]);
+
+        exit;
+
+    }
+
 }

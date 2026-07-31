@@ -278,6 +278,11 @@ $router->get(
     'operaciones\NotificacionesController@abrir'
 );
 
+$router->get(
+    '/notificaciones/ajax',
+    'operaciones\NotificacionesController@ajax'
+);
+
 /*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER
