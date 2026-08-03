@@ -224,6 +224,42 @@ class ServiciosController extends BaseController
         exit;
     }
 
+    // =========================
+    // Buscar tipo de servicio
+    // =========================
+    public function buscarTipoServicio()
+    {
+
+        if (!$this->permitido) {
+
+            echo json_encode([]);
+
+            exit;
+
+        }
+
+        $texto = trim($_GET['q'] ?? '');
+
+        $modelo = new Servicio();
+
+        if ($texto === '') {
+
+            $datos = $modelo->buscarTiposServicio('');
+
+        } else {
+
+            $datos = $modelo->buscarTiposServicio($texto);
+
+        }
+
+        header('Content-Type: application/json');
+
+        echo json_encode($datos);
+
+        exit;
+
+    }
+
 
 
     // =========================

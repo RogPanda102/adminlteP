@@ -169,6 +169,12 @@ $router->get(
     '/servicios/buscar-dependencia',
     'operaciones\ServiciosController@buscarDependencia'
 );
+
+$router->get(
+    '/servicios/buscar-tipo-servicio',
+    'operaciones\ServiciosController@buscarTipoServicio'
+);
+
 /*
 |------------------------------------------------------------------
 | DATOS AJAX / DASHBOARD
