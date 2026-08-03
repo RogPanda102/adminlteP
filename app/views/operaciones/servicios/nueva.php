@@ -234,27 +234,49 @@
                             Tipo de servicio
                         </label>
 
-                        <div class="input-group">
+                        <div class="position-relative">
 
-                            <span class="input-group-text">
-                                <i class="bi bi-tags"></i>
-                            </span>
+                            <div class="input-group">
 
-                            <input
-                                type="text"
-                                name="tipo_servicio"
-                                id="tipo_servicio"
-                                class="form-control"
-                                autocomplete="off">
+                                <span class="input-group-text">
+                                    <i class="bi bi-tags"></i>
+                                </span>
 
-                            <input
-                                type="hidden"
-                                name="tipo_servicio_id"
-                                id="tipo_servicio_id">
-                            <input
-                                type="hidden"
-                                name="adjudicado_id"
-                                id="adjudicado_id">
+                                <input
+                                    type="text"
+                                    name="tipo_servicio"
+                                    id="tipo_servicio"
+                                    class="form-control"
+                                    autocomplete="off">
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    type="button"
+                                    id="btn-tipo-servicio">
+                                    <i class="bi bi-chevron-down"></i>
+                                </button>
+
+                                <input
+                                    type="hidden"
+                                    name="tipo_servicio_id"
+                                    id="tipo_servicio_id">
+
+                                <input
+                                    type="hidden"
+                                    name="adjudicado_id"
+                                    id="adjudicado_id">
+
+                            </div>
+
+                            <div
+                                id="resultados-tipo-servicio"
+                                class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                                style="
+                                    z-index:1050;
+                                    display:none;
+                                    max-height:250px;
+                                    overflow-y:auto;
+                                ">
+                            </div>
 
                         </div>
 

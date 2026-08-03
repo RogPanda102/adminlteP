@@ -235,35 +235,60 @@ class Servicio
     }
 
     // =========================
-// Buscar dependencias
-// =========================
-public function buscarDependencias($texto)
-{
+    // Buscar dependencias
+    // =========================
+    public function buscarDependencias($texto)
+    {
 
-    $sql = "
-        SELECT DISTINCT
-            dependencia
-        FROM servicios
-        WHERE dependencia LIKE :texto
-        ORDER BY dependencia ASC
-        LIMIT 10
-    ";
-
-
-    $stmt = $this->db->prepare($sql);
+        $sql = "
+            SELECT DISTINCT
+                dependencia
+            FROM servicios
+            WHERE dependencia LIKE :texto
+            ORDER BY dependencia ASC
+            LIMIT 10
+        ";
 
 
-    $stmt->execute([
-
-        ':texto' => '%' . $texto . '%'
-
-    ]);
+        $stmt = $this->db->prepare($sql);
 
 
-    return $stmt->fetchAll(
-        PDO::FETCH_ASSOC
-    );
+        $stmt->execute([
 
-}
+            ':texto' => '%' . $texto . '%'
+
+        ]);
+
+
+        return $stmt->fetchAll(
+            PDO::FETCH_ASSOC
+        );
+
+    }
+
+
+    // =========================
+    // Buscar tipos de servicio
+    // =========================
+    public function buscarTiposServicio($texto)
+    {
+        $sql = "
+            SELECT
+                id,
+                nombre
+            FROM tipos_servicio
+            WHERE nombre LIKE :texto
+            ORDER BY nombre ASC
+            LIMIT 10
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':texto' => '%' . $texto . '%'
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 }
