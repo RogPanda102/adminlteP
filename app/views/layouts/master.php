@@ -214,15 +214,16 @@ $nombre_usuario = $nombre_usuario ?? '';
           <li class="nav-item dropdown">
             <a class="nav-link" data-bs-toggle="dropdown" href="#">
               <i class="bi bi-bell-fill"></i>
-              <?php if ($total > 0) : ?>
+              <span
+                id="navbar-notificaciones-total"
+                class="navbar-badge badge text-bg-warning"
+                <?php if ($navbarNotificaciones['total'] <= 0) : ?>
+                    style="display:none;"
+                <?php endif; ?>>
 
-                  <span class="navbar-badge badge text-bg-warning">
+                <?php echo $navbarNotificaciones['total']; ?>
 
-                      <?php echo $total; ?>
-
-                  </span>
-
-              <?php endif; ?>
+            </span>
             </a>
             <?php require APP_PATH . '/views/partials/navbar/notificaciones.php'; ?>
           </li>
@@ -638,6 +639,14 @@ $nombre_usuario = $nombre_usuario ?? '';
   <!-- aqui esta mostrar mensaje -->
   <script>
     <?= mostrar_mensaje(); ?>
+  </script>
+  <script>
+      window.APP = {
+          baseUrl: "<?php echo BASE_URL; ?>"
+      };
+  </script>
+  <script 
+    src="<?php echo BASE_URL; ?>assets/js/especificos/notificaciones/notificaciones.js">
   </script>
 
 </body>

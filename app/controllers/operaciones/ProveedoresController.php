@@ -137,13 +137,18 @@ class ProveedoresController extends BaseController
 
         ];
 
-        $modelo->guardar($datos);
+        $proveedorId = $modelo->guardar($datos);
 
-        mensaje(
-            'Proveedor registrado correctamente',
-            ALERT_SUCCESS,
-            3000
-        );
+        if ($proveedorId) {
+
+            notificarExito(
+                null,
+                'Proveedor registrado',
+                'Se registró el proveedor "' . $datos['proveedor'] . '".',
+                '/proveedores'
+            );
+
+        }
 
         redirect(
             'proveedores'

@@ -57,7 +57,7 @@ class Proveedor
 
         $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
+        $resultado = $stmt->execute([
 
             ':proveedor' => $datos['proveedor'],
             ':servicios' => $datos['servicios'],
@@ -68,6 +68,14 @@ class Proveedor
             ':enlace'    => $datos['enlace']
 
         ]);
+
+        if (!$resultado) {
+
+            return false;
+
+        }
+
+        return $this->db->lastInsertId();
     }
 
     // // =========================
