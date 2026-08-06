@@ -3,14 +3,13 @@
             $navbarNotificaciones =
                 $navbarNotificaciones ?? [];
 
-            $total =
-                $navbarNotificaciones['total'] ?? 0;
-
             $notificaciones =
                 $navbarNotificaciones['notificaciones'] ?? [];
 
             ?>
-<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
+<div
+    id="navbar-notificaciones-menu"
+    class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
 
     <span class="dropdown-item dropdown-header">
 

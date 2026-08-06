@@ -138,7 +138,7 @@ class NotificacionesController extends BaseController
         $total = $modelo->contarNoLeidas(
             $_SESSION['usuario_id']
         );
-
+        
         $notificaciones = $modelo->obtenerParaNavbar(
             $_SESSION['usuario_id'],
             5
