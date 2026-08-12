@@ -86,8 +86,31 @@
 
                     </div>
 
-                    <!-- REQ -->
+                    <!-- FOLIO -->
+                    <div class="col-md-3">
 
+                        <label class="form-label fw-semibold">
+                            Folio
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-file-earmark"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="folio"
+                                class="form-control"
+                                maxlength="4"
+                                required>
+
+                        </div>
+
+                    </div>
+
+                    <!-- REQ -->
                     <div class="col-md-3">
 
                         <label class="form-label fw-semibold">
@@ -111,30 +134,7 @@
 
                     </div>
 
-                    <!-- FOLIO -->
 
-                    <div class="col-md-3">
-
-                        <label class="form-label fw-semibold">
-                            Folio
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                <i class="bi bi-file-earmark"></i>
-                            </span>
-
-                            <input
-                                type="text"
-                                name="folio"
-                                class="form-control"
-                                maxlength="4"
-                                required>
-
-                        </div>
-
-                    </div>
 
                 </div>
 
@@ -204,6 +204,14 @@
                                 placeholder="Buscar analista...">
 
                             <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="btnAnalista">
+                                <i class="bi bi-chevron-down"></i>
+
+                            </button>
+
+                            <button
                                 class="btn btn-outline-primary"
                                 type="button"
                                 id="btnNuevoAnalista"
@@ -257,7 +265,7 @@
 
                     <!-- PROVEEDOR -->
 
-                    <div class="col-md-6 position-relative">
+                    <div class="col-md-4 position-relative">
 
                         <label class="form-label fw-semibold">
                             Proveedor
@@ -275,7 +283,19 @@
                                 name="proveedor"
                                 class="form-control"
                                 autocomplete="off">
+                            <input
+                                type="hidden"
+                                name="proveedor_id"
+                                id="proveedor_id">
 
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="btnProveedor">
+
+                                <i class="bi bi-chevron-down"></i>
+
+                            </button>
                         </div>
 
                         <div
@@ -288,7 +308,7 @@
 
                     <!-- PARTIDA -->
 
-                    <div class="col-md-6">
+                    <div class="col-md-4">
 
                         <label class="form-label fw-semibold">
                             Partida
@@ -307,6 +327,42 @@
                                 maxlength="150">
 
                         </div>
+
+                    </div>
+
+                    <!-- DEPENDENCIA -->
+                    <div class="col-md-4 position-relative">
+
+                                            <label class="form-label fw-semibold">
+                                                Dependencia
+                                            </label>
+
+                                            <div class="input-group">
+
+                                                <span class="input-group-text">
+                                                    <i class="bi bi-building"></i>
+                                                </span>
+
+                                                <input
+                                                    type="text"
+                                                    id="dependencia"
+                                                    name="dependencia"
+                                                    class="form-control"
+                                                    autocomplete="off"
+                                                    placeholder="Buscar dependencia...">
+
+                                            </div>
+
+                                            <div
+                                                id="lista-dependencia"
+                                                class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                                                style="
+                                                    display:none;
+                                                    z-index:1050;
+                                                    max-height:260px;
+                                                    overflow-y:auto;
+                                                ">
+                                            </div>
 
                     </div>
 
@@ -509,6 +565,170 @@
                         <input
                             type="text"
                             id="nuevo_telefono"
+                            class="form-control">
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                        Cancelar
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="bi bi-check-circle me-1"></i>
+                        Guardar
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVO PROVEEDOR -->
+<!-- ========================================================= -->
+
+<div
+    class="modal fade"
+    id="modalNuevoProveedor"
+    tabindex="-1"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    <i class="bi bi-building-add me-2"></i>
+                    Nuevo Proveedor
+                </h5>
+
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <form id="formNuevoProveedor">
+
+                <div class="modal-body">
+
+                    <!-- PROVEEDOR -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Proveedor
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_proveedor"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <!-- SERVICIOS -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Servicios
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_servicios"
+                            class="form-control">
+
+                    </div>
+
+                    <!-- UBICACIÓN -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Ubicación
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_ubicacion"
+                            class="form-control">
+
+                    </div>
+
+                    <!-- CONTACTO -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Contacto
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_contacto"
+                            class="form-control">
+
+                    </div>
+
+                    <!-- TELÉFONO -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Teléfono
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_telefono_proveedor"
+                            class="form-control">
+
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="nuevo_email"
+                            class="form-control">
+
+                    </div>
+
+                    <!-- ENLACE -->
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Enlace
+                        </label>
+
+                        <input
+                            type="text"
+                            id="nuevo_enlace"
                             class="form-control">
 
                     </div>

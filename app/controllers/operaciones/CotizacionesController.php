@@ -191,6 +191,7 @@ class CotizacionesController extends BaseController
             'folio'      => limpiarTexto($_POST['folio'] ?? ''),
             'elaboro'    => limpiarTextoMayusculas($_POST['elaboro'] ?? ''),
             'partida'    => limpiarTextoMayusculas($_POST['partida'] ?? ''),
+            'dependencia' => limpiarTextoMayusculas($_POST['dependencia'] ?? ''),
             'proveedor'  => limpiarTextoMayusculas($_POST['proveedor'] ?? ''),
             'analista_id' => !empty($_POST['analista_id'])
                 ? (int) $_POST['analista_id']
@@ -271,7 +272,7 @@ class CotizacionesController extends BaseController
 
         $texto = trim($_GET['q'] ?? '');
 
-        if (strlen($texto) < 2) {
+        if ($texto !== '' && strlen($texto) < 2) {
 
             echo json_encode([]);
 
@@ -291,6 +292,74 @@ class CotizacionesController extends BaseController
 
         exit;
     }
+
+
+    // =========================
+    // Guardar proveedor AJAX
+    // =========================
+    public function guardarProveedorAjax()
+    {
+        header('Content-Type: application/json');
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado'
+            ]);
+
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            http_response_code(405);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Método no permitido'
+            ]);
+
+            exit;
+        }
+
+        require_once __DIR__ . '/../../models/Proveedor.php';
+
+        $modelo = new Proveedor();
+
+        $datos = [
+            'proveedor' => trim($_POST['proveedor'] ?? ''),
+            'servicios' => trim($_POST['servicios'] ?? ''),
+            'ubicacion' => trim($_POST['ubicacion'] ?? ''),
+            'contacto'  => trim($_POST['contacto'] ?? ''),
+            'telefono'  => trim($_POST['telefono'] ?? ''),
+            'email'     => trim($_POST['email'] ?? ''),
+            'enlace'    => trim($_POST['enlace'] ?? '')
+        ];
+
+        $proveedorId = $modelo->guardar($datos);
+
+        if (!$proveedorId) {
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No se pudo guardar el proveedor'
+            ]);
+
+            exit;
+        }
+
+        echo json_encode([
+            'ok' => true,
+            'id' => $proveedorId,
+            'nombre' => $datos['proveedor']
+        ]);
+
+        exit;
+    }
+
     // =========================
     // Actualizar cotizacion
     // =========================

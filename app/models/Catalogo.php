@@ -62,8 +62,8 @@ class Catalogo
             'proveedor' => [
                 'tabla' => 'proveedores',
                 'id' => 'id',
-                'mostrar' => 'nombre',
-                'buscar' => 'nombre'
+                'mostrar' => 'proveedor',
+                'buscar' => 'proveedor'
             ],
 
             // =========================
