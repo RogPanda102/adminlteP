@@ -9,12 +9,12 @@
 />
 
 <style>
-    #tabla-adjudicados .tabulator-row {
+    #tabla-servicios .tabulator-row {
         cursor: pointer;
     }
 
-    #tabla-adjudicados .tabulator-row:hover {
-        background-color: rgba(13, 110, 253, 0.08);
+    #tabla-servicios .tabulator-row:hover {
+        background-color: rgba(13, 110, 253, 0.08) !important;
     }
     /* ===============================
     FILAS ERP STYLE
@@ -185,20 +185,220 @@
 
 </main>
 
+<!-- ================= OFFCANVAS DETALLE SERVICIO ================= -->
+<div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasDetalleServicio"
+    style="width:420px;"
+>
+
+    <div class="offcanvas-header border-bottom">
+
+        <div>
+
+            <h5 class="offcanvas-title mb-1">
+
+                <i class="bi bi-gear-wide-connected text-primary me-2"></i>
+
+                Servicio
+
+                <span
+                    id="det-titulo-folio"
+                    class="text-primary">
+                </span>
+
+            </h5>
+
+            <small class="text-muted">
+
+                Información del servicio
+
+            </small>
+
+        </div>
+
+        <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas">
+        </button>
+
+    </div>
+
+    <div class="offcanvas-body bg-light">
+
+        <!-- Información General -->
+
+        <div class="card shadow-sm border-0 mb-3">
+
+            <div class="card-header bg-white fw-semibold">
+
+                <i class="bi bi-info-circle me-1 text-primary"></i>
+
+                Información general
+
+            </div>
+
+            <div class="card-body py-2">
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">REQ</span>
+                    <span id="det-req"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Folio</span>
+                    <span id="det-folio"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Año</span>
+                    <span id="det-anio"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Elaboró</span>
+                    <span id="det-elaboro"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Partida</span>
+                    <span id="det-partida"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Analista</span>
+                    <span id="det-analista"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Tipo de servicio</span>
+                    <span id="det-tipo-servicio"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Dependencia</span>
+                    <span id="det-dependencia"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Contratación -->
+
+        <div class="card shadow-sm border-0">
+
+            <div class="card-header bg-white fw-semibold">
+
+                <i class="bi bi-calendar-event text-success me-1"></i>
+
+                Fechas
+
+            </div>
+
+            <div class="card-body py-2">
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Tiempo</span>
+                    <span id="det-tiempo"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Contratación</span>
+                    <span id="det-contratacion"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Inicio</span>
+                    <span id="det-inicio"></span>
+                </div>
+
+                <div class="d-flex justify-content-between py-1">
+                    <span class="text-muted">Finalización</span>
+                    <span id="det-finalizacion"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- TABULATOR JS -->
 <script
   src="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/js/tabulator.min.js"
-  crossorigin="anonymous"
+  
 ></script>
 
 <script>
     document.addEventListener('DOMContentLoaded',function(){
+    // =====================================
+    // OFFCANVAS
+    // =====================================
 
+    const elementoOffcanvas =
+        document.getElementById('offcanvasDetalleServicio');
+
+    const offcanvas =
+        bootstrap.Offcanvas.getOrCreateInstance(elementoOffcanvas);
+    
+    // =====================================
+    // MOSTRAR DETALLE
+    // =====================================
+    function mostrarDetalle(servicio){
+        console.log('Servicio seleccionado:', servicio);
+
+        document.getElementById("det-titulo-folio").textContent =
+            servicio.folio ?? "";
+
+        document.getElementById("det-req").textContent =
+            servicio.req ?? "";
+
+        document.getElementById("det-folio").textContent =
+            servicio.folio ?? "";
+
+        document.getElementById("det-elaboro").textContent =
+            servicio.elaboro ?? "";
+
+        document.getElementById("det-anio").textContent =
+            servicio.anio ?? "";
+
+        document.getElementById("det-partida").textContent =
+            servicio.partida ?? "";
+
+        document.getElementById("det-tipo-servicio").textContent =
+            servicio.tipo_servicio ?? "";
+
+        document.getElementById("det-analista").textContent =
+            servicio.analista ?? "";
+
+        document.getElementById("det-dependencia").textContent =
+            servicio.dependencia ?? "";
+
+        document.getElementById("det-tiempo").textContent =
+            servicio.tiempo_contratacion ?? "";
+
+        document.getElementById("det-contratacion").textContent =
+            servicio.fecha_contratacion ?? "";
+
+        document.getElementById("det-inicio").textContent =
+            servicio.inicio ?? "";
+
+        document.getElementById("det-finalizacion").textContent =
+            servicio.finalizacion ?? "";
+        
+        offcanvas.show();
+
+    }
         const tabla=new Tabulator('#tabla-servicios',{
 
             layout:'fitColumns',
 
-            responsiveLayout:"collapse",
+            responsiveLayout:false,
 
             movableColumns:true,
 
@@ -407,8 +607,28 @@
                 }
 
             ],
-
+            
             data:<?= json_encode($servicios) ?>
+
+        });
+
+        tabla.on('rowClick', function(e, row) {
+
+            
+
+            const servicio = row.getData();
+
+            
+
+            mostrarDetalle(servicio);
+
+        });
+
+        document
+        .getElementById('tabla-servicios')
+        .addEventListener('click', function(e) {
+
+            
 
         });
 
