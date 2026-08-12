@@ -80,6 +80,12 @@ $router->get(
     'operaciones\CotizacionesController@buscarCatalogoAjax'
 );
 
+$router->post(
+    '/cotizaciones/guardarProveedorAjax',
+    'operaciones\CotizacionesController@guardarProveedorAjax'
+); 
+// este lo agregamos uno antes del proveedores.
+
 
 /*
 |------------------------------------------------------------------
@@ -207,6 +213,11 @@ $router->get(
 $router->post(
     '/proveedores/guardar',
     'operaciones\ProveedoresController@guardar'
+);
+
+$router->post(
+    '/proveedores/guardarAjax',
+    'operaciones\ProveedoresController@guardarAjax'
 );
 
 /*

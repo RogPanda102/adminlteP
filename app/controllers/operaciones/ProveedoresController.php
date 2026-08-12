@@ -155,4 +155,63 @@ class ProveedoresController extends BaseController
         );
     }
 
+
+    // =========================
+    // Guardar proveedor AJAX
+    // =========================
+    public function guardarAjax()
+    {
+        header('Content-Type: application/json');
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado'
+            ]);
+
+            exit;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+
+            http_response_code(405);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Método no permitido'
+            ]);
+
+            exit;
+        }
+
+        $modelo = new Proveedor();
+
+        $datos = [
+
+            'proveedor' => trim($_POST['proveedor'] ?? ''),
+            'servicios' => trim($_POST['servicios'] ?? ''),
+            'ubicacion' => trim($_POST['ubicacion'] ?? ''),
+            'contacto'  => trim($_POST['contacto'] ?? ''),
+            'telefono'  => trim($_POST['telefono'] ?? ''),
+            'email'     => trim($_POST['email'] ?? ''),
+            'enlace'    => trim($_POST['enlace'] ?? ''),
+
+            'creado_por' => $_SESSION['usuario_id']
+
+        ];
+
+        $proveedorId = $modelo->guardar($datos);
+
+        echo json_encode([
+            'ok' => true,
+            'id' => $proveedorId,
+            'nombre' => $datos['proveedor']
+        ]);
+
+        exit;
+    }
+
 }
