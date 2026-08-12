@@ -126,29 +126,42 @@ class ContactosController extends BaseController
             redirect('contactos');
         }
 
-        $modelo = new Analista();
-
-        
-
-        $modelo->guardar($datos);
-
-        mensaje(
-            'Analista registrado correctamente',
-            ALERT_SUCCESS,
-            3000
-        );
-
-        redirect(
-            'contactos'
-        );
-
         if ($datos['nombre'] === '') {
             mensaje('Nombre obligatorio', ALERT_DANGER, 3000);
             header('Location: ' . BASE_URL . 'contactos');
             exit;
         }
 
-        exit;
+        $modelo = new Analista();
+
+        
+
+        $resultado = $modelo->guardar($datos);
+
+            if ($resultado) {
+
+                notificarExito(
+
+                    null,
+
+                    'Analista registrado',
+
+                    'Se registró el analista "' .
+                    $datos['nombre'] .
+                    '".',
+
+                    '/contactos'
+
+                );
+
+            }
+        mensaje(
+            'Analista registrado correctamente',
+            ALERT_SUCCESS,
+            3000
+        );
+
+        redirect('contactos');
     }
 
 
@@ -273,7 +286,25 @@ class ContactosController extends BaseController
 
         $modelo = new Encargado();
 
-        $modelo->guardar($datos);
+        $resultado = $modelo->guardar($datos);
+
+        if ($resultado) {
+
+            notificarExito(
+
+                null,
+
+                'Encargado registrado',
+
+                'Se registró el encargado "' .
+                $datos['nombre'] .
+                '".',
+
+                '/contactos'
+
+            );
+
+        }
 
         mensaje(
             'Encargado registrado correctamente',
@@ -281,10 +312,6 @@ class ContactosController extends BaseController
             3000
         );
 
-        redirect(
-            'contactos'
-        );
-
-        exit;
+        redirect('contactos');
     }
 }
