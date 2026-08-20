@@ -1,32 +1,30 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    const autocompleteAnalista = crearAutocomplete({
+    const catalogoAnalista = crearCatalogo({
+        campo: 'analista',
         input: '#analista',
         resultados: '#lista-analista',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'analista',
-        onSelect: function (item) {
-            document.getElementById('analista_id').value = item.id;
+        idInput: '#analista_id',
+        onEmpty: function (texto) {
+
+            document.getElementById('nuevo_nombre').value = texto;
+
+            modalNuevoAnalista.show();
+
         }
     });
 
-    document.getElementById('analista').addEventListener('input', function () {
-        document.getElementById('analista_id').value = '';
-    });
-
-    const autocompleteProveedor = crearAutocomplete({
+    const catalogoProveedor = crearCatalogo({
+        campo: 'proveedor',
         input: '#proveedor',
         resultados: '#lista-proveedor',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'proveedor',
+        idInput: '#proveedor_id',
+        onEmpty: function (texto) {
 
-        onSelect: function (item) {
-            document.getElementById('proveedor_id').value = item.id;
-        },
-        onEmpty: function (texto) 
-        {
             document.getElementById('nuevo_proveedor').value = texto;
+
             modalNuevoProveedor.show();
+
         }
     });
 
@@ -95,11 +93,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-        // Colocar proveedor en el formulario principal
-        document.getElementById('proveedor').value = json.nombre;
-
-        // Guardar ID del proveedor
-        document.getElementById('proveedor_id').value = json.id;
+        catalogoProveedor.seleccionar({
+            id: json.id,
+            nombre: json.nombre
+        });
 
         // Limpiar formulario del modal
         document.getElementById('formNuevoProveedor').reset();
@@ -153,11 +150,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
 
-        // Colocar nombre en el input
-        document.getElementById("analista").value = json.nombre;
-
-        // Guardar el id oculto
-        document.getElementById("analista_id").value = json.id;
+        catalogoAnalista.seleccionar({
+            id: json.id,
+            nombre: json.nombre
+        });
 
         // Limpiar formulario
         document.getElementById("formNuevoAnalista").reset();
@@ -171,11 +167,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // AUTOCOMPLETE DEPENDENCIA
     // =====================================================
 
-    crearAutocomplete({
+    const catalogoDependencia = crearCatalogo({
+        campo: 'dependencia',
         input: '#dependencia',
         resultados: '#lista-dependencia',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'dependencia'
+        idInput: '#dependencia_id',
+        onEmpty: function (texto) {
+            document.getElementById('nuevo_dependencia').value = texto;
+            modalNuevaDependencia.show();
+        }
     });
 
     // =====================================================
@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         btnAnalista.addEventListener('click', function () {
 
-            autocompleteAnalista.mostrarTodos();
+            catalogoAnalista.mostrarTodos();
 
         });
 
@@ -206,7 +206,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         btnProveedor.addEventListener('click', function () {
 
-            autocompleteProveedor.mostrarTodos();
+            catalogoProveedor.mostrarTodos();
+
+        });
+
+    }
+
+    const btnDependencia =
+        document.getElementById('btnDependencia');
+
+    if (btnDependencia) {
+
+        btnDependencia.addEventListener('click', function () {
+
+            catalogoDependencia.mostrarTodos();
 
         });
 

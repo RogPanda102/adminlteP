@@ -333,11 +333,10 @@
                     <!-- DEPENDENCIA -->
                     <div class="col-md-4 position-relative">
 
-                                            <label class="form-label fw-semibold">
+                        <label class="form-label fw-semibold">
                                                 Dependencia
-                                            </label>
-
-                                            <div class="input-group">
+                        </label>
+                        <div class="input-group">
 
                                                 <span class="input-group-text">
                                                     <i class="bi bi-building"></i>
@@ -350,10 +349,19 @@
                                                     class="form-control"
                                                     autocomplete="off"
                                                     placeholder="Buscar dependencia...">
+                                                <input
+                                                    type="hidden"
+                                                    name="dependencia_id"
+                                                    id="dependencia_id">
+                                                <button
+                                                    class="btn btn-outline-secondary"
+                                                    type="button"
+                                                    id="btnDependencia">
+                                                    <i class="bi bi-chevron-down"></i>
+                                                </button>
 
-                                            </div>
-
-                                            <div
+                        </div>
+                        <div
                                                 id="lista-dependencia"
                                                 class="list-group position-absolute w-100 shadow rounded-3 mt-1"
                                                 style="
@@ -362,7 +370,7 @@
                                                     max-height:260px;
                                                     overflow-y:auto;
                                                 ">
-                                            </div>
+                        </div>
 
                     </div>
 
@@ -474,300 +482,18 @@
 <!-- MODAL NUEVO ANALISTA -->
 <!-- ========================================================= -->
 
-<div
-    class="modal fade"
-    id="modalNuevoAnalista"
-    tabindex="-1"
-    aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-                    <i class="bi bi-person-plus me-2"></i>
-                    Nuevo Analista
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
-
-            </div>
-
-            <form id="formNuevoAnalista">
-
-                <div class="modal-body">
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Nombre
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_nombre"
-                            class="form-control"
-                            required>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Apellido paterno
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_apellido_paterno"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Apellido materno
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_apellido_materno"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Teléfono
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_telefono"
-                            class="form-control">
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            correo
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_telefono"
-                            class="form-control">
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-
-                        Cancelar
-
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary">
-
-                        <i class="bi bi-check-circle me-1"></i>
-                        Guardar
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
+<?= modalAnalista()  ?>
 
 <!-- ========================================================= -->
 <!-- MODAL NUEVO PROVEEDOR -->
 <!-- ========================================================= -->
 
-<div
-    class="modal fade"
-    id="modalNuevoProveedor"
-    tabindex="-1"
-    aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered">
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <h5 class="modal-title">
-                    <i class="bi bi-building-add me-2"></i>
-                    Nuevo Proveedor
-                </h5>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal">
-                </button>
-
-            </div>
-
-            <form id="formNuevoProveedor">
-
-                <div class="modal-body">
-
-                    <!-- PROVEEDOR -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Proveedor
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_proveedor"
-                            class="form-control"
-                            required>
-
-                    </div>
-
-                    <!-- SERVICIOS -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Servicios
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_servicios"
-                            class="form-control">
-
-                    </div>
-
-                    <!-- UBICACIÓN -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Ubicación
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_ubicacion"
-                            class="form-control">
-
-                    </div>
-
-                    <!-- CONTACTO -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Contacto
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_contacto"
-                            class="form-control">
-
-                    </div>
-
-                    <!-- TELÉFONO -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Teléfono
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_telefono_proveedor"
-                            class="form-control">
-
-                    </div>
-
-                    <!-- EMAIL -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Email
-                        </label>
-
-                        <input
-                            type="email"
-                            id="nuevo_email"
-                            class="form-control">
-
-                    </div>
-
-                    <!-- ENLACE -->
-                    <div class="mb-3">
-
-                        <label class="form-label">
-                            Enlace
-                        </label>
-
-                        <input
-                            type="text"
-                            id="nuevo_enlace"
-                            class="form-control">
-
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal">
-
-                        Cancelar
-
-                    </button>
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary">
-
-                        <i class="bi bi-check-circle me-1"></i>
-                        Guardar
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
+<?= modalProveedor() ?>
 
 <script>
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
 
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/nuevo.js"></script>
