@@ -70,10 +70,10 @@ class Catalogo
             // DEPENDENCIAS
             // =========================
             'dependencia' => [
-                'tabla' => 'cotizaciones',
-                'id' => 'dependencia',
-                'mostrar' => 'dependencia',
-                'buscar' => 'dependencia'
+                'tabla' => 'dependencias',
+                'id' => 'id',
+                'mostrar' => 'nombre',
+                'buscar' => 'nombre'
             ],
 
             // =========================

@@ -454,7 +454,7 @@
 
                     </div>
 
-                    <!-- DEPENDENCIA -->
+                    <!-- DEPENDENCIA
                     <div class="col-lg-8 position-relative">
 
                         <label class="form-label fw-semibold">
@@ -480,13 +480,55 @@
 
                         <div
                             id="lista-dependencia"
-                            class="list-group position-absolute w-100 shadow"
+                                class="list-group position-absolute w-100 shadow"
+                                style="
+                                z-index:1050;
+                                display:none;
+                                max-height:250px;
+                                overflow-y:auto;
+                            ">
+                        </div>
+
+                    </div> -->
+                    <!-- DEPENDENCIA -->
+                    <div class="col-md-8 position-relative">
+
+                        <label class="form-label fw-semibold">
+                                                Dependencia
+                        </label>
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-building"></i>
+                            </span>
+                            <input
+                                type="text"
+                                id="dependencia"
+                                name="dependencia"
+                                class="form-control"
+                                autocomplete="off"
+                                placeholder="Buscar dependencia...">
+                            <input
+                                type="hidden"
+                                name="dependencia_id"
+                                id="dependencia_id">
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="btnDependencia">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
+
+                        </div>
+                        <div
+                            id="lista-dependencia"
+                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
                             style="
-                    z-index:1050;
-                    display:none;
-                    max-height:250px;
-                    overflow-y:auto;
-                ">
+                                display:none;
+                                z-index:1050;
+                                max-height:260px;
+                                overflow-y:auto;
+                            ">
                         </div>
 
                     </div>
@@ -521,9 +563,22 @@
 
 </div>
 
+<!-- ========================================================= -->
+<!-- MODAL NUEVO DEPENDENCIA -->
+<!-- ========================================================= -->
+
+<?= modalAnalista()  ?>
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVO ANALISTA -->
+<!-- ========================================================= -->
+
+<?= modalAnalista()  ?>
+
 <script>
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
 <script src="<?= BASE_URL ?>assets/js/helpers/pagoToggle.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/nuevo.js"></script>

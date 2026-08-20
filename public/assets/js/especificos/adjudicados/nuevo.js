@@ -98,70 +98,60 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    
 
     // =====================================================
     // AUTOCOMPLETE ANALISTA
     // =====================================================
 
-    crearAutocomplete({
+    const modalNuevoAnalista = new bootstrap.Modal(
+        document.getElementById("modalNuevoAnalista")
+    );
+
+    const catalogoAnalista = crearCatalogo({
+        campo: 'analista',
         input: '#analista',
         resultados: '#lista-analista',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'analista',
-        onSelect: function (item) {
+        idInput: '#analista_id',
+        onEmpty: function (texto) {
 
-            const campoId =
-                document.getElementById('analista_id');
+            document.getElementById('nuevo_nombre').value = texto;
 
-            if (campoId) {
-                campoId.value = item.id;
-            }
+            modalNuevoAnalista.show();
 
         }
     });
+    
+    // =====================================================
+    // AUTOCOMPLETE DEPENDENCIA
+    // =====================================================
+    // const modalNuevaDependencia = new bootstrap.Modal(
+    //     document.getElementById("modalNuevaDependencia")
+    // );
 
+    const catalogoDependencia = crearCatalogo({
+        campo: 'dependencia',
+        input: '#dependencia',
+        resultados: '#lista-dependencia',
+        idInput: '#dependencia_id',
+        onEmpty: function (texto) {
+            document.getElementById('nuevo_dependencia').value = texto;
+            modalNuevaDependencia.show();
+        }
+    });
 
-    const analista =
-        document.getElementById('analista');
+    const btnDependencia =
+        document.getElementById('btnDependencia');
 
-    if (analista) {
+    if (btnDependencia) {
 
-        analista.addEventListener('input', function () {
+        btnDependencia.addEventListener('click', function () {
 
-            const campoId =
-                document.getElementById('analista_id');
-
-            if (campoId) {
-                campoId.value = '';
-            }
+            catalogoDependencia.mostrarTodos();
 
         });
 
     }
-
-
-    // =====================================================
-    // AUTOCOMPLETE PROVEEDOR
-    // =====================================================
-
-    crearAutocomplete({
-        input: '#proveedor',
-        resultados: '#lista-proveedor',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'proveedor'
-    });
-
-
-    // =====================================================
-    // AUTOCOMPLETE DEPENDENCIA
-    // =====================================================
-
-    crearAutocomplete({
-        input: '#dependencia',
-        resultados: '#lista-dependencia',
-        url: 'cotizaciones/buscarCatalogoAjax',
-        campo: 'dependencia'
-    });
 
 
 });

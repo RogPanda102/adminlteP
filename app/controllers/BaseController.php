@@ -8,6 +8,7 @@ require_once APP_PATH . '/helpers/historial.php';
 require_once APP_PATH . '/helpers/menu.php';
 require_once APP_PATH . '/helpers/formularios.php';
 require_once APP_PATH . '/helpers/notificaciones.php';
+require_once APP_PATH . '/helpers/modales_modulos.php';
 
 class BaseController
 {
