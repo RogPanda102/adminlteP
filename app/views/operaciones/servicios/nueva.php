@@ -306,7 +306,7 @@
                     <div class="col-md-6">
 
                         <label class="form-label fw-semibold">
-                            Tiempo de contratación
+                            Cantidad de tiempo 
                         </label>
 
                         <div class="input-group">
@@ -316,13 +316,27 @@
                             </span>
 
                             <input
-                                type="text"
-                                name="tiempo_contratacion"
-                                class="form-control">
+                                type="number"
+                                name="tiempo_cantidad"
+                                class="form-control"
+                                placeholder="Cantidad"
+                                min="1"
+                            >
+
+                            <select
+                                name="tiempo_unidad"
+                                class="form-select"
+                            >
+                                <option value="dias">Días</option>
+                                <option value="meses">Meses</option>
+                                <option value="años">Años</option>
+                            </select>
 
                         </div>
 
                     </div>
+
+                    
 
                     <!-- FECHA CONTRATACIÓN -->
                     <div class="col-md-6">

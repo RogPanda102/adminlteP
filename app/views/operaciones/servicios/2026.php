@@ -378,10 +378,21 @@
 
         document.getElementById("det-dependencia").textContent =
             servicio.dependencia ?? "";
+        // ==============================
+        // TIEMPO DE CONTRATACIÓN
+        // ==============================
+        const cantidad = servicio.tiempo_cantidad ?? '';
+        const unidad = servicio.tiempo_unidad ?? '';
 
         document.getElementById("det-tiempo").textContent =
-            servicio.tiempo_contratacion ?? "";
+            cantidad && unidad
+                ? `${cantidad} ${unidad}`
+                : cantidad || unidad || "";
 
+        // ==============================
+        // FECHAS
+        // ==============================
+        
         document.getElementById("det-contratacion").textContent =
             servicio.fecha_contratacion ?? "";
 
@@ -493,13 +504,22 @@
 
                 {
                     title:'Tiempo',
-                    field:'tiempo_contratacion',
+                    field:'tiempo_cantidad',
 
                     formatter:function(cell){
 
+                        const servicio = cell.getRow().getData();
+
+                        const cantidad = servicio.tiempo_cantidad ?? '';
+                        const unidad = servicio.tiempo_unidad ?? '';
+
+                        if (!cantidad && !unidad) {
+                            return '';
+                        }
+
                         return `
                             <span class="badge bg-info">
-                                ${cell.getValue() || ''}
+                                ${cantidad} ${unidad}
                             </span>
                         `;
 
