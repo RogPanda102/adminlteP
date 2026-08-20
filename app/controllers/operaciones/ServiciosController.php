@@ -296,7 +296,8 @@ class ServiciosController extends BaseController
                 ? (int) $_POST['tipo_servicio_id']
                 : null,
 
-            'tiempo_contratacion' => trim($_POST['tiempo_contratacion'] ?? ''),
+            'tiempo_cantidad'      => $_POST['tiempo_cantidad'] ?? null,
+            'tiempo_unidad'       => $_POST['tiempo_unidad'] ?? null,
             'fecha_contratacion'  => $_POST['fecha_contratacion'] ?? null,
             'inicio'              => $_POST['inicio'] ?? null,
             'finalizacion'        => $_POST['finalizacion'] ?? null,
