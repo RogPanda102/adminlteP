@@ -98,6 +98,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // =====================================================
+    // GUARDAR DEPENDENCIA AJAX
+    // =====================================================
+
+    document.getElementById("formNuevaDependencia")
+        .addEventListener("submit", async function (e) {
+
+            e.preventDefault();
+
+            const formData = new FormData();
+
+            formData.append(
+                "nombre",
+                document.getElementById("nuevo_dependencia").value
+            );
+
+            formData.append(
+                "descripcion",
+                document.getElementById("nuevo_descripcion_dependencia").value
+            );
+
+            formData.append(
+                "ubicacion",
+                document.getElementById("nuevo_ubicacion_dependencia").value
+            );
+
+            const respuesta = await fetch(
+                BASE_URL + "dependencias/guardarAjax",
+                {
+                    method: "POST",
+                    body: formData
+                }
+            );
+
+            const json = await respuesta.json();
+
+            if (!json.ok) {
+
+                alert(
+                    json.mensaje ||
+                    "No se pudo registrar la dependencia"
+                );
+
+                return;
+            }
+
+            catalogoDependencia.seleccionar({
+                id: json.id,
+                nombre: json.nombre
+            });
+
+            document
+                .getElementById("formNuevaDependencia")
+                .reset();
+
+            modalNuevaDependencia.hide();
+
+        });
+
     
 
     // =====================================================
@@ -125,9 +184,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // =====================================================
     // AUTOCOMPLETE DEPENDENCIA
     // =====================================================
-    // const modalNuevaDependencia = new bootstrap.Modal(
-    //     document.getElementById("modalNuevaDependencia")
-    // );
+    const modalNuevaDependencia = new bootstrap.Modal(
+        document.getElementById("modalNuevaDependencia")
+    );
 
     const catalogoDependencia = crearCatalogo({
         campo: 'dependencia',

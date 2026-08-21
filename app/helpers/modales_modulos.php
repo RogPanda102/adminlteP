@@ -584,3 +584,174 @@
             </div>
         ';
     }
+
+    function modalDependencia()
+    {
+        return '
+        <!-- ========================================================= -->
+        <!-- MODAL NUEVA DEPENDENCIA -->
+        <!-- ========================================================= -->
+
+        <div
+            class="modal fade"
+            id="modalNuevaDependencia"
+            tabindex="-1"
+            aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-centered">
+
+                <div class="modal-content border-0 shadow-lg">
+
+                    <!-- HEADER -->
+                    <div class="modal-header bg-primary text-white">
+
+                        <div class="d-flex align-items-center">
+
+                            <div
+                                class="d-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-3 me-3"
+                                style="width:42px;height:42px;">
+
+                                <i class="bi bi-building-add fs-4"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h5 class="modal-title fw-bold mb-0">
+                                    Nueva Dependencia
+                                </h5>
+
+                                <small class="opacity-75">
+                                    Registrar una nueva dependencia
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn-close btn-close-white"
+                            data-bs-dismiss="modal">
+                        </button>
+
+                    </div>
+
+                    <!-- FORMULARIO -->
+                    <form id="formNuevaDependencia">
+
+                        <div class="modal-body p-4">
+
+                            <!-- NOMBRE -->
+                            <div class="mb-3">
+
+                                <label
+                                    for="nuevo_dependencia"
+                                    class="form-label fw-semibold">
+
+                                    Nombre de la dependencia
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-building text-primary"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="nuevo_dependencia"
+                                        name="nombre"
+                                        class="form-control"
+                                        placeholder="Ej. Secretaría de Finanzas"
+                                        maxlength="255"
+                                        required>
+
+                                </div>
+
+                            </div>
+
+                            <!-- DESCRIPCIÓN -->
+                            <div class="mb-3">
+
+                                <label
+                                    for="nuevo_descripcion_dependencia"
+                                    class="form-label fw-semibold">
+
+                                    Descripción
+
+                                </label>
+
+                                <textarea
+                                    id="nuevo_descripcion_dependencia"
+                                    class="form-control"
+                                    rows="3"
+                                    placeholder="Descripción de la dependencia..."
+                                    maxlength="1000"></textarea>
+
+                            </div>
+
+                            <!-- UBICACIÓN -->
+                            <div class="mb-2">
+
+                                <label
+                                    for="nuevo_ubicacion_dependencia"
+                                    class="form-label fw-semibold">
+
+                                    Ubicación
+
+                                </label>
+
+                                <div class="input-group">
+
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-geo-alt text-primary"></i>
+                                    </span>
+
+                                    <input
+                                        type="text"
+                                        id="nuevo_ubicacion_dependencia"
+                                        class="form-control"
+                                        placeholder="Ej. Tlaxcala, Tlax."
+                                        maxlength="255">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div class="modal-footer bg-light border-top">
+
+                            <button
+                                type="button"
+                                class="btn btn-light border"
+                                data-bs-dismiss="modal">
+
+                                <i class="bi bi-x-circle me-1"></i>
+                                Cancelar
+
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary px-4">
+
+                                <i class="bi bi-check-circle me-1"></i>
+                                Guardar dependencia
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        ';
+    }

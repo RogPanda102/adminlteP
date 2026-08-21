@@ -334,42 +334,39 @@
                     <div class="col-md-4 position-relative">
 
                         <label class="form-label fw-semibold">
-                                                Dependencia
+                             Dependencia
                         </label>
                         <div class="input-group">
-
-                                                <span class="input-group-text">
-                                                    <i class="bi bi-building"></i>
-                                                </span>
-
-                                                <input
-                                                    type="text"
-                                                    id="dependencia"
-                                                    name="dependencia"
-                                                    class="form-control"
-                                                    autocomplete="off"
-                                                    placeholder="Buscar dependencia...">
-                                                <input
-                                                    type="hidden"
-                                                    name="dependencia_id"
-                                                    id="dependencia_id">
-                                                <button
-                                                    class="btn btn-outline-secondary"
-                                                    type="button"
-                                                    id="btnDependencia">
-                                                    <i class="bi bi-chevron-down"></i>
-                                                </button>
-
+                            <span class="input-group-text">
+                                <i class="bi bi-building"></i>
+                            </span>
+                            <input
+                                type="text"
+                                id="dependencia"
+                                name="dependencia"
+                                class="form-control"
+                                autocomplete="off"
+                                placeholder="Buscar dependencia...">
+                            <input
+                                type="hidden"
+                                name="dependencia_id"
+                                id="dependencia_id">
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="btnDependencia">
+                                <i class="bi bi-chevron-down"></i>
+                            </button>
                         </div>
                         <div
-                                                id="lista-dependencia"
-                                                class="list-group position-absolute w-100 shadow rounded-3 mt-1"
-                                                style="
-                                                    display:none;
-                                                    z-index:1050;
-                                                    max-height:260px;
-                                                    overflow-y:auto;
-                                                ">
+                            id="lista-dependencia"
+                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                            style="
+                                display:none;
+                                z-index:1050;
+                                max-height:260px;
+                                overflow-y:auto;
+                            ">
                         </div>
 
                     </div>
@@ -489,6 +486,12 @@
 <!-- ========================================================= -->
 
 <?= modalProveedor() ?>
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVA DEPENDENCIA -->
+<!-- ========================================================= -->
+
+<?= modalDependencia() ?>
 
 <script>
     const BASE_URL = '<?= BASE_URL ?>';

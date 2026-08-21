@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/../config/database.php';
 
-class Proveedor
+class Dependencia
 {
     private $db;
 
@@ -18,7 +18,7 @@ class Proveedor
     {
         $sql = "
             SELECT *
-            FROM proveedores
+            FROM dependencias
             ORDER BY id DESC
         ";
 
@@ -28,30 +28,22 @@ class Proveedor
     }
 
     // =========================
-    // Guardar proveedor
+    // Guardar dependencia
     // =========================
     public function guardar($datos)
     {
         $sql = "
-            INSERT INTO proveedores
+            INSERT INTO dependencias
             (
-                proveedor,
-                servicios,
-                ubicacion,
-                contacto,
-                telefono,
-                email,
-                enlace
+                nombre,
+                descripcion,
+                ubicacion
             )
             VALUES
             (
-                :proveedor,
-                :servicios,
-                :ubicacion,
-                :contacto,
-                :telefono,
-                :email,
-                :enlace
+                :nombre,
+                :descripcion,
+                :ubicacion
             )
         ";
 
@@ -59,20 +51,14 @@ class Proveedor
 
         $resultado = $stmt->execute([
 
-            ':proveedor' => $datos['proveedor'],
-            ':servicios' => $datos['servicios'],
-            ':ubicacion' => $datos['ubicacion'],
-            ':contacto'  => $datos['contacto'],
-            ':telefono'  => $datos['telefono'],
-            ':email'     => $datos['email'],
-            ':enlace'    => $datos['enlace']
+            ':nombre'      => $datos['nombre'],
+            ':descripcion' => $datos['descripcion'],
+            ':ubicacion'   => $datos['ubicacion']
 
         ]);
 
         if (!$resultado) {
-
             return false;
-
         }
 
         return $this->db->lastInsertId();

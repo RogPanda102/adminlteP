@@ -46,7 +46,7 @@ class ProveedoresController extends BaseController
     }
 
     // =========================
-    // Vista 2025
+    // Vista 
     // =========================
     public function index()
     {

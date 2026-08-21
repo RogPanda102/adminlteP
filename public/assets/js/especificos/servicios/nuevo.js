@@ -127,21 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    // =====================================================
-    // AUTOCOMPLETE DEPENDENCIA
-    // =====================================================
-
-    crearAutocomplete({
-
-        input: '#dependencia',
-
-        resultados: '#resultados-dependencia',
-
-        url: 'servicios/buscar-dependencia',
-
-        campo: 'dependencia'
-
-    });
 
     // =====================================================
     // AUTOCOMPLETE TIPO DE SERVICIO
@@ -177,5 +162,174 @@ document.addEventListener('DOMContentLoaded', () => {
             autocompleteTipoServicio.mostrarTodos();
 
         });
+
+
+    // =====================================================
+    // AUTOCOMPLETE DEPENDENCIA
+    // =====================================================
+    const modalNuevaDependencia = new bootstrap.Modal(
+        document.getElementById("modalNuevaDependencia")
+    );
+    const catalogoDependencia = crearCatalogo({
+        campo: 'dependencia',
+        input: '#dependencia',
+        resultados: '#lista-dependencia',
+        idInput: '#dependencia_id',
+        onEmpty: function (texto) {
+            document.getElementById('nuevo_dependencia').value = texto;
+            modalNuevaDependencia.show();
+        }
+    });
+    // =====================================================
+    // GUARDAR DEPENDENCIA AJAX
+    // =====================================================
+    document.getElementById("formNuevaDependencia").addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append(
+            "nombre",
+            document.getElementById("nuevo_dependencia").value
+        );
+
+        formData.append(
+            "descripcion",
+            document.getElementById("nuevo_descripcion_dependencia").value
+        );
+
+        formData.append(
+            "ubicacion",
+            document.getElementById("nuevo_ubicacion_dependencia").value
+        );
+
+        const respuesta = await fetch(
+            BASE_URL + "dependencias/guardarAjax",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const json = await respuesta.json();
+
+        if (!json.ok) {
+
+            alert(
+                json.mensaje ||
+                "No se pudo registrar la dependencia"
+            );
+
+            return;
+        }
+
+        catalogoDependencia.seleccionar({
+            id: json.id,
+            nombre: json.nombre
+        });
+
+        document
+            .getElementById("formNuevaDependencia")
+            .reset();
+
+        modalNuevaDependencia.hide();
+
+    });
+
+
+    // =====================================================
+    // GUARDAR ANALISTA AJAX/BTN
+    // =====================================================
+    const modalNuevoAnalista = new bootstrap.Modal(
+        document.getElementById("modalNuevoAnalista")
+    );
+    document.getElementById("btnNuevoAnalista").addEventListener("click", () => { modalNuevoAnalista.show(); });
+    document.getElementById("formNuevoAnalista").addEventListener("submit", async function (e) {
+
+        e.preventDefault();
+
+        const formData = new FormData();
+
+        formData.append(
+            "nombre",
+            document.getElementById("nuevo_nombre").value
+        );
+
+        formData.append(
+            "apellido_paterno",
+            document.getElementById("nuevo_apellido_paterno").value
+        );
+
+        formData.append(
+            "apellido_materno",
+            document.getElementById("nuevo_apellido_materno").value
+        );
+
+        formData.append(
+            "telefono",
+            document.getElementById("nuevo_telefono").value
+        );
+
+        const respuesta = await fetch(
+            BASE_URL + "contactos/guardarAnalistaAjax",
+            {
+                method: "POST",
+                body: formData
+            }
+        );
+
+        const json = await respuesta.json();
+
+        if (!json.ok) {
+
+            alert(json.mensaje);
+            return;
+
+        }
+
+        catalogoAnalista.seleccionar({
+            id: json.id,
+            nombre: json.nombre
+        });
+
+        // Limpiar formulario
+        document.getElementById("formNuevoAnalista").reset();
+
+        // Cerrar modal
+        modalNuevoAnalista.hide();
+
+    });
+
+    const catalogoAnalista = crearCatalogo({
+        campo: 'analista',
+        input: '#analista',
+        resultados: '#lista-analista',
+        idInput: '#analista_id',
+        onEmpty: function (texto) {
+
+            document.getElementById('nuevo_nombre').value = texto;
+
+            modalNuevoAnalista.show();
+
+        }
+    });
+
+    // =====================================================
+    // BOTÓN MOSTRAR TODOS LOS ANALISTAS
+    // =====================================================
+
+    const btnAnalista =
+        document.getElementById('btnAnalista');
+
+    if (btnAnalista) {
+
+        btnAnalista.addEventListener('click', function () {
+
+            catalogoAnalista.mostrarTodos();
+
+        });
+
+    }
 
 });
