@@ -106,6 +106,29 @@
 
                     </div>
 
+                    <!-- FOLIO -->
+                    <div class="col-md-3">
+
+                        <label class="form-label fw-semibold">
+                            Folio
+                        </label>
+
+                        <div class="input-group">
+
+                            <span class="input-group-text">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </span>
+
+                            <input
+                                type="text"
+                                name="folio"
+                                id="folio"
+                                class="form-control">
+
+                        </div>
+
+                    </div>
+
                     <!-- REQ -->
                     <div class="col-md-3">
 
@@ -129,28 +152,7 @@
 
                     </div>
 
-                    <!-- FOLIO -->
-                    <div class="col-md-3">
 
-                        <label class="form-label fw-semibold">
-                            Folio
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </span>
-
-                            <input
-                                type="text"
-                                name="folio"
-                                id="folio"
-                                class="form-control">
-
-                        </div>
-
-                    </div>
 
                     <!-- ELABORÓ -->
                     <div class="col-md-3">
@@ -200,7 +202,8 @@
                     </div>
 
                     <!-- ANALISTA -->
-                    <div class="col-md-6">
+
+                    <div class="col-md-6 position-relative">
 
                         <label class="form-label fw-semibold">
                             Analista
@@ -214,15 +217,48 @@
 
                             <input
                                 type="text"
-                                name="analista"
                                 id="analista"
-                                class="form-control">
+                                name="analista"
+                                class="form-control"
+                                autocomplete="off"
+                                placeholder="Buscar analista...">
 
-                            <input
-                                type="hidden"
-                                name="analista_id"
-                                id="analista_id">
+                            <button
+                                class="btn btn-outline-secondary"
+                                type="button"
+                                id="btnAnalista">
+                                <i class="bi bi-chevron-down"></i>
 
+                            </button>
+
+                            <button
+                                class="btn btn-outline-primary"
+                                type="button"
+                                id="btnNuevoAnalista"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Crear nuevo analista">
+
+                                <i class="bi bi-plus-lg"></i>
+
+                            </button>
+
+                        </div>
+
+                        <input
+                            type="hidden"
+                            name="analista_id"
+                            id="analista_id">
+
+                        <div
+                            id="lista-analista"
+                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                            style="
+                                display:none;
+                                z-index:1050;
+                                max-height:260px;
+                                overflow-y:auto;
+                            ">
                         </div>
 
                     </div>
@@ -412,7 +448,7 @@
             <!-- DEPENDENCIA -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4">
+            <!-- <div class="border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-danger mb-3">
 
@@ -453,6 +489,44 @@
 
                 </div>
 
+            </div> -->
+            <!-- DEPENDENCIA -->
+            <div class="col-md-12 position-relative">
+                <label class="form-label fw-semibold">
+                    Dependencia
+                </label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-building"></i>
+                    </span>
+                    <input
+                        type="text"
+                        id="dependencia"
+                        name="dependencia"
+                        class="form-control"
+                        autocomplete="off"
+                        placeholder="Buscar dependencia...">
+                    <input
+                        type="hidden"
+                        name="dependencia_id"
+                        id="dependencia_id">
+                    <button
+                        class="btn btn-outline-secondary"
+                        type="button"
+                        id="btnDependencia">
+                        <i class="bi bi-chevron-down"></i>
+                    </button>
+                </div>
+                <div
+                            id="lista-dependencia"
+                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                            style="
+                                display:none;
+                                z-index:1050;
+                                max-height:260px;
+                                overflow-y:auto;
+                            ">
+                </div>
             </div>
         </div>
         <!-- =========================
@@ -475,8 +549,22 @@
         </div>
     </form>
 </div>
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVA DEPENDENCIA -->
+<!-- ========================================================= -->
+
+<?= modalDependencia() ?>
+
+<!-- ========================================================= -->
+<!-- MODAL NUEVA ANALISTA -->
+<!-- ========================================================= -->
+
+<?= modalAnalista() ?>
+
 <script>
 const BASE_URL = '<?= BASE_URL ?>';
 </script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/servicios/nuevo.js"></script>

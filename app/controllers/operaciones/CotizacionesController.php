@@ -191,7 +191,7 @@ class CotizacionesController extends BaseController
             'folio'      => limpiarTexto($_POST['folio'] ?? ''),
             'elaboro'    => limpiarTextoMayusculas($_POST['elaboro'] ?? ''),
             'partida'    => limpiarTextoMayusculas($_POST['partida'] ?? ''),
-            'dependencia' => limpiarTextoMayusculas($_POST['dependencia'] ?? ''),
+            'dependencia_id' => !empty($_POST['dependencia_id']) ? (int) $_POST['dependencia_id'] : null,
             'proveedor'  => limpiarTextoMayusculas($_POST['proveedor'] ?? ''),
             'analista_id' => !empty($_POST['analista_id'])
                 ? (int) $_POST['analista_id']
@@ -406,9 +406,9 @@ class CotizacionesController extends BaseController
                 ? (int)$input['analista_id']
                 : null,
 
-            'dependencia' => limpiarTextoMayusculas(
-                $input['dependencia']
-            ),
+            'dependencia_id' => !empty($input['dependencia_id'])
+            ? (int)$input['dependencia_id']
+            : null,
 
             'estatus' => $input['estatus'],
 

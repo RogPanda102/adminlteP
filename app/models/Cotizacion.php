@@ -238,7 +238,7 @@ class Cotizacion
                 elaboro,
                 partida,
                 proveedor,
-                dependencia,
+                dependencia_id,
                 analista_id,
                 estatus,
                 reenviar,
@@ -254,7 +254,7 @@ class Cotizacion
                 :elaboro,
                 :partida,
                 :proveedor,
-                :dependencia,
+                :dependencia_id,
                 :analista_id,
                 :estatus,
                 :reenviar,
@@ -275,7 +275,7 @@ class Cotizacion
             ':elaboro'=>$datos['elaboro'],
             ':partida'=>$datos['partida'],
             ':proveedor'=>$datos['proveedor'],
-            ':dependencia' => $datos['dependencia'],
+            ':dependencia_id' => $datos['dependencia_id'],
             ':analista_id'=>$datos['analista_id'] ?? null,
             ':estatus'=>$datos['estatus'],
             ':reenviar'=>$datos['reenviar'],
@@ -313,7 +313,7 @@ class Cotizacion
 
                 analista_id = :analista_id,
 
-                dependencia = :dependencia,
+                dependencia_id = :dependencia_id,
 
                 estatus = :estatus,
 
@@ -345,7 +345,7 @@ class Cotizacion
 
             ':analista_id' => $datos['analista_id'],
 
-            ':dependencia' => $datos['dependencia'],
+            ':dependencia_id' => $datos['dependencia_id'],
 
             ':estatus' => $datos['estatus'],
 
