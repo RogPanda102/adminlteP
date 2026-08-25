@@ -220,6 +220,17 @@ $router->post(
     'operaciones\ProveedoresController@guardarAjax'
 );
 
+
+/*
+|------------------------------------------------------------------
+| DEPENDENCIAS
+|------------------------------------------------------------------
+*/
+
+$router->post(
+    '/dependencias/guardarAjax',
+    'operaciones\DependenciasController@guardarAjax'
+);
 /*
 |------------------------------------------------------------------
 | CATALOGO - CONTACTO
