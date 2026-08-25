@@ -354,6 +354,7 @@
                             <input
                                 type="number"
                                 name="tiempo_cantidad"
+                                id="tiempo_cantidad"
                                 class="form-control"
                                 placeholder="Cantidad"
                                 min="1"
@@ -361,8 +362,10 @@
 
                             <select
                                 name="tiempo_unidad"
+                                id="tiempo_unidad"
                                 class="form-select"
                             >
+                                <option value="">Unidad</option>
                                 <option value="dias">Días</option>
                                 <option value="meses">Meses</option>
                                 <option value="años">Años</option>
@@ -390,6 +393,7 @@
                             <input
                                 type="date"
                                 name="fecha_contratacion"
+                                id="fecha_contratacion"
                                 class="form-control">
 
                         </div>
@@ -412,6 +416,7 @@
                             <input
                                 type="date"
                                 name="inicio"
+                                id="inicio"
                                 class="form-control">
 
                         </div>
@@ -423,6 +428,9 @@
 
                         <label class="form-label fw-semibold">
                             Finalización
+                            <span class="text-muted fw-normal">
+                                (calculada automáticamente)
+                            </span>
                         </label>
 
                         <div class="input-group">
@@ -434,9 +442,16 @@
                             <input
                                 type="date"
                                 name="finalizacion"
-                                class="form-control">
+                                id="finalizacion"
+                                class="form-control"
+                                readonly
+                                disabled>
 
                         </div>
+
+                        <small class="text-muted">
+                            Se calcula a partir del inicio y la duración del servicio.
+                        </small>
 
                     </div>
 
