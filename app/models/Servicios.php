@@ -155,12 +155,12 @@ class Servicio
 
             ':analista_id'         => $datos['analista_id'] ?? null,
             ':tipo_servicio_id'    => $datos['tipo_servicio_id'] ?? null,
-            ':tiempo_cantidad'     => $datos['tiempo_cantidad'],
-            ':tiempo_unidad'       => $datos['tiempo_unidad'],
-            ':fecha_contratacion'  => $datos['fecha_contratacion'],
-            ':inicio'              => $datos['inicio'],
-            ':finalizacion'        => $datos['finalizacion'],
-            ':dependencia'         => $datos['dependencia'],
+            ':tiempo_cantidad'     => $datos['tiempo_cantidad'] ?? null,
+            ':tiempo_unidad'       => $datos['tiempo_unidad'] ?? null,
+            ':fecha_contratacion'  => $datos['fecha_contratacion'] ?? null,
+            ':inicio'              => $datos['inicio'] ?? null,
+            ':finalizacion'        => $datos['finalizacion'] ?? null,
+            ':dependencia'         => $datos['dependencia'] ?? null,
 
             ':adjudicado_id'       => $datos['adjudicado_id'] ?? null,
 

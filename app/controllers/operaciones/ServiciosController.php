@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../BaseController.php';
 require_once __DIR__ . '/../../models/Servicios.php';
 require_once __DIR__ . '/../../models/Adjudicados.php';
+require_once __DIR__ . '/../../helpers/servicios.php';
 
 class ServiciosController extends BaseController
 {
@@ -296,11 +297,16 @@ class ServiciosController extends BaseController
                 ? (int) $_POST['tipo_servicio_id']
                 : null,
 
-            'tiempo_cantidad'      => $_POST['tiempo_cantidad'] ?? null,
-            'tiempo_unidad'       => $_POST['tiempo_unidad'] ?? null,
+            'tiempo_cantidad'  => !empty($_POST['tiempo_cantidad'])
+                ? (int) $_POST['tiempo_cantidad']
+                : null,
+
+            'tiempo_unidad'    => !empty($_POST['tiempo_unidad'])
+                ? trim($_POST['tiempo_unidad'])
+                : null,
             'fecha_contratacion'  => $_POST['fecha_contratacion'] ?? null,
             'inicio'              => $_POST['inicio'] ?? null,
-            'finalizacion'        => $_POST['finalizacion'] ?? null,
+            'finalizacion'        => null,
             'dependencia'         => trim($_POST['dependencia'] ?? ''),
 
             'adjudicado_id'       => !empty($_POST['adjudicado_id'])
@@ -312,6 +318,18 @@ class ServiciosController extends BaseController
             'actualizado_por'     => null
 
         ];
+        // ========================================
+        // CALCULAR FECHAS DEL SERVICIO
+        // ========================================
+        $fechas = calcularFechasServicio(
+            $datos['inicio'],
+            null,
+            $datos['tiempo_cantidad'],
+            $datos['tiempo_unidad']
+        );
+
+        $datos['inicio'] = $fechas['inicio'];
+        $datos['finalizacion'] = $fechas['finalizacion'];
 
         $modelo->guardar($datos);
 
