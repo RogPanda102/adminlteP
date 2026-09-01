@@ -99,6 +99,31 @@ class Servicio
     }
 
     // =========================
+    // Obtener servicios para detector de vencimientos
+    // =========================
+    public function obtenerServiciosParaNotificaciones()
+    {
+        $sql = "
+            SELECT
+                id,
+                req,
+                folio,
+                inicio,
+                finalizacion,
+                creado_por
+            FROM servicios
+            WHERE finalizacion IS NOT NULL
+            AND creado_por IS NOT NULL
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    // =========================
     // Guardar servicio
     // =========================
     public function guardar($datos)
@@ -169,6 +194,38 @@ class Servicio
             ':actualizado_por'     => $datos['actualizado_por']
 
         ]);
+    }
+
+    // =========================
+    // Obtener servicios para notificación
+    // =========================
+    public function obtenerServiciosParaNotificar()
+    {
+        $sql = "
+            SELECT
+                id,
+                req,
+                folio,
+                finalizacion,
+                creado_por,
+                anio
+            FROM servicios
+            WHERE finalizacion IS NOT NULL
+            AND creado_por IS NOT NULL
+            AND finalizacion IN (
+                DATE_ADD(CURDATE(), INTERVAL 90 DAY),
+                DATE_ADD(CURDATE(), INTERVAL 30 DAY),
+                DATE_ADD(CURDATE(), INTERVAL 7 DAY),
+                CURDATE()
+            )
+            ORDER BY finalizacion ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // =========================

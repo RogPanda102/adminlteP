@@ -137,3 +137,54 @@ function calcularFechasServicio(
 
     return $resultado;
 }
+// =====================================================
+// D E T E R M I N A R   E V E N T O   D E   V E N C I M I E N T O
+// =====================================================
+
+function determinarEventoVencimiento($finalizacion)
+{
+    if (empty($finalizacion)) {
+        return null;
+    }
+
+    try {
+
+        $hoy = new DateTime();
+        $fechaFinalizacion = new DateTime($finalizacion);
+
+        $hoy->setTime(0, 0, 0);
+        $fechaFinalizacion->setTime(0, 0, 0);
+
+        $diferencia = $hoy->diff($fechaFinalizacion);
+
+        // Si ya pasó la fecha, no genera evento
+        if ($fechaFinalizacion < $hoy) {
+            return null;
+        }
+
+        $diasRestantes = (int) $diferencia->days;
+
+        switch ($diasRestantes) {
+
+            case 90:
+                return 'vencimiento_90';
+
+            case 30:
+                return 'vencimiento_30';
+
+            case 7:
+                return 'vencimiento_7';
+
+            case 0:
+                return 'vencimiento_hoy';
+
+            default:
+                return null;
+        }
+
+    } catch (Exception $e) {
+
+        return null;
+
+    }
+}

@@ -504,5 +504,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     }
-
-});

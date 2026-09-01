@@ -24,7 +24,10 @@ class Notificacion
                     titulo,
                     mensaje,
                     url,
-                    tipo
+                    tipo,
+                    modulo,
+                    registro_id,
+                    evento
                 )
                 VALUES
                 (
@@ -32,7 +35,10 @@ class Notificacion
                     :titulo,
                     :mensaje,
                     :url,
-                    :tipo
+                    :tipo,
+                    :modulo,
+                    :registro_id,
+                    :evento
                 )";
 
         $query = $this->conexion->prepare($sql);
@@ -47,10 +53,48 @@ class Notificacion
 
             ':url' => $datos['url'],
 
-            ':tipo' => $datos['tipo']
+            ':tipo' => $datos['tipo'],
+
+            ':modulo' => $datos['modulo'] ?? null,
+            ':registro_id' => $datos['registro_id'] ?? null,
+            ':evento' => $datos['evento'] ?? null
 
         ]);
 
+    }
+
+    
+
+    // =========================
+    // Verificar si ya existe un evento
+    // =========================
+    public function existeEvento(
+        $usuarioId,
+        $modulo,
+        $registroId,
+        $evento
+    ) {
+
+        $sql = "SELECT id
+                FROM notificaciones
+                WHERE usuario_id = :usuario_id
+                AND modulo = :modulo
+                AND registro_id = :registro_id
+                AND evento = :evento
+                LIMIT 1";
+
+        $query = $this->conexion->prepare($sql);
+
+        $query->execute([
+
+            ':usuario_id' => $usuarioId,
+            ':modulo' => $modulo,
+            ':registro_id' => $registroId,
+            ':evento' => $evento
+
+        ]);
+
+        return $query->fetch(PDO::FETCH_ASSOC) !== false;
     }
 
     // =========================
