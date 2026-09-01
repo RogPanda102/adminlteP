@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../BaseController.php';
 require_once __DIR__ . '/../../models/Notificacion.php';
+require_once __DIR__ . '/../../models/Servicios.php';
 
 class NotificacionesController extends BaseController
 {

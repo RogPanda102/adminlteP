@@ -19,38 +19,46 @@ function notificar(
     $mensaje = '',
     $url = '',
     $tipo = 'info',
-) {
+    $modelo = null,
+    $registroId = null,
+    $evento = null
+    ) 
+    {
 
-    if (
-        $usuarioId === null &&
-        isset($_SESSION['usuario_id'])
-    ) {
+        if (
+            $usuarioId === null &&
+            isset($_SESSION['usuario_id'])
+        ) {
 
-        $usuarioId = $_SESSION['usuario_id'];
+            $usuarioId = $_SESSION['usuario_id'];
 
-    }
+        }
 
-    if ($usuarioId === null) {
+        if ($usuarioId === null) {
 
-        return false;
+            return false;
 
-    }
+        }
 
-    $notificacion = new Notificacion();
+        $notificacion = new Notificacion();
 
-    return $notificacion->crear([
+        return $notificacion->crear([
 
-        'usuario_id' => $usuarioId,
+            'usuario_id' => $usuarioId,
 
-        'titulo' => $titulo,
+            'titulo' => $titulo,
 
-        'mensaje' => $mensaje,
+            'mensaje' => $mensaje,
 
-        'url' => $url,
+            'url' => $url,
 
-        'tipo' => $tipo
+            'tipo' => $tipo,
 
-    ]);
+            'modulo' => $modelo ?? null,
+            'registro_id' => $registroId ?? null,
+            'evento' => $evento ?? null
+
+        ]);
 }
 function notificacionIcono($tipo)
 {
