@@ -25,23 +25,60 @@ class Router
     // =========================
     public function dispatch()
     {
-
         $metodo = $_SERVER['REQUEST_METHOD'];
 
         $url = $_GET['url'] ?? '/';
 
         $url = '/' . trim($url, '/');
-        
 
-        // Ruta no encontrada
-        if (!isset($this->routes[$metodo][$url])) {
+        // =========================
+        // BUSCAR RUTA
+        // =========================
+        $accion = null;
+        $parametros = [];
+
+        if (isset($this->routes[$metodo][$url])) {
+
+            // Ruta exacta
+            $accion = $this->routes[$metodo][$url];
+
+        } else {
+
+            // Buscar rutas dinámicas
+            foreach ($this->routes[$metodo] ?? [] as $ruta => $accionRuta) {
+
+                // Convertir {parametro} en segmento dinámico
+                $patron = preg_replace(
+                    '/\{[^\/]+\}/',
+                    '([^\/]+)',
+                    $ruta
+                );
+
+                $patron = '#^' . $patron . '$#';
+
+                if (preg_match($patron, $url, $coincidencias)) {
+
+                    $accion = $accionRuta;
+
+                    // El primer elemento es la coincidencia completa
+                    array_shift($coincidencias);
+
+                    $parametros = $coincidencias;
+
+                    break;
+                }
+            }
+        }
+
+        // =========================
+        // RUTA NO ENCONTRADA
+        // =========================
+        if (!$accion) {
 
             require_once VIEWS_PATH . 'errors/404.php';
             return;
 
         }
-
-        $accion = $this->routes[$metodo][$url];
 
         // =========================
         // Separar controlador y método
@@ -57,7 +94,6 @@ class Router
         $controladorRuta = str_replace('\\', '/', $controladorCompleto);
 
         $controllerFile = CONTROLLERS_PATH . $controladorRuta . '.php';
-        
 
         // =========================
         // Validar existencia
@@ -96,7 +132,6 @@ class Router
         // =========================
         // Ejecutar método
         // =========================
-        $controller->$metodoControlador();
-
+        $controller->$metodoControlador(...$parametros);
     }
 }

@@ -34,14 +34,19 @@ $router->get('/dashboard', 'HomeController@index');
 |------------------------------------------------------------------
 */
 
-$router->get(
-    '/cotizaciones/2025',
-    'operaciones\CotizacionesController@cotizaciones2025'
-);
+// $router->get(
+//     '/cotizaciones/2025',
+//     'operaciones\CotizacionesController@cotizaciones2025'
+// );
+
+// $router->get(
+//     '/cotizaciones/2026',
+//     'operaciones\CotizacionesController@cotizaciones2026'
+// );
 
 $router->get(
-    '/cotizaciones/2026',
-    'operaciones\CotizacionesController@cotizaciones2026'
+    '/cotizaciones/{anio}',
+    'operaciones\CotizacionesController@cotizaciones'
 );
 
 $router->get(

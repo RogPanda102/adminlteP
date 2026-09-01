@@ -50,15 +50,104 @@ class CotizacionesController extends BaseController
 
     }
 
-    // =========================
-    // Vista 2025
-    // =========================
-    public function cotizaciones2025()
-    {
+    // // =========================
+    // // Vista 2025
+    // // =========================
+    // public function cotizaciones2025()
+    // {
 
+    //     if (!$this->permitido) {
+
+    //         header('Location: ' . BASE_URL . 'login');
+    //         exit;
+
+    //     }
+
+    //     // MODELO
+    //     $modelo = new Cotizacion();
+
+    //     // DATOS GENERALES
+    //     $datos = $this->cargar_datos();
+        
+    //     $datos['nombre_pagina'] = 'Cotizaciones 2025';
+
+    //     $breadcrumb = [
+    //         [
+    //             'tarea' => 'Cotizaciones',
+    //             'href' => '#'
+    //         ],
+    //         [
+    //             'tarea' => '2025',
+    //             'href' => '#'
+    //         ]
+    //     ];
+
+    //     $datos['breadcrumb'] = breadcrumb(
+    //         $datos['tarea'],
+    //         $breadcrumb
+    //     );
+
+    //     // COTIZACIONES
+    //     $datos['cotizaciones'] =
+    //         $modelo->obtenerPorAnio(2025);
+
+    //     $this->render(
+    //         'operaciones/cotizaciones/2025',
+    //         $datos
+    //     );
+
+    // }
+
+    // // =========================
+    // // Vista 2026
+    // // =========================
+    // public function cotizaciones2026()
+    // {
+
+    //     if (!$this->permitido) {
+
+    //         header('Location: ' . BASE_URL . 'login');
+    //         exit;
+
+    //     }
+
+    //     // MODELO
+    //     $modelo = new Cotizacion();
+
+    //     // DATOS GENERALES
+    //     $datos = $this->cargar_datos();
+
+    //     // COTIZACIONES
+    //     $datos['cotizaciones'] =
+    //         $modelo->obtenerPorAnio(2026);
+
+    //     // VISTA
+        
+    //     $this->render(
+    //         'operaciones/cotizaciones/2026',
+    //         $datos
+    //     );
+
+    // }
+
+    // =========================
+    // Vista de cotizaciones por año
+    // =========================
+    public function cotizaciones($anio)
+    {
         if (!$this->permitido) {
 
             header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        $anio = (int) $anio;
+
+        // Validar año
+        if ($anio < 2000 || $anio > 2100) {
+
+            header('Location: ' . BASE_URL . 'cotizaciones/' . date('Y'));
             exit;
 
         }
@@ -68,18 +157,32 @@ class CotizacionesController extends BaseController
 
         // DATOS GENERALES
         $datos = $this->cargar_datos();
-        
-        $datos['nombre_pagina'] = 'Cotizaciones 2025';
+
+        // =========================
+        // DATOS DINÁMICOS
+        // =========================
+
+        $datos['anio'] = $anio;
+
+        $datos['nombre_pagina'] =
+            'Cotizaciones ' . $anio;
+
+        // =========================
+        // BREADCRUMB
+        // =========================
 
         $breadcrumb = [
+
             [
                 'tarea' => 'Cotizaciones',
                 'href' => '#'
             ],
+
             [
-                'tarea' => '2025',
+                'tarea' => (string) $anio,
                 'href' => '#'
             ]
+
         ];
 
         $datos['breadcrumb'] = breadcrumb(
@@ -87,48 +190,23 @@ class CotizacionesController extends BaseController
             $breadcrumb
         );
 
+        // =========================
         // COTIZACIONES
+        // =========================
+
         $datos['cotizaciones'] =
-            $modelo->obtenerPorAnio(2025);
+            $modelo->obtenerPorAnio($anio);
 
-        $this->render(
-            'operaciones/cotizaciones/2025',
-            $datos
-        );
-
-    }
-
-    // =========================
-    // Vista 2026
-    // =========================
-    public function cotizaciones2026()
-    {
-
-        if (!$this->permitido) {
-
-            header('Location: ' . BASE_URL . 'login');
-            exit;
-
-        }
-
-        // MODELO
-        $modelo = new Cotizacion();
-
-        // DATOS GENERALES
-        $datos = $this->cargar_datos();
-
-        // COTIZACIONES
-        $datos['cotizaciones'] =
-            $modelo->obtenerPorAnio(2026);
-
+        // =========================
         // VISTA
-        
+        // =========================
+
         $this->render(
-            'operaciones/cotizaciones/2026',
+            'operaciones/cotizaciones/index',
             $datos
         );
-
     }
+
 
     // =========================
     // CREAR FORMULARIO

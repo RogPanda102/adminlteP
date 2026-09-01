@@ -1,4 +1,5 @@
 <?php
+    require_once __DIR__ . '/../models/Cotizacion.php';
     //funcion para configurar el menu
 
     function configurar_menu_panel($rol_actual = NULL)
@@ -6,12 +7,37 @@
         $menu = array();
         $menu_item = array();
         $sub_menu_item = array();
+
         /*
         |--------------------------------------------------------------------------
         | SESION ACTUAL
         |--------------------------------------------------------------------------
         */
         $rol_actual = $_SESSION['rol_actual'] ?? null;
+
+        /*
+        |--------------------------------------------------------------------------
+        | AÑOS DISPONIBLES - COTIZACIONES
+        |--------------------------------------------------------------------------
+        */
+        $modeloCotizacion = new Cotizacion();
+
+        $aniosCotizaciones = $modeloCotizacion->obtenerAnios();
+
+        $submenuCotizaciones = array();
+
+        foreach ($aniosCotizaciones as $item) {
+
+            $anio = (int) $item['anio'];
+
+            $submenuCotizaciones[] = array(
+                'is_active' => FALSE,
+                'href' => BASE_URL . 'cotizaciones/' . $anio,
+                'icon' => 'bi bi-calendar3',
+                'text' => (string) $anio
+            );
+        }
+
         /*
         |--------------------------------------------------------------------------
         | Dashboard
@@ -22,20 +48,25 @@
         $menu_item['icon'] = 'bi bi-speedometer2';
         $menu_item['text'] = 'Dashboard';
         $menu_item['submenu'] = array();
+
         $menu['dashboard'] = $menu_item;
+
         /*
         |--------------------------------------------------------------------------
         | Usuarios
         |--------------------------------------------------------------------------
         */
         if ($rol_actual == 1) {
+
             $menu_item['is_active'] = FALSE;
             $menu_item['href'] = BASE_URL . 'usuarios';
             $menu_item['icon'] = 'bi bi-people';
             $menu_item['text'] = 'Usuarios';
             $menu_item['submenu'] = array();
+
             $menu['usuarios'] = $menu_item;
         }
+
         /*
         |--------------------------------------------------------------------------
         | Cotizaciones
@@ -45,21 +76,10 @@
         $menu_item['href'] = '#';
         $menu_item['icon'] = 'bi bi-file-earmark-text';
         $menu_item['text'] = 'Cotizaciones';
-        $menu_item['submenu'] = array(
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'cotizaciones/2026',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2026'
-            ),
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'cotizaciones/2025',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2025'
-            )
-        );
+        $menu_item['submenu'] = $submenuCotizaciones;
+
         $menu['cotizaciones'] = $menu_item;
+
         /*
         |--------------------------------------------------------------------------
         | Adjudicados
@@ -69,6 +89,7 @@
         $menu_item['href'] = '#';
         $menu_item['icon'] = 'bi bi-patch-check';
         $menu_item['text'] = 'Adjudicados';
+
         $menu_item['submenu'] = array(
             array(
                 'is_active' => FALSE,
@@ -83,7 +104,9 @@
                 'text' => '2025'
             )
         );
+
         $menu['adjudicados'] = $menu_item;
+
         /*
         |--------------------------------------------------------------------------
         | Servicios
@@ -93,6 +116,7 @@
         $menu_item['href'] = '#';
         $menu_item['icon'] = 'bi bi-tools';
         $menu_item['text'] = 'Servicios';
+
         $menu_item['submenu'] = array(
             array(
                 'is_active' => FALSE,
@@ -107,7 +131,9 @@
                 'text' => '2025'
             )
         );
+
         $menu['servicios'] = $menu_item;
+
         /*
         |--------------------------------------------------------------------------
         | Proveedores
@@ -118,7 +144,9 @@
         $menu_item['icon'] = 'bi bi-truck';
         $menu_item['text'] = 'Proveedores';
         $menu_item['submenu'] = array();
+
         $menu['proveedores'] = $menu_item;
+
         /*
         |--------------------------------------------------------------------------
         | Contactos
@@ -129,7 +157,9 @@
         $menu_item['icon'] = 'bi bi-people';
         $menu_item['text'] = 'Contactos';
         $menu_item['submenu'] = array();
+
         $menu['contactos'] = $menu_item;
+
         return $menu;
     }
 
