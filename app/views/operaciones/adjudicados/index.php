@@ -1,5 +1,6 @@
 <?php
 $adjudicados = $adjudicados ?? [];
+$anio = $anio ?? date('Y');
 ?>
 
 <link
@@ -97,7 +98,7 @@ $adjudicados = $adjudicados ?? [];
 
                 <div class="card-header">
                     <h3 class="card-title">
-                        Adjudicados 2026
+                        adjudicados <?= htmlspecialchars($anio) ?>
                     </h3>
 
                     <div class="card-tools">

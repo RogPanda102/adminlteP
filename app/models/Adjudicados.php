@@ -51,6 +51,25 @@ class Adjudicados
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // =========================
+    // Obtener años disponibles
+    // =========================
+    public function obtenerAnios()
+    {
+        $sql = "
+            SELECT DISTINCT anio
+            FROM adjudicados
+            WHERE anio IS NOT NULL
+            ORDER BY anio DESC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     // =========================
     // Actualizar adjudicación

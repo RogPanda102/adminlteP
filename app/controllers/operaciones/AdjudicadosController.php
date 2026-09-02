@@ -54,63 +54,113 @@ class AdjudicadosController extends BaseController
     // =========================
     // Vista 2026
     // =========================
-    public function adjudicados2026()
-    {
+    // public function adjudicados2026()
+    // {
 
-        if (!$this->permitido) {
+    //     if (!$this->permitido) {
 
-            redirect('login');
+    //         redirect('login');
 
-        }
+    //     }
 
-        // MODELO
-        $modelo = new Adjudicados;
+    //     // MODELO
+    //     $modelo = new Adjudicados;
 
-        // DATOS GENERALES
-        $datos = $this->cargar_datos();
+    //     // DATOS GENERALES
+    //     $datos = $this->cargar_datos();
 
-        // Adjudicados
-        $datos['adjudicados'] =
-            $modelo->obtenerPorAnio(2026);
+    //     // Adjudicados
+    //     $datos['adjudicados'] =
+    //         $modelo->obtenerPorAnio(2026);
 
-        // VISTA
-        $this->render(
-            'operaciones/adjudicados/2026',
-            $datos
-        );
-    }
+    //     // VISTA
+    //     $this->render(
+    //         'operaciones/adjudicados/2026',
+    //         $datos
+    //     );
+    // }
 
     // =========================
     // Vista 2025
     // =========================
-    public function adjudicados2025()
+    // public function adjudicados2025()
+    // {
+
+    //     if (!$this->permitido) {
+
+    //         header('Location: ' . BASE_URL . 'login');
+    //         exit;
+    //     }
+
+    //     // MODELO
+    //     $modelo = new Adjudicados;
+
+    //     // DATOS GENERALES
+    //     $datos = $this->cargar_datos();
+
+    //     // Adjudicados
+    //     $datos['adjudicados'] =
+    //         $modelo->obtenerPorAnio(2025);
+
+    //     // VISTA
+    //     $this->render(
+    //         'operaciones/adjudicados/2025',
+    //         $datos
+    //     );
+    // }
+
+    // =========================
+    // Vista dinámica por año
+    // =========================
+    public function adjudicados($anio)
     {
-
         if (!$this->permitido) {
-
             header('Location: ' . BASE_URL . 'login');
             exit;
         }
 
-        // MODELO
-        $modelo = new Adjudicados;
+        $anio = (int) $anio;
 
-        // DATOS GENERALES
+        if ($anio < 2000 || $anio > 2100) {
+            header('Location: ' . BASE_URL . 'adjudicados/' . date('Y'));
+            exit;
+        }
+
+        $modelo = new Adjudicados();
+
         $datos = $this->cargar_datos();
 
-        // Adjudicados
-        $datos['adjudicados'] =
-            $modelo->obtenerPorAnio(2025);
+        $datos['anio'] = $anio;
+        $datos['nombre_pagina'] = 'Adjudicados ' . $anio;
 
-        // VISTA
+        $breadcrumb = [
+            [
+                'tarea' => 'Adjudicados',
+                'href' => '#'
+            ],
+            [
+                'tarea' => (string) $anio,
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        $datos['adjudicados'] =
+            $modelo->obtenerPorAnio($anio);
+
         $this->render(
-            'operaciones/adjudicados/2025',
+            'operaciones/adjudicados/index',
             $datos
         );
     }
     // =========================
     // CREAR FORMULARIO
     // =========================
+
     public function nueva()
     {
         // DATOS GENERALES

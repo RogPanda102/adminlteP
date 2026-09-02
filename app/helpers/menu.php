@@ -1,5 +1,7 @@
 <?php
     require_once __DIR__ . '/../models/Cotizacion.php';
+    require_once __DIR__ . '/../models/Adjudicados.php';
+    require_once __DIR__ . '/../models/Servicios.php';
     //funcion para configurar el menu
 
     function configurar_menu_panel($rol_actual = NULL)
@@ -33,6 +35,53 @@
             $submenuCotizaciones[] = array(
                 'is_active' => FALSE,
                 'href' => BASE_URL . 'cotizaciones/' . $anio,
+                'icon' => 'bi bi-calendar3',
+                'text' => (string) $anio
+            );
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | AÑOS DISPONIBLES - ADJUDICADOS
+        |--------------------------------------------------------------------------
+        */
+        $modeloAdjudicados = new Adjudicados();
+
+        $aniosAdjudicados = $modeloAdjudicados->obtenerAnios();
+
+        $submenuAdjudicados = array();
+
+        foreach ($aniosAdjudicados as $item) {
+
+            $anio = (int) $item['anio'];
+
+            $submenuAdjudicados[] = array(
+                'is_active' => FALSE,
+                'href' => BASE_URL . 'adjudicados/' . $anio,
+                'icon' => 'bi bi-calendar3',
+                'text' => (string) $anio
+            );
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | AÑOS DISPONIBLES - SERVICIOS
+        |--------------------------------------------------------------------------
+        */
+        $modeloServicios = new Servicio();
+
+        $aniosServicios = $modeloServicios->obtenerAnios();
+
+        $submenuServicios = array();
+
+        foreach ($aniosServicios as $item) {
+
+            $anio = (int) $item['anio'];
+
+            $submenuServicios[] = array(
+                'is_active' => FALSE,
+                'href' => BASE_URL . 'servicios/' . $anio,
                 'icon' => 'bi bi-calendar3',
                 'text' => (string) $anio
             );
@@ -89,21 +138,7 @@
         $menu_item['href'] = '#';
         $menu_item['icon'] = 'bi bi-patch-check';
         $menu_item['text'] = 'Adjudicados';
-
-        $menu_item['submenu'] = array(
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'adjudicados/2026',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2026'
-            ),
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'adjudicados/2025',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2025'
-            )
-        );
+        $menu_item['submenu'] = $submenuAdjudicados;
 
         $menu['adjudicados'] = $menu_item;
 
@@ -116,21 +151,7 @@
         $menu_item['href'] = '#';
         $menu_item['icon'] = 'bi bi-tools';
         $menu_item['text'] = 'Servicios';
-
-        $menu_item['submenu'] = array(
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'servicios/2026',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2026'
-            ),
-            array(
-                'is_active' => FALSE,
-                'href' => BASE_URL . 'servicios/2025',
-                'icon' => 'bi bi-calendar3',
-                'text' => '2025'
-            )
-        );
+        $menu_item['submenu'] = $submenuServicios;
 
         $menu['servicios'] = $menu_item;
 

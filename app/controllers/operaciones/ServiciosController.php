@@ -61,14 +61,70 @@ class ServiciosController extends BaseController
         return $datos;
     }
 
+    // // =========================
+    // // Vista 2026
+    // // =========================
+    // public function servicios2026()
+    // {
+    //     if (!$this->permitido) {
+
+    //         redirect('login');
+    //         exit;
+    //     }
+
+    //     $modelo = new Servicio();
+
+    //     $datos = $this->cargar_datos();
+
+    //     $datos['servicios'] =
+    //         $modelo->obtenerPorAnio(2026);
+
+    //     $this->render(
+    //         'operaciones/servicios/2026',
+    //         $datos
+    //     );
+    // }
+
+    // // =========================
+    // // Vista 2025
+    // // =========================
+    // public function servicios2025()
+    // {
+    //     if (!$this->permitido) {
+
+    //         redirect('login');
+
+    //     }
+
+    //     $modelo = new Servicio();
+
+    //     $datos = $this->cargar_datos();
+
+    //     $datos['nombre_pagina'] = 'Servicios 2025';
+
+    //     $datos['servicios'] =
+    //         $modelo->obtenerPorAnio(2025);
+
+    //     $this->render(
+    //         'operaciones/servicios/2025',
+    //         $datos
+    //     );
+    // }
+
     // =========================
-    // Vista 2026
+    // Vista dinámica por año
     // =========================
-    public function servicios2026()
+    public function servicios($anio)
     {
         if (!$this->permitido) {
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
 
-            redirect('login');
+        $anio = (int) $anio;
+
+        if ($anio < 2000 || $anio > 2100) {
+            header('Location: ' . BASE_URL . 'servicios/' . date('Y'));
             exit;
         }
 
@@ -76,41 +132,33 @@ class ServiciosController extends BaseController
 
         $datos = $this->cargar_datos();
 
+        $datos['anio'] = $anio;
+        $datos['nombre_pagina'] = 'Servicios ' . $anio;
+
+        $breadcrumb = [
+            [
+                'tarea' => 'Servicios',
+                'href' => '#'
+            ],
+            [
+                'tarea' => (string) $anio,
+                'href' => '#'
+            ]
+        ];
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
         $datos['servicios'] =
-            $modelo->obtenerPorAnio(2026);
+            $modelo->obtenerPorAnio($anio);
 
         $this->render(
-            'operaciones/servicios/2026',
+            'operaciones/servicios/index',
             $datos
         );
     }
-
-    // =========================
-    // Vista 2025
-    // =========================
-    public function servicios2025()
-    {
-        if (!$this->permitido) {
-
-            redirect('login');
-
-        }
-
-        $modelo = new Servicio();
-
-        $datos = $this->cargar_datos();
-
-        $datos['nombre_pagina'] = 'Servicios 2025';
-
-        $datos['servicios'] =
-            $modelo->obtenerPorAnio(2025);
-
-        $this->render(
-            'operaciones/servicios/2025',
-            $datos
-        );
-    }
-
     // =========================
     // CREAR FORMULARIO
     // =========================
