@@ -98,14 +98,19 @@ $router->post(
 |------------------------------------------------------------------
 */
 
-$router->get(
-    '/adjudicados/2026',
-    'operaciones\AdjudicadosController@adjudicados2026'
-);
+// $router->get(
+//     '/adjudicados/2026',
+//     'operaciones\AdjudicadosController@adjudicados2026'
+// );
+
+// $router->get(
+//     '/adjudicados/2025',
+//     'operaciones\AdjudicadosController@adjudicados2025'
+// );
 
 $router->get(
-    '/adjudicados/2025',
-    'operaciones\AdjudicadosController@adjudicados2025'
+    '/adjudicados/{anio}',
+    'operaciones\AdjudicadosController@adjudicados'
 );
 
 $router->get(
@@ -144,14 +149,19 @@ $router->post(
 |------------------------------------------------------------------
 */
 
-$router->get(
-    '/servicios/2025',
-    'operaciones\ServiciosController@servicios2025'
-);
+// $router->get(
+//     '/servicios/2025',
+//     'operaciones\ServiciosController@servicios2025'
+// );
+
+// $router->get(
+//     '/servicios/2026',
+//     'operaciones\ServiciosController@servicios2026'
+// );
 
 $router->get(
-    '/servicios/2026',
-    'operaciones\ServiciosController@servicios2026'
+    '/servicios/{anio}',
+    'operaciones\ServiciosController@servicios'
 );
 
 /*
