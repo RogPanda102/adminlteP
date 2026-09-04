@@ -110,7 +110,8 @@ class Servicio
                 folio,
                 inicio,
                 finalizacion,
-                creado_por
+                creado_por,
+                anio
             FROM servicios
             WHERE finalizacion IS NOT NULL
             AND creado_por IS NOT NULL

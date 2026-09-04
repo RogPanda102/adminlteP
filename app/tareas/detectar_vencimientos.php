@@ -3,6 +3,10 @@
 require_once __DIR__ . '/../models/Servicios.php';
 require_once __DIR__ . '/../models/Notificacion.php';
 
+if (PHP_SAPI !== 'cli') {
+    exit("Este proceso solo puede ejecutarse desde CLI.\n");
+}
+
 $modeloServicio = new Servicio();
 $modeloNotificacion = new Notificacion();
 
@@ -167,7 +171,7 @@ foreach ($servicios as $servicio) {
                 $mensaje,
 
             'url' =>
-                '/servicios/2026',
+                '/servicios/' . $servicio['anio'],
 
             'tipo' =>
                 $tipo,
