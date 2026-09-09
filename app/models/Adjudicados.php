@@ -327,5 +327,31 @@ class Adjudicados
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    // =========================
+    // Estadísticas por año
+    // =========================
+    public function obtenerEstadisticasPorAnio($anio)
+    {
+        $sql = "
+            SELECT
+                COUNT(*) AS total_adjudicados
+            FROM adjudicados
+            WHERE anio = :anio
+            AND eliminado = 0
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':anio' => $anio
+        ]);
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return [
+            'total_adjudicados' =>
+                $resultado['total_adjudicados'] ?? 0
+        ];
+    }
 
 }
