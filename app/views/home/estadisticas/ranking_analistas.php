@@ -1,3 +1,37 @@
+<?php
+
+$moduloActual = $modulo_actual ?? 'cotizaciones';
+
+$ranking = [];
+
+$tituloRanking = 'Cotizaciones';
+
+if ($moduloActual === 'cotizaciones') {
+
+    $ranking = $top_analistas_cotizaciones ?? [];
+
+    $tituloRanking = 'Cotizaciones';
+
+}
+
+if ($moduloActual === 'adjudicados') {
+
+    $ranking = $top_analistas_adjudicados ?? [];
+
+    $tituloRanking = 'Adjudicados';
+
+}
+
+if ($moduloActual === 'servicios') {
+
+    $ranking = $top_analistas_servicios ?? [];
+
+    $tituloRanking = 'Servicios';
+
+}
+
+?>
+
 <div class="card shadow-sm">
 
     <div class="card-header">
@@ -7,9 +41,13 @@
         </h3>
 
         <div class="card-tools">
-            <span id="ranking-analistas-anio" class="badge bg-primary">
+
+            <span
+                id="ranking-analistas-anio"
+                class="badge bg-primary">
                 <?= $anio_actual ?>
             </span>
+
         </div>
 
     </div>
@@ -21,109 +59,94 @@
             <thead class="table-light">
 
                 <tr>
+
                     <th width="60">#</th>
+
                     <th>Analista</th>
-                    <th class="text-end">Adjudicados</th>
-                    <th class="text-end">Cotizaciones</th>
+
+                    <th
+                        id="ranking-analistas-titulo"
+                        class="text-end">
+                        <?= $tituloRanking ?>
+                    </th>
+
                 </tr>
 
             </thead>
 
             <tbody id="ranking-analistas-body">
 
-            <?php
+                <?php foreach ($ranking as $i => $analista): ?>
 
-            $cotizaciones = [];
+                    <?php
 
-            foreach ($top_analistas_cotizaciones as $item) {
+                    $nombre = $analista['analista'] ?? '';
 
-                $cotizaciones[$item['analista']] = $item['total'];
+                    $total = $analista['total'] ?? 0;
 
-            }
+                    ?>
 
-            ?>
+                    <tr>
 
-            <?php foreach ($top_analistas_adjudicados as $i => $analista): ?>
+                        <td>
 
-                <?php
+                            <?php
+                            switch ($i + 1) {
 
-                $nombre = $analista['analista'];
+                                case 1:
+                                    echo "🥇";
+                                    break;
 
-                $adjudicados = $analista['total'];
+                                case 2:
+                                    echo "🥈";
+                                    break;
 
-                $cot = $cotizaciones[$nombre] ?? 0;
+                                case 3:
+                                    echo "🥉";
+                                    break;
 
-                ?>
+                                default:
+                                    echo $i + 1;
+                            }
+                            ?>
 
-                <tr>
+                        </td>
 
-                    <td>
+                        <td class="fw-semibold">
 
-                        <?php
-                        switch ($i + 1) {
+                            <?= htmlspecialchars($nombre) ?>
 
-                            case 1:
-                                echo "🥇";
-                                break;
+                        </td>
 
-                            case 2:
-                                echo "🥈";
-                                break;
+                        <td class="text-end">
 
-                            case 3:
-                                echo "🥉";
-                                break;
+                            <span class="badge bg-primary fs-6">
 
-                            default:
-                                echo $i + 1;
-                        }
-                        ?>
+                                <?= $total ?>
 
-                    </td>
+                            </span>
 
-                    <td class="fw-semibold">
+                        </td>
 
-                        <?= htmlspecialchars($nombre) ?>
+                    </tr>
 
-                    </td>
+                <?php endforeach; ?>
 
-                    <td class="text-end">
+                <?php if (empty($ranking)): ?>
 
-                        <span class="badge bg-success fs-6">
+                    <tr>
 
-                            <?= $adjudicados ?>
+                        <td
+                            colspan="3"
+                            class="text-center text-muted py-4">
 
-                        </span>
+                            No existen registros.
 
-                    </td>
+                        </td>
 
-                    <td class="text-end">
+                    </tr>
 
-                        <span class="badge bg-primary fs-6">
-
-                            <?= $cot ?>
-
-                        </span>
-
-                    </td>
-
-                </tr>
-
-            <?php endforeach; ?>
-
-            <?php if (empty($top_analistas_adjudicados)): ?>
-
-                <tr>
-
-                    <td colspan="4" class="text-center text-muted py-4">
-
-                        No existen registros.
-
-                    </td>
-
-                </tr>
-
-            <?php endif; ?>
+                <?php endif; ?>
 
             </tbody>
 
