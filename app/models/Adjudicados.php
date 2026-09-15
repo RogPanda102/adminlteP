@@ -90,7 +90,7 @@ class Adjudicados
                 total = :total,
                 dia_pago = :dia_pago,
                 pago = :pago,
-                dependencia = :dependencia,
+                dependencia_id = :dependencia_id,
                 cotizacion_id = :cotizacion_id,
                 anio = :anio,
                 actualizado_por = :actualizado_por
@@ -111,7 +111,7 @@ class Adjudicados
             ':total' => $datos['total'],
             ':dia_pago' => $datos['dia_pago'],
             ':pago' => $datos['pago'],
-            ':dependencia' => $datos['dependencia'],
+            ':dependencia_id' => $datos['dependencia_id'],
             ':cotizacion_id' => $datos['cotizacion_id'],
             ':anio' => $datos['anio'],
             ':actualizado_por' => $datos['actualizado_por'],
@@ -179,7 +179,7 @@ class Adjudicados
                 total,
                 dia_pago,
                 pago,
-                dependencia,
+                dependencia_id,
                 cotizacion_id,
                 anio,
                 creado_por
@@ -197,7 +197,7 @@ class Adjudicados
                 :total,
                 :dia_pago,
                 :pago,
-                :dependencia,
+                :dependencia_id,
                 :cotizacion_id,
                 :anio,
                 :creado_por
@@ -209,33 +209,19 @@ class Adjudicados
         return $stmt->execute([
 
             ':req' => $datos['req'],
-
             ':folio' => $datos['folio'],
-
             ':elaboro' => $datos['elaboro'],
-
             ':partida' => $datos['partida'],
-
             ':analista_id' => $datos['analista_id'] ?? null,
-
             ':fecha_elaboracion' => $datos['fecha_elaboracion'],
-
             ':fecha_inicio_entrega' => $datos['fecha_inicio_entrega'],
-
             ':fecha_fin_entrega' => $datos['fecha_fin_entrega'],
-
             ':total' => $datos['total'],
-
             ':dia_pago' => $datos['dia_pago'],
-
             ':pago' => $datos['pago'],
-
-            ':dependencia' => $datos['dependencia'],
-
+            ':dependencia_id' => $datos['dependencia_id'],
             ':cotizacion_id' => $datos['cotizacion_id'],
-
             ':anio' => $datos['anio'],
-
             ':creado_por' => $datos['creado_por']
 
         ]);
@@ -290,7 +276,8 @@ class Adjudicados
                 ad.elaboro,
                 ad.partida,
                 ad.analista_id,
-                ad.dependencia,
+                ad.dependencia_id,
+                d.nombre AS dependencia,
 
                 CONCAT(
                     a.nombre,
@@ -308,6 +295,9 @@ class Adjudicados
 
             LEFT JOIN analistas a
                 ON a.id = ad.analista_id
+
+            LEFT JOIN dependencias d
+                ON d.id = ad.dependencia_id
 
             WHERE ad.eliminado = 0
             AND (

@@ -52,64 +52,6 @@ class AdjudicadosController extends BaseController
     }
 
     // =========================
-    // Vista 2026
-    // =========================
-    // public function adjudicados2026()
-    // {
-
-    //     if (!$this->permitido) {
-
-    //         redirect('login');
-
-    //     }
-
-    //     // MODELO
-    //     $modelo = new Adjudicados;
-
-    //     // DATOS GENERALES
-    //     $datos = $this->cargar_datos();
-
-    //     // Adjudicados
-    //     $datos['adjudicados'] =
-    //         $modelo->obtenerPorAnio(2026);
-
-    //     // VISTA
-    //     $this->render(
-    //         'operaciones/adjudicados/2026',
-    //         $datos
-    //     );
-    // }
-
-    // =========================
-    // Vista 2025
-    // =========================
-    // public function adjudicados2025()
-    // {
-
-    //     if (!$this->permitido) {
-
-    //         header('Location: ' . BASE_URL . 'login');
-    //         exit;
-    //     }
-
-    //     // MODELO
-    //     $modelo = new Adjudicados;
-
-    //     // DATOS GENERALES
-    //     $datos = $this->cargar_datos();
-
-    //     // Adjudicados
-    //     $datos['adjudicados'] =
-    //         $modelo->obtenerPorAnio(2025);
-
-    //     // VISTA
-    //     $this->render(
-    //         'operaciones/adjudicados/2025',
-    //         $datos
-    //     );
-    // }
-
-    // =========================
     // Vista dinámica por año
     // =========================
     public function adjudicados($anio)
@@ -270,23 +212,29 @@ class AdjudicadosController extends BaseController
             !empty($_POST['fecha_fin_entrega'])
             ? $_POST['fecha_fin_entrega']
             : null,
+
             'total' =>
             !empty($_POST['total'])
             ? $_POST['total']
             : 0,
+
             'dia_pago' =>
             !empty($_POST['dia_pago'])
             ? $_POST['dia_pago']
             : null,
+
             'pago' =>
             $_POST['pago'] ?? 'pendiente',
-            'dependencia' =>
-            limpiarTextoMayusculas(
-                $_POST['dependencia'] ?? ''
-            ),
+
+            'dependencia_id' =>
+            !empty($_POST['dependencia_id'])
+            ? (int) $_POST['dependencia_id']
+            : null,
+
             'cotizacion_id' => !empty($_POST['cotizacion_id'])
             ? (int) $_POST['cotizacion_id']
             : null,
+            
             'anio' =>
             $_POST['anio'] ?? date('Y'),
             'creado_por' =>

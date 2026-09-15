@@ -400,7 +400,6 @@ class Cotizacion
     }
 
 
-
     // =========================
     // Buscar cotización AJAX
     // =========================
@@ -415,6 +414,9 @@ class Cotizacion
                 c.elaboro,
                 c.partida,
                 c.analista_id,
+                c.dependencia_id,
+
+                d.nombre AS dependencia,
 
                 CONCAT(
                     a.nombre,
@@ -433,11 +435,15 @@ class Cotizacion
             LEFT JOIN analistas a
                 ON a.id = c.analista_id
 
+            LEFT JOIN dependencias d
+                ON d.id = c.dependencia_id
+
             WHERE c.eliminado = 0
             AND c.anio = :anio
             AND (
                 c.req LIKE :termino
                 OR c.folio LIKE :termino
+                OR c.partida LIKE :termino
             )
 
             ORDER BY c.id DESC
@@ -458,53 +464,73 @@ class Cotizacion
     // =========================
     // Buscar catálogo genérico
     // =========================
-    public function buscarCatalogo($campo,$texto)
+    public function buscarCatalogo($campo, $texto)
     {
-
-        $camposPermitidos=[
+        $camposPermitidos = [
             'dependencia',
             'proveedor',
             'partida',
             'elaboro'
         ];
 
-
-        if(!in_array($campo,$camposPermitidos,true)){
+        if (!in_array($campo, $camposPermitidos, true)) {
             return [];
         }
 
+        // =========================
+        // Dependencia
+        // =========================
+        if ($campo === 'dependencia') {
 
-        $sql="
-            SELECT DISTINCT {$campo}
+            $sql = "
+                SELECT DISTINCT
+                    d.id,
+                    d.nombre
 
-            FROM cotizaciones
+                FROM cotizaciones c
 
-            WHERE eliminado=0
+                INNER JOIN dependencias d
+                    ON d.id = c.dependencia_id
 
-            AND {$campo} <> ''
+                WHERE c.eliminado = 0
+                AND d.nombre IS NOT NULL
+                AND d.nombre <> ''
+                AND d.nombre LIKE :texto
 
-            AND {$campo} IS NOT NULL
+                ORDER BY d.nombre
 
-            AND {$campo} LIKE :texto
+                LIMIT 10
+            ";
 
-            ORDER BY {$campo}
+        } else {
 
-            LIMIT 10
-        ";
+            $sql = "
+                SELECT DISTINCT
+                    {$campo} AS nombre
 
+                FROM cotizaciones
 
-        $stmt=$this->db->prepare($sql);
+                WHERE eliminado = 0
 
+                AND {$campo} <> ''
+
+                AND {$campo} IS NOT NULL
+
+                AND {$campo} LIKE :texto
+
+                ORDER BY {$campo}
+
+                LIMIT 10
+            ";
+        }
+
+        $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
-
-            ':texto'=>'%'.$texto.'%'
-
+            ':texto' => '%' . $texto . '%'
         ]);
 
-
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-
     }
 
 }
