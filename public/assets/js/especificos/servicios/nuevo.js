@@ -86,6 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.getElementById('analista_id').value =
                         item.analista_id ?? '';
 
+                    document.getElementById('dependencia').value =
+                        item.dependencia ?? '';
+
+                    document.getElementById('dependencia_id').value =
+                        item.dependencia_id ?? '';
+
                     document.getElementById('tipo_servicio_id').value =
                         item.tipo_servicio_id ?? '';
 

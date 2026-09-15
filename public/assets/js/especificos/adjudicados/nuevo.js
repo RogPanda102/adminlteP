@@ -43,10 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 opcion.className =
                     'list-group-item list-group-item-action';
 
-                opcion.innerHTML =
-                    `<strong>${item.req}</strong>
-                    <br>
-                    <small>N° ${item.folio}</small>`;
+                opcion.innerHTML = `
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <span>
+                            <strong class="text-primary">FOLIO:</strong>
+                            ${item.folio ?? ''}
+                        </span>
+
+                        <span>
+                            <strong class="text-primary">REQ:</strong>
+                            ${item.req ?? ''}
+                        </span>
+
+                        <span>
+                            <strong class="text-primary">PARTIDA:</strong>
+                            ${item.partida ?? ''}
+                        </span>
+                    </div>
+                `;
 
                 opcion.addEventListener('click', e => {
 
@@ -72,7 +86,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     document.getElementById('analista_id').value =
                         item.analista_id ?? '';
-                        
+
+                    document.getElementById('dependencia').value =
+                        item.dependencia ?? '';
+
+                    document.getElementById('dependencia_id').value =
+                        item.dependencia_id ?? '';
 
                     buscador.value =
                         item.req + ' - ' + item.folio;
