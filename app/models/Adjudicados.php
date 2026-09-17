@@ -10,8 +10,9 @@ class Adjudicados
     {
         $this->db = Database::connect();
     }
+    
     // =========================
-    // Obtener cotizaciones por año
+    // Obtener adjudicaciones por año
     // =========================
     public function obtenerPorAnio($anio)
     {
@@ -19,15 +20,17 @@ class Adjudicados
             SELECT
                 ad.*,
 
+                d.nombre AS dependencia,
+
                 CONCAT(
                     a.nombre,
                     ' ',
                     a.apellido_paterno,
                     IF(
                         a.apellido_materno IS NULL
-                        OR a.apellido_materno='',
+                        OR a.apellido_materno = '',
                         '',
-                        CONCAT(' ',a.apellido_materno)
+                        CONCAT(' ', a.apellido_materno)
                     )
                 ) AS analista
 
@@ -35,6 +38,9 @@ class Adjudicados
 
             LEFT JOIN analistas a
                 ON a.id = ad.analista_id
+
+            LEFT JOIN dependencias d
+                ON d.id = ad.dependencia_id
 
             WHERE ad.anio = :anio
             AND ad.eliminado = 0
@@ -45,7 +51,7 @@ class Adjudicados
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
-            ':anio'=>$anio
+            ':anio' => $anio
         ]);
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

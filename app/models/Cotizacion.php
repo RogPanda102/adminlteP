@@ -20,6 +20,8 @@ class Cotizacion
             SELECT
                 c.*,
 
+                d.nombre AS dependencia,
+
                 CONCAT(
                     a.nombre,
                     ' ',
@@ -36,6 +38,9 @@ class Cotizacion
 
             LEFT JOIN analistas a
                 ON a.id = c.analista_id
+
+            LEFT JOIN dependencias d
+                ON d.id = c.dependencia_id
 
             WHERE c.anio = :anio
             AND c.eliminado = 0

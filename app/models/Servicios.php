@@ -21,6 +21,8 @@ class Servicio
 
                 s.*,
 
+                d.nombre AS dependencia,
+
                 CONCAT(
                     a.nombre,
                     ' ',
@@ -39,6 +41,9 @@ class Servicio
 
             LEFT JOIN analistas a
                 ON a.id = s.analista_id
+
+            LEFT JOIN dependencias d
+                ON d.id = s.dependencia_id
 
             LEFT JOIN tipos_servicio ts
                 ON ts.id = s.tipo_servicio_id
@@ -137,13 +142,13 @@ class Servicio
                 elaboro,
                 partida,
                 analista_id,
+                dependencia_id,
                 tipo_servicio_id,
                 tiempo_cantidad,
                 tiempo_unidad,
                 fecha_contratacion,
                 inicio,
                 finalizacion,
-                dependencia,
                 adjudicado_id,
                 anio,
                 creado_por,
@@ -156,13 +161,13 @@ class Servicio
                 :elaboro,
                 :partida,
                 :analista_id,
+                :dependencia_id,
                 :tipo_servicio_id,
                 :tiempo_cantidad,
                 :tiempo_unidad,
                 :fecha_contratacion,
                 :inicio,
                 :finalizacion,
-                :dependencia,
                 :adjudicado_id,
                 :anio,
                 :creado_por,
@@ -180,13 +185,14 @@ class Servicio
             ':partida'             => $datos['partida'],
 
             ':analista_id'         => $datos['analista_id'] ?? null,
+            ':dependencia_id'      => $datos['dependencia_id'] ?? null,
             ':tipo_servicio_id'    => $datos['tipo_servicio_id'] ?? null,
+
             ':tiempo_cantidad'     => $datos['tiempo_cantidad'] ?? null,
             ':tiempo_unidad'       => $datos['tiempo_unidad'] ?? null,
             ':fecha_contratacion'  => $datos['fecha_contratacion'] ?? null,
             ':inicio'              => $datos['inicio'] ?? null,
             ':finalizacion'        => $datos['finalizacion'] ?? null,
-            ':dependencia'         => $datos['dependencia'] ?? null,
 
             ':adjudicado_id'       => $datos['adjudicado_id'] ?? null,
 

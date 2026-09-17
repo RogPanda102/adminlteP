@@ -61,56 +61,6 @@ class ServiciosController extends BaseController
         return $datos;
     }
 
-    // // =========================
-    // // Vista 2026
-    // // =========================
-    // public function servicios2026()
-    // {
-    //     if (!$this->permitido) {
-
-    //         redirect('login');
-    //         exit;
-    //     }
-
-    //     $modelo = new Servicio();
-
-    //     $datos = $this->cargar_datos();
-
-    //     $datos['servicios'] =
-    //         $modelo->obtenerPorAnio(2026);
-
-    //     $this->render(
-    //         'operaciones/servicios/2026',
-    //         $datos
-    //     );
-    // }
-
-    // // =========================
-    // // Vista 2025
-    // // =========================
-    // public function servicios2025()
-    // {
-    //     if (!$this->permitido) {
-
-    //         redirect('login');
-
-    //     }
-
-    //     $modelo = new Servicio();
-
-    //     $datos = $this->cargar_datos();
-
-    //     $datos['nombre_pagina'] = 'Servicios 2025';
-
-    //     $datos['servicios'] =
-    //         $modelo->obtenerPorAnio(2025);
-
-    //     $this->render(
-    //         'operaciones/servicios/2025',
-    //         $datos
-    //     );
-    // }
-
     // =========================
     // Vista dinámica por año
     // =========================
@@ -356,7 +306,9 @@ class ServiciosController extends BaseController
             'fecha_contratacion'  => $_POST['fecha_contratacion'] ?? null,
             'inicio'              => $_POST['inicio'] ?? null,
             'finalizacion'        => null,
-            'dependencia'         => trim($_POST['dependencia'] ?? ''),
+            'dependencia_id' => !empty($_POST['dependencia_id'])
+            ? (int) $_POST['dependencia_id']
+            : null,
 
             'adjudicado_id'       => !empty($_POST['adjudicado_id'])
                 ? (int) $_POST['adjudicado_id']
