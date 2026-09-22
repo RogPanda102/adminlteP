@@ -543,16 +543,52 @@
 
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <!-- PROVEEDOR -->
 
-                                        <label class="form-label mb-0">
+                                    <div class="col-md-6 position-relative">
+
+                                        <label class="form-label fw-semibold">
                                             Proveedor
                                         </label>
 
+                                        <div class="input-group">
+
+                                            <span class="input-group-text">
+                                                <i class="bi bi-building"></i>
+                                            </span>
+
+                                            <input
+                                                type="text"
+                                                id="edit-proveedor"
+                                                class="form-control form-control-sm"
+                                                autocomplete="off"
+                                                placeholder="Buscar proveedor...">
+
+                                            <button
+                                                class="btn btn-outline-secondary"
+                                                type="button"
+                                                id="btnEditProveedor">
+
+                                                <i class="bi bi-chevron-down"></i>
+
+                                            </button>
+
+                                        </div>
+
                                         <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="edit-proveedor">
+                                            type="hidden"
+                                            id="edit-proveedor_id">
+
+                                        <div
+                                            id="lista-edit-proveedor"
+                                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                                            style="
+                                                display:none;
+                                                z-index:1065;
+                                                max-height:260px;
+                                                overflow-y:auto;
+                                            ">
+                                        </div>
 
                                     </div>
 
@@ -590,16 +626,52 @@
 
                                 <div class="row g-2">
 
-                                    <div class="col-md-6">
+                                    <!-- DEPENDENCIA -->
 
-                                        <label class="form-label mb-0">
+                                    <div class="col-md-6 position-relative">
+
+                                        <label class="form-label fw-semibold">
                                             Dependencia
                                         </label>
 
+                                        <div class="input-group">
+
+                                            <span class="input-group-text">
+                                                <i class="bi bi-building"></i>
+                                            </span>
+
+                                            <input
+                                                type="text"
+                                                id="edit-dependencia"
+                                                class="form-control form-control-sm"
+                                                autocomplete="off"
+                                                placeholder="Buscar dependencia...">
+
+                                            <button
+                                                class="btn btn-outline-secondary"
+                                                type="button"
+                                                id="btnEditDependencia">
+
+                                                <i class="bi bi-chevron-down"></i>
+
+                                            </button>
+
+                                        </div>
+
                                         <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="edit-dependencia">
+                                            type="hidden"
+                                            id="edit-dependencia_id">
+
+                                        <div
+                                            id="lista-edit-dependencia"
+                                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                                            style="
+                                                display:none;
+                                                z-index:1065;
+                                                max-height:260px;
+                                                overflow-y:auto;
+                                            ">
+                                        </div>
 
                                     </div>
 
@@ -607,15 +679,43 @@
 
                                     <div class="col-md-6 position-relative">
 
-                                        <label class="form-label mb-0">
+                                        <label class="form-label fw-semibold">
                                             Analista
                                         </label>
 
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="edit-analista"
-                                            autocomplete="off">
+                                        <div class="input-group">
+
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-badge"></i>
+                                            </span>
+
+                                            <input
+                                                type="text"
+                                                id="edit-analista"
+                                                class="form-control form-control-sm"
+                                                autocomplete="off"
+                                                placeholder="Buscar analista...">
+
+                                            <button
+                                                class="btn btn-outline-secondary"
+                                                type="button"
+                                                id="btnEditAnalista">
+                                                <i class="bi bi-chevron-down"></i>
+                                            </button>
+
+                                            <button
+                                                class="btn btn-outline-primary"
+                                                type="button"
+                                                id="btnNuevoEditAnalista"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="top"
+                                                title="Crear nuevo analista">
+
+                                                <i class="bi bi-plus-lg"></i>
+
+                                            </button>
+
+                                        </div>
 
                                         <input
                                             type="hidden"
@@ -623,11 +723,11 @@
 
                                         <div
                                             id="lista-edit-analista"
-                                            class="list-group position-absolute w-100 shadow"
+                                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
                                             style="
                                                 display:none;
                                                 z-index:1065;
-                                                max-height:220px;
+                                                max-height:260px;
                                                 overflow-y:auto;
                                             ">
                                         </div>
@@ -778,3 +878,5 @@
 </script>
 
 <script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/offcanvas.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>

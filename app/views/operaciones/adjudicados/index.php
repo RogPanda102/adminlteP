@@ -390,7 +390,6 @@ $anio = $anio ?? date('Y');
                                             id="edit-partida">
 
                                     </div>
-
                                     <!-- ANALISTA -->
                                     <div class="col-md-6 position-relative">
 
@@ -398,31 +397,43 @@ $anio = $anio ?? date('Y');
                                             Analista
                                         </label>
 
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            id="edit-analista"
-                                            autocomplete="off">
+                                        <div class="input-group">
 
-                                        <!-- ID REAL -->
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-badge"></i>
+                                            </span>
+
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm"
+                                                id="edit-analista"
+                                                autocomplete="off"
+                                                placeholder="Buscar analista...">
+
+                                            <button
+                                                class="btn btn-outline-secondary"
+                                                type="button"
+                                                id="btnEditAnalista">
+                                                <i class="bi bi-chevron-down"></i>
+                                            </button>
+
+                                        </div>
+
                                         <input
                                             type="hidden"
                                             id="edit-analista_id">
 
-                                        <!-- LISTA AUTOCOMPLETE -->
                                         <div
                                             id="lista-edit-analista"
-                                            class="list-group position-absolute w-100 shadow"
+                                            class="list-group position-absolute w-100 shadow rounded-3 mt-1"
                                             style="
-                                                z-index:1065;
                                                 display:none;
-                                                max-height:220px;
+                                                z-index:1065;
+                                                max-height:260px;
                                                 overflow-y:auto;
                                             ">
                                         </div>
-
                                     </div>
-
                                 </div>
 
                             </div>
@@ -590,31 +601,58 @@ $anio = $anio ?? date('Y');
                     <!-- ===================================================== -->
 
                     <div class="card mb-1">
-
                         <div
                             class="card-header bg-light py-2 section-toggle"
                             data-target="#sec-dep">
-
                             <strong>
                                 <i class="bi bi-building me-1"></i>
                                 Dependencia
                             </strong>
-
                         </div>
-
                         <div class="collapse" id="sec-dep">
 
                             <div class="card-body py-2">
 
-                                <input
-                                    type="text"
-                                    class="form-control form-control-sm"
-                                    id="edit-dependencia">
+                                <div class="position-relative">
+
+                                    <div class="input-group">
+
+                                        <input
+                                            type="text"
+                                            class="form-control form-control-sm"
+                                            id="edit-dependencia"
+                                            autocomplete="off"
+                                            placeholder="Buscar dependencia...">
+
+                                        <button
+                                            class="btn btn-outline-secondary"
+                                            type="button"
+                                            id="btnEditDependencia">
+                                            <i class="bi bi-chevron-down"></i>
+                                        </button>
+
+                                    </div>
+
+                                    <input
+                                        type="hidden"
+                                        id="edit-dependencia_id">
+
+                                    <div
+                                        id="lista-edit-dependencia"
+                                        class="list-group position-absolute w-100 shadow rounded-3 mt-1"
+                                        style="
+                                            display:none;
+                                            z-index:1065;
+                                            max-height:260px;
+                                            overflow-y:auto;
+                                        ">
+                                    </div>
+
+                                </div>
 
                             </div>
 
                         </div>
-
                     </div>
 
                 </div>
@@ -659,3 +697,5 @@ $anio = $anio ?? date('Y');
 
 <script src="<?= BASE_URL ?>assets/js/helpers/pagoToggle.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/2026.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>

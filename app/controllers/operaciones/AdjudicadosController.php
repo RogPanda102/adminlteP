@@ -324,9 +324,9 @@ class AdjudicadosController extends BaseController
 
             'pago' => $input['pago'],
 
-            'dependencia' => limpiarTextoMayusculas(
-                $input['dependencia']
-            ),
+            'dependencia_id' => !empty($input['dependencia_id'])
+                ? (int)$input['dependencia_id']
+                : null,
 
             'cotizacion_id' => !empty($input['cotizacion_id'])
                 ? (int)$input['cotizacion_id']

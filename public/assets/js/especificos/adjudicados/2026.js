@@ -283,7 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('edit-total').value = data.total || '';
         document.getElementById('edit-pago').value = data.pago || 'pendiente';
-        document.getElementById('edit-dependencia').value = data.dependencia || '';
+        catalogoEditDependencia.seleccionar({id: data.dependencia_id || '', nombre: data.dependencia || ''});
 
         new bootstrap.Modal(
             document.getElementById('modalEditarAdjudicacion')
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             pago: document.getElementById('edit-pago').value,
 
-            dependencia: document.getElementById('edit-dependencia').value
+            dependencia_id: document.getElementById('edit-dependencia_id').value
 
         };
 
@@ -406,8 +406,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // =====================================================
 
     const btnHistorial = document.getElementById('btn-historial');
-
-
     btnHistorial?.addEventListener('click', async function () {
 
 
@@ -645,6 +643,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
+    });
+
+    // CATÁLOGO ANALISTA - EDITAR
+    const catalogoEditAnalista = crearCatalogo({
+        campo: 'analista',
+        input: '#edit-analista',
+        resultados: '#lista-edit-analista',
+        idInput: '#edit-analista_id'
+    });
+
+    // CATÁLOGO DEPENDENCIA - EDITAR
+    const catalogoEditDependencia = crearCatalogo({
+        campo: 'dependencia',
+        input: '#edit-dependencia',
+        resultados: '#lista-edit-dependencia',
+        idInput: '#edit-dependencia_id'
+    });
+
+    // BOTÓN MOSTRAR TODOS LOS ANALISTAS - EDITAR
+    document.getElementById('btnEditAnalista')?.addEventListener('click', function () {
+        catalogoEditAnalista.mostrarTodos();
+    });
+
+    // BOTÓN MOSTRAR TODAS LAS DEPENDENCIAS - EDITAR
+    document.getElementById('btnEditDependencia')?.addEventListener('click', function () {
+        catalogoEditDependencia.mostrarTodos();
     });
 
 });
