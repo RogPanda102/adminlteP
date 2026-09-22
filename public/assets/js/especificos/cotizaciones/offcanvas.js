@@ -1,4 +1,67 @@
 document.addEventListener('DOMContentLoaded', function () {
+    // =====================================================
+    // CATÁLOGO ANALISTA - EDITAR
+    // =====================================================
+    const catalogoEditAnalista = crearCatalogo({
+        campo: 'analista',
+        input: '#edit-analista',
+        resultados: '#lista-edit-analista',
+        idInput: '#edit-analista_id'
+    });
+
+    // =====================================================
+    // AUTOCOMPLETE DEPENDENCIA
+    // =====================================================
+
+    const catalogoEditDependencia = crearCatalogo({
+        campo: 'dependencia',
+        input: '#edit-dependencia',
+        resultados: '#lista-edit-dependencia',
+        idInput: '#edit-dependencia_id',
+    });
+
+    // =====================================================
+    // CATÁLOGO PROVEEDOR - EDITAR
+    // =====================================================
+
+    const catalogoEditProveedor = crearCatalogo({
+        campo: 'proveedor',
+        input: '#edit-proveedor',
+        resultados: '#lista-edit-proveedor',
+        idInput: '#edit-proveedor_id'
+    });
+
+    // =====================================================
+    // BOTONES ANALISTA - EDITAR
+    // =====================================================
+
+    document.getElementById('btnEditAnalista')?.addEventListener('click', function () {
+
+        catalogoEditAnalista.mostrarTodos();
+
+    });
+
+    // =====================================================
+    // BOTÓN MOSTRAR TODAS LAS DEPENDENCIAS - EDITAR
+    // =====================================================
+
+    document.getElementById('btnEditDependencia')?.addEventListener('click', function () {
+
+        catalogoEditDependencia.mostrarTodos();
+
+    });
+
+    // =====================================================
+    // BOTÓN MOSTRAR TODOS LOS PROVEEDORES - EDITAR
+    // =====================================================
+
+    document.getElementById('btnEditProveedor')?.addEventListener('click', function () {
+
+        catalogoEditProveedor.mostrarTodos();
+
+    });
+
+
     const tabla = new Tabulator('#tabla-cotizaciones', {
         layout: 'fitColumns',
         responsiveLayout: "collapse",
@@ -253,6 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
         });
+        
 
         // =====================================================
         // EDITAR MODAL
@@ -273,9 +337,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('edit-anio').value =
                 data.anio || '';
-
-            document.getElementById('edit-analista_id').value =
-                data.analista_id || '';
 
             // ==========================
             // INFORMACIÓN GENERAL
@@ -306,8 +367,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('edit-dependencia').value =
                 data.dependencia || '';
 
-            document.getElementById('edit-analista').value =
-                data.analista || '';
+            catalogoEditAnalista.seleccionar({
+                id: data.analista_id || '',
+                nombre: data.analista || ''
+            });
 
             // ==========================
             // OPCIONES
@@ -328,6 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('modalEditarCotizacion')
                 )
                 .show();
+
 
         });
 
@@ -394,7 +458,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 analista_id: document.getElementById('edit-analista_id').value,
 
-                dependencia: document.getElementById('edit-dependencia').value,
+                dependencia_id: document.getElementById('edit-dependencia_id').value,
 
                 estatus: document.getElementById('edit-estatus').value,
 

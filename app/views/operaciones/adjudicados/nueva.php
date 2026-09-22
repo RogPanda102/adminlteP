@@ -280,11 +280,11 @@
                             id="lista-analista"
                             class="list-group position-absolute w-100 shadow"
                             style="
-                    z-index:1050;
-                    display:none;
-                    max-height:250px;
-                    overflow-y:auto;
-                ">
+                            z-index:1050;
+                            display:none;
+                            max-height:250px;
+                            overflow-y:auto;
+                        ">
                         </div>
 
                     </div>
@@ -328,7 +328,7 @@
                         </div>
 
                     </div>
-                    
+
                     <!-- FECHA FIN ENTREGA -->
                     <div class="col-lg-3 col-md-6">
 
@@ -454,47 +454,11 @@
 
                     </div>
 
-                    <!-- DEPENDENCIA
-                    <div class="col-lg-8 position-relative">
 
-                        <label class="form-label fw-semibold">
-                            Dependencia
-                        </label>
-
-                        <div class="input-group">
-
-                            <span class="input-group-text">
-                                <i class="bi bi-building"></i>
-                            </span>
-
-                            <input
-                                type="text"
-                                name="dependencia"
-                                id="dependencia"
-                                class="form-control"
-                                maxlength="150"
-                                autocomplete="off"
-                                placeholder="Buscar dependencia...">
-
-                        </div>
-
-                        <div
-                            id="lista-dependencia"
-                                class="list-group position-absolute w-100 shadow"
-                                style="
-                                z-index:1050;
-                                display:none;
-                                max-height:250px;
-                                overflow-y:auto;
-                            ">
-                        </div>
-
-                    </div> -->
-                    <!-- DEPENDENCIA -->
                     <div class="col-md-8 position-relative">
 
                         <label class="form-label fw-semibold">
-                                                Dependencia
+                            Dependencia
                         </label>
                         <div class="input-group">
 
