@@ -7,9 +7,11 @@ async function actualizarNotificaciones() {
         );
 
         const datos = await respuesta.json();
+
         // =========================
         // Actualizar badge
         // =========================
+
         const badge = document.getElementById(
             'navbar-notificaciones-total'
         );
@@ -25,9 +27,11 @@ async function actualizarNotificaciones() {
             badge.style.display = 'none';
 
         }
+
         // =========================
         // Actualizar menú
         // =========================
+
         const parser = new DOMParser();
 
         const documento = parser.parseFromString(
@@ -60,7 +64,82 @@ async function actualizarNotificaciones() {
 
 }
 
+
+// =========================
+// ACTUALIZAR NOTIFICACIONES
+// =========================
+
 setInterval(
     actualizarNotificaciones,
     30000
 );
+
+
+// =========================
+// TEMPORIZADOR DE SESIÓN
+// =========================
+
+const TIEMPO_INACTIVIDAD = 10 * 60 * 1000;
+
+let temporizadorSesion;
+
+
+// =========================
+// REINICIAR TEMPORIZADOR
+// =========================
+
+function reiniciarTemporizadorSesion() {
+
+    clearTimeout(temporizadorSesion);
+
+    temporizadorSesion = setTimeout(
+        () => {
+
+            console.log(
+                'Sesión inactiva durante 10 minutos.'
+            );
+
+            // =========================
+            // CERRAR SESIÓN
+            // =========================
+
+            window.location.href =
+            APP.baseUrl + 'logout?sesion_expirada=1';
+
+        },
+        TIEMPO_INACTIVIDAD
+    );
+
+}
+
+
+// =========================
+// DETECTAR ACTIVIDAD
+// =========================
+
+const eventosActividad = [
+    'click',
+    'keydown',
+    'mousemove',
+    'scroll',
+    'input',
+    'change'
+];
+
+
+eventosActividad.forEach(evento => {
+
+    document.addEventListener(
+        evento,
+        reiniciarTemporizadorSesion,
+        { passive: true }
+    );
+
+});
+
+
+// =========================
+// INICIAR TEMPORIZADOR
+// =========================
+
+reiniciarTemporizadorSesion();
