@@ -22,6 +22,20 @@ class AuthController extends BaseController
 
         }
 
+        // =========================
+        // SESIÓN EXPIRADA
+        // =========================
+
+        if (isset($_GET['sesion_expirada'])) {
+
+            mensaje(
+                'Tu sesión expiró por inactividad.',
+                ALERT_WARNING,
+                5000
+            );
+
+        }
+
         View::renderLogin('auth/login');
 
     }
@@ -113,15 +127,13 @@ class AuthController extends BaseController
 
             }
 
-            // DEBUG
-            // echo '<pre>';
-            // print_r($usuarioDB);
-            // exit;
             // =========================
             // CREAR SESIÓN
             // =========================
 
             $_SESSION['logueado'] = true;
+
+            $_SESSION['ultima_actividad'] = time();
 
             $_SESSION['usuario_id'] = $usuarioDB['id'];
 
@@ -171,9 +183,30 @@ class AuthController extends BaseController
     public function logout()
     {
 
+        $sesionExpirada =
+            isset($_GET['sesion_expirada']) &&
+            $_GET['sesion_expirada'] == '1';
+
         session_destroy();
 
-        header('Location: ' . BASE_URL . 'login');
+        if ($sesionExpirada) {
+
+            header(
+                'Location: ' .
+                BASE_URL .
+                'login?sesion_expirada=1'
+            );
+
+            exit;
+        }
+
+        // Logout normal
+        header(
+            'Location: ' .
+            BASE_URL .
+            'login'
+        );
+
         exit;
 
     }

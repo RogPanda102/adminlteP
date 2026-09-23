@@ -7,6 +7,48 @@ session_start();
 
 /*
 |--------------------------------------------------------------------------
+| CONTROL DE SESIÓN POR INACTIVIDAD
+|--------------------------------------------------------------------------
+*/
+
+if (isset($_SESSION['logueado'])) {
+
+    $tiempoInactividad = 600; // 10 minutos
+
+    $ultimaActividad =
+        $_SESSION['ultima_actividad'] ?? time();
+
+    if ((time() - $ultimaActividad) >= $tiempoInactividad) {
+
+        // Guardar mensaje antes de destruir la sesión
+        $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+
+            $params = session_get_cookie_params();
+
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+
+        session_destroy();
+
+        // Marcar que la sesión expiró
+        session_start();
+
+        $_SESSION['sesion_expirada'] = true;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
 | Configuraciones
 |--------------------------------------------------------------------------
 */
