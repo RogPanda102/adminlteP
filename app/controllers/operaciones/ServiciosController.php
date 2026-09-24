@@ -5,6 +5,7 @@ require_once __DIR__ . '/../../models/Servicios.php';
 require_once __DIR__ . '/../../models/Notificacion.php';
 require_once __DIR__ . '/../../models/Adjudicados.php';
 require_once __DIR__ . '/../../helpers/servicios.php';
+require_once __DIR__ . '/../../models/RecordatorioServicio.php';
 
 class ServiciosController extends BaseController
 {
@@ -332,7 +333,31 @@ class ServiciosController extends BaseController
         $datos['inicio'] = $fechas['inicio'];
         $datos['finalizacion'] = $fechas['finalizacion'];
 
-        $modelo->guardar($datos);
+        $servicioId = $modelo->guardar($datos);
+
+
+        // ========================================
+        // CREAR RECORDATORIOS PREDETERMINADOS
+        // ========================================
+
+        $recordatorioModelo = new RecordatorioServicio();
+
+        $recordatoriosPredeterminados = [
+            90,
+            30,
+            7,
+            0
+        ];
+
+        foreach ($recordatoriosPredeterminados as $diasAntes) {
+
+            $recordatorioModelo->crear([
+                'servicio_id' => $servicioId,
+                'dias_antes' => $diasAntes,
+                'activo' => 1
+            ]);
+        }
+
 
         mensaje(
             'Servicio registrado correctamente',
