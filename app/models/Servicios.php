@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../config/database.php';
 
+
 class Servicio
 {
     private $db;
@@ -177,7 +178,7 @@ class Servicio
 
         $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
+        $stmt->execute([
 
             ':req'                 => $datos['req'],
             ':folio'               => $datos['folio'],
@@ -201,6 +202,7 @@ class Servicio
             ':actualizado_por'     => $datos['actualizado_por']
 
         ]);
+        return $this->db->lastInsertId();
     }
 
     // =========================
