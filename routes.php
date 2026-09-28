@@ -180,6 +180,10 @@ $router->post(
     'operaciones\ServiciosController@guardar'
 );
 
+$router->post(
+    '/servicios/actualizar',
+    'operaciones\ServiciosController@actualizar'
+);
 
 $router->get(
     '/servicios/buscar',
