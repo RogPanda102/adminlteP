@@ -361,4 +361,49 @@ class Servicio
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function actualizar($datos)
+    {
+        $sql = "
+            UPDATE servicios
+            SET
+                tiempo_cantidad = :tiempo_cantidad,
+                tiempo_unidad = :tiempo_unidad,
+                fecha_contratacion = :fecha_contratacion,
+                inicio = :inicio,
+                finalizacion = :finalizacion,
+                actualizado_por = :actualizado_por
+            WHERE id = :id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            ':tiempo_cantidad' => $datos['tiempo_cantidad'],
+            ':tiempo_unidad' => $datos['tiempo_unidad'],
+            ':fecha_contratacion' => $datos['fecha_contratacion'],
+            ':inicio' => $datos['inicio'],
+            ':finalizacion' => $datos['finalizacion'],
+            ':actualizado_por' => $datos['actualizado_por'],
+            ':id' => $datos['id']
+        ]);
+    }
+
+    public function buscarPorId($id)
+    {
+        $sql = "
+            SELECT *
+            FROM servicios
+            WHERE id = :id
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 }

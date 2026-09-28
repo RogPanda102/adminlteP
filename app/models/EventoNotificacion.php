@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/Servicios.php';
+require_once __DIR__ . '/RecordatorioServicio.php';
 
 class EventoNotificacion
 {
@@ -44,6 +46,81 @@ class EventoNotificacion
             ':fecha_hora_programada' => $datos['fecha_hora_programada'],
             ':enviado' => $datos['enviado'] ?? 0
         ]);
+    }
+
+    // =========================
+    // Generar eventos para un servicio
+    // =========================
+    public function generarParaServicio($servicioId)
+    {
+        $servicioModelo = new Servicio();
+        $recordatorioModelo = new RecordatorioServicio();
+
+        $servicio = $servicioModelo->buscarPorId($servicioId);
+
+        if (!$servicio) {
+            return false;
+        }
+
+        if (empty($servicio['finalizacion']) || empty($servicio['creado_por'])) {
+            return false;
+        }
+
+        $recordatorios =
+            $recordatorioModelo->obtenerActivosPorServicio($servicioId);
+
+        if (empty($recordatorios)) {
+            return true;
+        }
+
+        $fechaFinalizacion =
+            new DateTime($servicio['finalizacion']);
+
+        $hoy = new DateTime();
+
+        $horarios = [
+            '09:00:00',
+            '13:00:00',
+            '17:00:00'
+        ];
+
+        foreach ($recordatorios as $recordatorio) {
+
+            $diasAntes = (int)$recordatorio['dias_antes'];
+
+            $fechaEvento = clone $fechaFinalizacion;
+
+            if ($diasAntes > 0) {
+                $fechaEvento->modify("-{$diasAntes} days");
+            }
+
+            // No generar eventos cuya fecha ya pasó
+            if ($fechaEvento->format('Y-m-d') < $hoy->format('Y-m-d')) {
+                continue;
+            }
+
+            foreach ($horarios as $hora) {
+
+                $fechaHoraProgramada =
+                    $fechaEvento->format('Y-m-d') . ' ' . $hora;
+
+                if ($this->existe(
+                    $recordatorio['id'],
+                    $fechaHoraProgramada
+                )) {
+                    continue;
+                }
+
+                $this->crear([
+                    'servicio_id' => $servicioId,
+                    'recordatorio_id' => $recordatorio['id'],
+                    'usuario_id' => $servicio['creado_por'],
+                    'fecha_hora_programada' => $fechaHoraProgramada
+                ]);
+            }
+        }
+
+        return true;
     }
 
     // =========================================

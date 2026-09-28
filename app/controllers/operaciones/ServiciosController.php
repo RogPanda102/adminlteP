@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../models/Notificacion.php';
 require_once __DIR__ . '/../../models/Adjudicados.php';
 require_once __DIR__ . '/../../helpers/servicios.php';
 require_once __DIR__ . '/../../models/RecordatorioServicio.php';
+require_once __DIR__ . '/../../models/EventoNotificacion.php';
 
 class ServiciosController extends BaseController
 {
@@ -455,5 +456,178 @@ class ServiciosController extends BaseController
         }
 
         echo 'Revisión de vencimientos completada.';
+    }
+
+    // =========================
+    // Actualizar servicio
+    // =========================
+    public function actualizar()
+    {
+        header('Content-Type: application/json');
+
+        $input = json_decode(
+            file_get_contents('php://input'),
+            true
+        );
+
+        if (!$input) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Datos inválidos'
+            ]);
+
+            return;
+        }
+
+        $modelo = new Servicio();
+
+        // =========================
+        // ID DEL SERVICIO
+        // =========================
+
+        $id = (int)($input['id'] ?? 0);
+
+        if ($id <= 0) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'ID de servicio inválido'
+            ]);
+
+            return;
+        }
+
+        // =========================
+        // ESTADO ANTERIOR
+        // =========================
+
+        $antes = $modelo->buscarPorId($id);
+
+        if (!$antes) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Servicio no encontrado'
+            ]);
+
+            return;
+        }
+
+        // =========================
+        // DATOS EDITABLES
+        // =========================
+
+        $cantidad = !empty($input['tiempo_cantidad'])
+            ? (int)$input['tiempo_cantidad']
+            : null;
+
+        $unidad = !empty($input['tiempo_unidad'])
+            ? trim($input['tiempo_unidad'])
+            : null;
+
+        $fechaContratacion = !empty($input['fecha_contratacion'])
+            ? trim($input['fecha_contratacion'])
+            : null;
+
+        $inicio = !empty($input['inicio'])
+            ? $input['inicio']
+            : null;
+
+        // =========================
+        // VALIDAR DURACIÓN
+        // =========================
+
+        if (empty($cantidad) || empty($unidad)) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'La cantidad y la unidad de duración son obligatorias'
+            ]);
+
+            return;
+        }
+
+        // =========================
+        // CALCULAR NUEVA FINALIZACIÓN
+        // =========================
+
+        $fechas = calcularFechasServicio(
+            $inicio,
+            null,
+            $cantidad,
+            $unidad
+        );
+
+        $nuevaFinalizacion = $fechas['finalizacion'];
+
+        if (empty($nuevaFinalizacion)) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'No se pudo calcular la fecha de finalización'
+            ]);
+
+            return;
+        }
+
+        // =========================
+        // DATOS PARA ACTUALIZAR
+        // =========================
+
+        $datos = [
+            'id' => $id,
+
+            'tiempo_cantidad' => $cantidad,
+
+            'tiempo_unidad' => $unidad,
+
+            'fecha_contratacion' => $fechaContratacion,
+
+            'inicio' => $fechas['inicio'],
+
+            'finalizacion' => $nuevaFinalizacion,
+
+            'actualizado_por' => $_SESSION['usuario_id']
+        ];
+
+        // =========================
+        // ACTUALIZAR
+        // =========================
+
+        $ok = $modelo->actualizar($datos);
+
+        if (!$ok) {
+
+            echo json_encode([
+                'success' => false,
+                'message' => 'Error al actualizar el servicio'
+            ]);
+
+            return;
+        }
+
+        $despues = $modelo->buscarPorId($id);
+
+        // Si cambió la fecha de finalización,
+        // regeneramos los eventos pendientes.
+        if ($antes['finalizacion'] !== $despues['finalizacion']) {
+
+            $eventoModelo = new EventoNotificacion();
+
+            // Eliminar únicamente eventos que todavía no han sido enviados.
+            // Los eventos históricos ya enviados se conservan.
+            $eventoModelo->eliminarPendientesPorServicio($id);
+
+            // Generar nuevamente los eventos según
+            // los recordatorios activos del servicio.
+            $eventoModelo->generarParaServicio($id);
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Servicio actualizado correctamente',
+            'servicio' => $despues
+        ]);
     }
 }
