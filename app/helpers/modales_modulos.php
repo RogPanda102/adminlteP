@@ -755,3 +755,572 @@
         </div>
         ';
     }
+
+    function documentos($modulo, $registro_id)
+    {
+        return '
+
+        <!-- ========================================================= -->
+        <!-- PANEL DOCUMENTOS -->
+        <!-- ========================================================= -->
+
+        <div
+            id="erp-panel-documentos"
+            class="p-3"
+            style="
+                width:50%;
+                flex:0 0 50%;
+            ">
+
+            <!-- ================= VOLVER ================= -->
+
+            <div class="mb-3">
+
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    id="btn-volver-cotizacion">
+
+                    <i class="bi bi-arrow-left me-1"></i>
+
+                    Volver a cotización
+
+                </button>
+
+            </div>
+
+
+            <!-- ================= ENCABEZADO ================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <div class="fw-semibold fs-6">
+
+                                <i class="bi bi-paperclip text-primary me-1"></i>
+
+                                Documentos
+
+                            </div>
+
+                            <div class="text-muted small mt-1">
+
+                                Archivos asociados a este registro
+
+                            </div>
+
+                        </div>
+
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            id="btn-subir-documento">
+
+                            <i class="bi bi-cloud-arrow-up me-1"></i>
+
+                            Subir
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FORMULARIO DE CARGA -->
+            <!-- ================================================= -->
+
+            <div
+                id="panel-carga-documento"
+                class="card border-0 shadow-sm mb-3 d-none">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="fw-semibold">
+
+                        <i class="bi bi-cloud-arrow-up text-primary me-1"></i>
+
+                        Subir documento
+
+                    </div>
+
+                    <div class="text-muted small mt-1">
+
+                        Selecciona el tipo de documento y el archivo.
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <!-- ================= TIPO ================= -->
+
+                    <div class="mb-3">
+
+                        <label
+                            for="documento-tipo"
+                            class="form-label fw-semibold">
+
+                            Tipo de documento
+
+                        </label>
+
+                        <select
+                            id="documento-tipo"
+                            class="form-select">
+
+                            <option value="">
+
+                                Seleccionar...
+
+                            </option>
+
+                            <option value="solicitud">
+
+                                Solicitud recibida
+
+                            </option>
+
+                            <option value="cotizacion">
+
+                                Cotización enviada
+
+                            </option>
+
+                            <option value="evidencia">
+
+                                Evidencia
+
+                            </option>
+
+                            <option value="factura">
+
+                                Factura
+
+                            </option>
+
+                            <option value="entrega">
+
+                                Entrega
+
+                            </option>
+
+                            <option value="otro">
+
+                                Otros documentos
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- ================= ARCHIVO ================= -->
+
+                    <div class="mb-3">
+
+                        <label
+                            for="documento-archivo"
+                            class="form-label fw-semibold">
+
+                            Archivo
+
+                        </label>
+
+                        <input
+                            type="file"
+                            id="documento-archivo"
+                            class="form-control">
+
+                        <div class="form-text">
+
+                            Selecciona el archivo que deseas asociar a esta cotización.
+
+                        </div>
+
+                        <div
+
+                            id="info-documento-archivo"
+                            class="mt-2 d-none">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================= BOTONES ================= -->
+
+                    <div class="d-flex justify-content-end gap-2">
+
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-outline-secondary"
+                            id="btn-cancelar-documento">
+
+                            Cancelar
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="btn btn-sm btn-primary"
+                            id="btn-confirmar-documento">
+
+                            <i class="bi bi-upload me-1"></i>
+
+                            Continuar
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- SOLICITUD RECIBIDA                                -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-download"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Solicitud recibida
+                            </div>
+
+                            <div class="text-muted small">
+                                Documento enviado para realizar la cotización
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-solicitud">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small mt-2">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- COTIZACIÓN ENVIADA                                -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-success-subtle text-success"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-send"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Cotización enviada
+                            </div>
+
+                            <div class="text-muted small">
+                                Cotización enviada por el proveedor
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-cotizacion">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- EVIDENCIAS                                        -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-warning-subtle text-warning"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-paperclip"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Evidencias
+                            </div>
+
+                            <div class="text-muted small">
+                                Evidencias relacionadas con el registro
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-evidencia">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- FACTURAS                                          -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-danger-subtle text-danger"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-receipt"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Facturas
+                            </div>
+
+                            <div class="text-muted small">
+                                Documentos fiscales
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-factura">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ENTREGA                                           -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-info-subtle text-info"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-box-seam"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Entrega
+                            </div>
+
+                            <div class="text-muted small">
+                                Documentación de entrega
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-entrega">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- OTROS                                             -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom">
+
+                    <div class="d-flex align-items-center gap-2">
+
+                        <span
+                            class="d-flex align-items-center justify-content-center rounded-circle bg-secondary-subtle text-secondary"
+                            style="width:32px;height:32px;">
+
+                            <i class="bi bi-folder"></i>
+
+                        </span>
+
+                        <div>
+
+                            <div class="fw-semibold">
+                                Otros documentos
+                            </div>
+
+                            <div class="text-muted small">
+                                Archivos adicionales
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="card-body"
+                    id="documentos-otro">
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-file-earmark-x text-muted fs-3"></i>
+
+                        <div class="text-muted small">
+
+                            No hay documentos registrados.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+        ';
+    }

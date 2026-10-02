@@ -9,15 +9,10 @@ $router = new Router();
 */
 
 $router->get('/', 'auth\AuthController@login');
-
 $router->get('/login', 'auth\AuthController@login');
-
 $router->post('/login', 'auth\AuthController@autenticar');
-
 $router->get('/logout', 'auth\AuthController@logout');
-
 $router->get('/registro', 'auth\AuthController@registro');
-
 $router->post('/registro', 'auth\AuthController@guardarRegistro');
 
 /*
@@ -25,30 +20,17 @@ $router->post('/registro', 'auth\AuthController@guardarRegistro');
 | PANEL
 |--------------------------------------------------------------------------
 */
-
 $router->get('/dashboard', 'HomeController@index');
-
 /*
 |------------------------------------------------------------------
 | OPERACIONES - COTIZACIONES
 |------------------------------------------------------------------
 */
 
-// $router->get(
-//     '/cotizaciones/2025',
-//     'operaciones\CotizacionesController@cotizaciones2025'
-// );
-
-// $router->get(
-//     '/cotizaciones/2026',
-//     'operaciones\CotizacionesController@cotizaciones2026'
-// );
-
 $router->get(
     '/cotizaciones/{anio}',
     'operaciones\CotizacionesController@cotizaciones'
 );
-
 $router->get(
     '/historial/cotizaciones',
     'operaciones\HistorialController@cotizaciones'
@@ -64,49 +46,43 @@ $router->get(
     '/cotizaciones/nueva',
     'operaciones\CotizacionesController@nueva'
 );
-
 $router->post(
     '/cotizaciones/guardar',
     'operaciones\CotizacionesController@guardar'
 );
-
 $router->post(
     '/cotizaciones/update',
     'operaciones\CotizacionesController@update'
 );
 
 $router->get(
+    '/cotizaciones/documentos',
+    'operaciones\DocumentosController@documentos'
+);
+
+$router->post(
+    '/cotizaciones/documentos/subir',
+    'operaciones\DocumentosController@subirDocumento'
+);
+$router->get(
     '/cotizaciones/buscar',
     'operaciones\CotizacionesController@buscarAjax'
 );
-
 $router->get(
     '/cotizaciones/buscarCatalogoAjax',
     'operaciones\CotizacionesController@buscarCatalogoAjax'
 );
-
 $router->post(
     '/cotizaciones/guardarProveedorAjax',
     'operaciones\CotizacionesController@guardarProveedorAjax'
 ); 
 // este lo agregamos uno antes del proveedores.
 
-
 /*
 |------------------------------------------------------------------
 | OPERACIONES - ADJUDICADOS 2026 - 2025
 |------------------------------------------------------------------
 */
-
-// $router->get(
-//     '/adjudicados/2026',
-//     'operaciones\AdjudicadosController@adjudicados2026'
-// );
-
-// $router->get(
-//     '/adjudicados/2025',
-//     'operaciones\AdjudicadosController@adjudicados2025'
-// );
 
 $router->get(
     '/adjudicados/{anio}',
@@ -148,16 +124,6 @@ $router->post(
 | OPERACIONES - SERVICIOS
 |------------------------------------------------------------------
 */
-
-// $router->get(
-//     '/servicios/2025',
-//     'operaciones\ServiciosController@servicios2025'
-// );
-
-// $router->get(
-//     '/servicios/2026',
-//     'operaciones\ServiciosController@servicios2026'
-// );
 
 $router->get(
     '/servicios/{anio}',

@@ -94,11 +94,6 @@ function reiniciarTemporizadorSesion() {
 
     temporizadorSesion = setTimeout(
         () => {
-
-            console.log(
-                'Sesión inactiva durante 10 minutos.'
-            );
-
             // =========================
             // CERRAR SESIÓN
             // =========================
