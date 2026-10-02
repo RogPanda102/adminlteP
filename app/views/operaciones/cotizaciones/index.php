@@ -240,161 +240,124 @@
 
             </button>
 
+            <!-- ================= DOCUMENTOS ================= -->
+            <button
+                type="button"
+                class="btn btn-sm btn-outline-primary px-3"
+                id="btn-documentos">
+
+                📎 Documentos
+
+            </button>
+
         </div>
 
     </div>
 
-    <!-- BODY -->
+
+    <!-- ========================================================= -->
+    <!-- BODY / CONTENEDOR DE PANELES                              -->
+    <!-- ========================================================= -->
+
     <div
-        class="offcanvas-body p-0 bg-light d-flex"
-        id="erp-wrapper">
+            class="offcanvas-body p-0 bg-light" 
+            id="erp-wrapper"
+            style="overflow-x:hidden; overflow-y:auto;">
 
         <div
-            id="erp-panel-detalle"
-            class="p-3"
-            style="width:100%; transition:all .3s ease;">
+            id="erp-panels"
+            class="d-flex align-items-start"
+            style="
+                width:200%;
+                transition:transform .35s ease;
+            ">
 
-            <!-- ================= GENERAL ================= -->
 
-            <div class="card border-0 shadow-sm mb-3">
+            <!-- ================================================= -->
+            <!-- PANEL DETALLE COTIZACIÓN                           -->
+            <!-- ================================================= -->
 
-                <div class="card-header bg-white border-bottom fw-semibold">
+            <div
+                id="erp-panel-detalle"
+                class="p-3"
+                style="
+                    width:50%;
+                    flex:0 0 50%;
+                ">
 
-                    <i class="bi bi-info-circle me-1 text-primary"></i>
+                <!-- ================= GENERAL ================= -->
 
-                    Información general
+                <div class="card border-0 shadow-sm mb-3">
 
-                </div>
+                    <div class="card-header bg-white border-bottom fw-semibold">
 
-                <div class="card-body py-2">
+                        <i class="bi bi-info-circle me-1 text-primary"></i>
 
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Fecha</span>
-                        <span id="det-fecha" class="fw-semibold"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">REQ</span>
-                        <span id="det-req" class="fw-semibold"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Folio</span>
-                        <span id="det-folio" class="fw-semibold"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Elaboró</span>
-                        <span id="det-elaboro" class="fw-semibold"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Partida</span>
-                        <span id="det-partida" class="fw-semibold"></span>
-                    </div>
-
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Analista</span>
-                        <span id="det-analista" class="fw-semibold"></span>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ================= PROVEEDOR ================= -->
-
-            <div class="card border-0 shadow-sm mb-3">
-
-                <div class="card-header bg-white border-bottom fw-semibold">
-
-                    <i class="bi bi-truck me-1 text-success"></i>
-
-                    Proveedor
-
-                </div>
-
-                <div class="card-body py-2">
-
-                    <div class="d-flex justify-content-between py-1">
-
-                        <span class="text-muted">
-                            Proveedor
-                        </span>
-
-                        <span
-                            id="det-proveedor"
-                            class="fw-semibold">
-                        </span>
+                        Información general
 
                     </div>
 
-                </div>
+                    <div class="card-body py-2">
 
-            </div>
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Fecha</span>
+                            <span id="det-fecha" class="fw-semibold"></span>
+                        </div>
 
-            <!-- ================= ESTATUS ================= -->
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">REQ</span>
+                            <span id="det-req" class="fw-semibold"></span>
+                        </div>
 
-            <div class="card border-0 shadow-sm mb-3">
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Folio</span>
+                            <span id="det-folio" class="fw-semibold"></span>
+                        </div>
 
-                <div class="card-header bg-white border-bottom fw-semibold">
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Elaboró</span>
+                            <span id="det-elaboro" class="fw-semibold"></span>
+                        </div>
 
-                    <i class="bi bi-check2-circle me-1 text-warning"></i>
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Partida</span>
+                            <span id="det-partida" class="fw-semibold"></span>
+                        </div>
 
-                    Estatus
-
-                </div>
-
-                <div class="card-body py-2">
-
-                    <div class="d-flex justify-content-between py-1">
-
-                        <span class="text-muted">
-                            Estado
-                        </span>
-
-                        <span
-                            id="det-estatus"
-                            class="badge bg-light text-dark">
-                        </span>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- ================= HISTORIAL ================= -->
-
-            <div class="card border-0 shadow-sm mb-3">
-
-                <div class="card-header bg-white border-bottom fw-semibold">
-
-                    <i class="bi bi-clock-history text-primary me-1"></i>
-
-                    Auditoría del registro
-
-                </div>
-
-                <div class="card-body">
-
-                    <div id="historial-items">
-
-                        <div class="text-muted small">
-
-                            Presiona historial para cargar cambios
-
+                        <div class="d-flex justify-content-between py-1">
+                            <span class="text-muted">Analista</span>
+                            <span id="det-analista" class="fw-semibold"></span>
                         </div>
 
                     </div>
 
-                    <div
-                        id="historial-detalle"
-                        class="mt-3">
+                </div>
 
-                        <div class="text-muted small">
 
-                            Selecciona un cambio para ver el detalle
+                <!-- ================= PROVEEDOR ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-truck me-1 text-success"></i>
+
+                        Proveedor
+
+                    </div>
+
+                    <div class="card-body py-2">
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Proveedor
+                            </span>
+
+                            <span
+                                id="det-proveedor"
+                                class="fw-semibold">
+                            </span>
 
                         </div>
 
@@ -402,7 +365,86 @@
 
                 </div>
 
+
+                <!-- ================= ESTATUS ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-check2-circle me-1 text-warning"></i>
+
+                        Estatus
+
+                    </div>
+
+                    <div class="card-body py-2">
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Estado
+                            </span>
+
+                            <span
+                                id="det-estatus"
+                                class="badge bg-light text-dark">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= HISTORIAL ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-clock-history text-primary me-1"></i>
+
+                        Auditoría del registro
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div id="historial-items">
+
+                            <div class="text-muted small">
+
+                                Presiona historial para cargar cambios
+
+                            </div>
+
+                        </div>
+
+                        <div
+                            id="historial-detalle"
+                            class="mt-3">
+
+                            <div class="text-muted small">
+
+                                Selecciona un cambio para ver el detalle
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
+
+            <!-- ================================================= -->
+            <!-- PANEL DOCUMENTOS                                  -->
+            <!-- ================================================= -->
+            <?= documentos('cotizaciones', 0) ?>
 
         </div>
 

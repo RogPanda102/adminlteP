@@ -4,6 +4,7 @@ require_once __DIR__ . '/../BaseController.php';
 require_once __DIR__ . '/../../models/Cotizacion.php';
 require_once __DIR__ . '/../../models/Catalogo.php';
 
+
 class CotizacionesController extends BaseController
 {
     protected $permitido = true;
