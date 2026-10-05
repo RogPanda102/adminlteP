@@ -145,6 +145,19 @@ class NotificacionesController extends BaseController
             5
         );
 
+        // =========================
+        // DATOS PARA LA VISTA
+        // =========================
+
+        $navbarNotificaciones = [
+            'total' => (int)$total['total'],
+            'notificaciones' => $notificaciones
+        ];
+
+        // =========================
+        // GENERAR HTML
+        // =========================
+
         ob_start();
 
         require APP_PATH .

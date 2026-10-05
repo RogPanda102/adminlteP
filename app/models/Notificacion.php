@@ -27,7 +27,8 @@ class Notificacion
                     tipo,
                     modulo,
                     registro_id,
-                    evento
+                    evento,
+                    evento_notificacion_id
                 )
                 VALUES
                 (
@@ -38,7 +39,8 @@ class Notificacion
                     :tipo,
                     :modulo,
                     :registro_id,
-                    :evento
+                    :evento,
+                    :evento_notificacion_id
                 )";
 
         $query = $this->conexion->prepare($sql);
@@ -57,7 +59,9 @@ class Notificacion
 
             ':modulo' => $datos['modulo'] ?? null,
             ':registro_id' => $datos['registro_id'] ?? null,
-            ':evento' => $datos['evento'] ?? null
+            ':evento' => $datos['evento'] ?? null,
+            ':evento_notificacion_id' =>
+                $datos['evento_notificacion_id'] ?? null
 
         ]);
 
@@ -72,7 +76,8 @@ class Notificacion
         $usuarioId,
         $modulo,
         $registroId,
-        $evento
+        $evento,
+        $eventoNotificacionId,
     ) {
 
         $sql = "SELECT id
@@ -81,6 +86,7 @@ class Notificacion
                 AND modulo = :modulo
                 AND registro_id = :registro_id
                 AND evento = :evento
+                AND evento_notificacion_id = :evento_notificacion_id
                 LIMIT 1";
 
         $query = $this->conexion->prepare($sql);
@@ -90,7 +96,8 @@ class Notificacion
             ':usuario_id' => $usuarioId,
             ':modulo' => $modulo,
             ':registro_id' => $registroId,
-            ':evento' => $evento
+            ':evento' => $evento,
+            ':evento_notificacion_id' => $eventoNotificacionId
 
         ]);
 
