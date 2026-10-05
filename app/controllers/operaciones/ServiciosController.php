@@ -359,6 +359,13 @@ class ServiciosController extends BaseController
             ]);
         }
 
+        // ========================================
+        // GENERAR EVENTOS DE NOTIFICACIÓN
+        // ========================================
+
+        $eventoModelo = new EventoNotificacion();
+
+        $eventoModelo->generarParaServicio($servicioId);
 
         mensaje(
             'Servicio registrado correctamente',
@@ -371,91 +378,6 @@ class ServiciosController extends BaseController
         );
 
         exit;
-    }
-
-    // =========================
-    // Revisar vencimientos
-    // =========================
-    public function revisarVencimientos()
-    {
-        if (!$this->permitido) {
-
-            redirect('login');
-            exit;
-        }
-
-        $modeloServicio = new Servicio();
-        $modeloNotificacion = new Notificacion();
-
-        $servicios = $modeloServicio->obtenerServiciosParaNotificar();
-
-        foreach ($servicios as $servicio) {
-
-            // ========================================
-            // DETERMINAR EVENTO
-            // ========================================
-
-            $evento = determinarEventoVencimiento(
-                $servicio['finalizacion']
-            );
-
-            if ($evento === null) {
-                continue;
-            }
-
-            // ========================================
-            // COMPROBAR SI YA FUE GENERADO
-            // ========================================
-
-            $yaExiste = $modeloNotificacion->existeEvento(
-
-                $servicio['creado_por'],
-
-                'servicios',
-
-                $servicio['id'],
-
-                $evento
-
-            );
-
-            if ($yaExiste) {
-                continue;
-            }
-
-            // ========================================
-            // CREAR NOTIFICACIÓN
-            // ========================================
-
-            notificar(
-
-                $servicio['creado_por'],
-
-                'Vencimiento de servicio',
-
-                'El servicio ' .
-                $servicio['req'] .
-                ' tiene fecha de finalización ' .
-                date(
-                    'd/m/Y',
-                    strtotime($servicio['finalizacion'])
-                ) .
-                '.',
-
-                'servicios/' . $servicio['anio'],
-
-                'warning',
-
-                'servicios',
-
-                $servicio['id'],
-
-                $evento
-
-            );
-        }
-
-        echo 'Revisión de vencimientos completada.';
     }
 
     // =========================

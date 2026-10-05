@@ -42,7 +42,8 @@ foreach ($eventos as $evento) {
         $evento['usuario_id'],
         'servicios',
         $evento['servicio_id'],
-        $eventoNombre
+        $eventoNombre,
+        $evento['id']
     );
 
     if ($existe) {
@@ -61,7 +62,8 @@ foreach ($eventos as $evento) {
         'tipo' => $tipo,
         'modulo' => 'servicios',
         'registro_id' => $evento['servicio_id'],
-        'evento' => $eventoNombre
+        'evento' => $eventoNombre,
+        'evento_notificacion_id' => $evento['id']
     ]);
 
     if ($resultado) {
