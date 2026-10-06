@@ -119,6 +119,17 @@ $router->post(
     '/adjudicados/update',
     'operaciones\AdjudicadosController@update'
 );
+
+$router->get(
+    '/adjudicados/documentos',
+    'operaciones\DocumentosController@documentos'
+);
+
+$router->post(
+    '/adjudicados/documentos/subir',
+    'operaciones\DocumentosController@subirDocumento'
+);
+
 /*
 |------------------------------------------------------------------
 | OPERACIONES - SERVICIOS

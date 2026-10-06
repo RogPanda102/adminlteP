@@ -671,6 +671,88 @@ document.addEventListener('DOMContentLoaded', function () {
         catalogoEditDependencia.mostrarTodos();
     });
 
+// inicia aqui
+    // =====================================================
+    // DOCUMENTOS
+    // =====================================================
+
+    inicializarDocumentos({
+
+        modulo: 'adjudicados',
+
+        obtenerRegistroId: () => {
+            return window.currentAdjudicacion?.id;
+        },
+
+        // ================================================
+        // DOCUMENTOS RELACIONADOS
+        // ================================================
+
+        obtenerRegistrosRelacionados: () => {
+
+            const cotizacionId =
+                window.currentAdjudicacion?.cotizacion_id;
+
+            if (!cotizacionId) {
+                return [];
+            }
+
+            return [
+                {
+                    modulo: 'cotizaciones',
+                    registro_id: cotizacionId
+                }
+            ];
+        },
+
+        // ================================================
+        // BOTONES Y ELEMENTOS
+        // ================================================
+
+        btnDocumentosId: 'btn-documentos',
+
+        btnVolverId: 'btn-volver-adjudicacion',
+
+        erpPanelsId: 'erp-panels',
+
+        btnSubirDocumentoId: 'btn-subir-documento',
+
+        btnCancelarDocumentoId: 'btn-cancelar-documento',
+
+        panelCargaDocumentoId: 'panel-carga-documento',
+
+        inputDocumentoArchivoId: 'documento-archivo',
+
+        infoDocumentoArchivoId: 'info-documento-archivo',
+
+        selectDocumentoTipoId: 'documento-tipo',
+
+        btnConfirmarDocumentoId: 'btn-confirmar-documento',
+
+        // ================================================
+        // ORIGEN DEL DOCUMENTO
+        // ================================================
+
+        obtenerOrigen: (doc) => {
+
+            if (doc.modulo === 'cotizaciones') {
+                return 'Cotización';
+            }
+
+            if (doc.modulo === 'adjudicados') {
+                return 'Adjudicación';
+            }
+
+            return 'Documento';
+        }
+
+    });
+
+
+// termina aqui
+
+
+
 });
 
 // =====================================================
