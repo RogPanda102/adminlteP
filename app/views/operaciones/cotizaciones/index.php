@@ -919,6 +919,7 @@
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
 
+<script src="<?= BASE_URL ?>assets/js/helpers/documentos.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/offcanvas.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>

@@ -146,142 +146,399 @@ $anio = $anio ?? date('Y');
 </main>
 
 <!-- ================= OFFCANVAS DETALLE ERP ================= -->
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasDetalleAdjudicacion" style="width:420px; transition: all .3s ease;">
+<div
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasDetalleAdjudicacion"
+    style="width:420px; transition:all .3s ease;"
+>
 
     <!-- HEADER -->
     <div class="offcanvas-header border-bottom flex-column align-items-start">
 
         <div class="d-flex justify-content-between w-100">
+
             <h5 class="offcanvas-title mb-0 fw-semibold">
-                Adjudicación <span id="erp-folio-title" class="text-primary"></span>
+
+                Adjudicación
+                <span
+                    id="erp-folio-title"
+                    class="text-primary">
+                </span>
+
             </h5>
 
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas">
+            </button>
+
         </div>
 
+
         <div class="mt-2 d-flex align-items-center gap-2">
-            <span id="erp-status" class="badge bg-secondary px-3 py-2 rounded-pill">
+
+            <span
+                id="erp-status"
+                class="badge bg-secondary px-3 py-2 rounded-pill">
+
                 Pendiente
+
             </span>
+
         </div>
+
 
         <div class="mt-2 d-flex gap-2 flex-wrap">
 
-            <button class="btn btn-sm btn-primary px-3" id="btn-editar">
+            <button
+                class="btn btn-sm btn-primary px-3"
+                id="btn-editar">
+
                 ✏️ Editar
+
             </button>
 
-            <button class="btn btn-sm btn-outline-dark px-3" id="btn-historial">
+
+            <button
+                class="btn btn-sm btn-outline-dark px-3"
+                id="btn-historial">
+
                 🕓 Historial
+
+            </button>
+
+
+            <!-- ================= DOCUMENTOS ================= -->
+
+            <button
+                type="button"
+                class="btn btn-sm btn-outline-primary px-3"
+                id="btn-documentos">
+
+                📎 Documentos
+
             </button>
 
         </div>
 
     </div>
 
-    <!-- BODY -->
-    <div class="offcanvas-body p-0 bg-light d-flex" id="erp-wrapper">
 
-        <!-- ================= PANEL DETALLE ================= -->
-        <div id="erp-panel-detalle" class="p-3" style="width:100%; transition:all .3s ease;">
+    <!-- ========================================================= -->
+    <!-- BODY / CONTENEDOR DE PANELES                              -->
+    <!-- ========================================================= -->
 
-            <!-- GENERAL -->
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white border-bottom fw-semibold">
-                    <i class="bi bi-info-circle me-1 text-primary"></i> General
-                </div>
-                <div class="card-body py-2">
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">REQ</span><span id="det-req" class="fw-semibold"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Folio</span><span id="det-folio" class="fw-semibold"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Elaboró</span><span id="det-elaboro" class="fw-semibold"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Partida</span><span id="det-partida" class="fw-semibold"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Analista</span><span id="det-analista" class="fw-semibold"></span>
-                    </div>
-                </div>
-            </div>
+    <div
+        class="offcanvas-body p-0 bg-light"
+        id="erp-wrapper"
+        style="overflow-x:hidden; overflow-y:auto;"
+    >
 
-            <!-- PAGOS -->
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white border-bottom fw-semibold">
-                    <i class="bi bi-cash-coin me-1 text-success"></i> Pagos
-                </div>
-                <div class="card-body py-2">
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Total</span><span id="det-total" class="fw-semibold text-success"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Estado</span><span id="det-pago" class="badge bg-light text-dark"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Día pago</span><span id="det-dia-pago"></span>
-                    </div>
-                </div>
-            </div>
+        <div
+            id="erp-panels"
+            class="d-flex align-items-start"
+            style="
+                width:200%;
+                transition:transform .35s ease;
+            "
+        >
 
-            <!-- DEPENDENCIA -->
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white border-bottom fw-semibold">
-                    <i class="bi bi-building me-1 text-warning"></i> Dependencia
-                </div>
-                <div class="card-body py-2">
-                    <span id="det-dependencia" class="fw-semibold"></span>
-                </div>
-            </div>
 
-            <!-- FECHAS -->
-            <div class="card border-0 shadow-sm mb-3">
-                <div class="card-header bg-white border-bottom fw-semibold">
-                    <i class="bi bi-calendar me-1 text-danger"></i> Fechas
-                </div>
-                <div class="card-body py-2">
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Elaboración</span><span id="det-fecha-elaboracion"></span>
+            <!-- ================================================= -->
+            <!-- PANEL DETALLE ADJUDICACIÓN                         -->
+            <!-- ================================================= -->
+
+            <div
+                id="erp-panel-detalle"
+                class="p-3"
+                style="
+                    width:50%;
+                    flex:0 0 50%;
+                "
+            >
+
+                <!-- ================= GENERAL ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-info-circle me-1 text-primary"></i>
+
+                        General
+
                     </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Inicio</span><span id="det-fecha-inicio"></span>
-                    </div>
-                    <div class="d-flex justify-content-between py-1">
-                        <span class="text-muted">Fin</span><span id="det-fecha-fin"></span>
-                    </div>
-                </div>
-            </div>
 
-            <!-- ================= HISTORIAL (REUBICADO AQUÍ) ================= -->
-            <div class="card border-0 shadow-sm mb-3">
+                    <div class="card-body py-2">
 
-                <div class="card-header bg-white border-bottom fw-semibold">
-                    <i class="bi bi-clock-history text-primary me-1"></i>
-                    Auditoría del registro
-                </div>
+                        <div class="d-flex justify-content-between py-1">
 
-                <div class="card-body">
+                            <span class="text-muted">
+                                REQ
+                            </span>
 
-                    <div id="historial-items">
-                        <div class="text-muted small">
-                            Presiona historial para cargar cambios
+                            <span
+                                id="det-req"
+                                class="fw-semibold">
+                            </span>
+
                         </div>
-                    </div>
 
-                    <div id="historial-detalle" class="mt-3">
-                        <div class="text-muted small">
-                            Selecciona un cambio para ver el detalle
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Folio
+                            </span>
+
+                            <span
+                                id="det-folio"
+                                class="fw-semibold">
+                            </span>
+
                         </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Elaboró
+                            </span>
+
+                            <span
+                                id="det-elaboro"
+                                class="fw-semibold">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Partida
+                            </span>
+
+                            <span
+                                id="det-partida"
+                                class="fw-semibold">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Analista
+                            </span>
+
+                            <span
+                                id="det-analista"
+                                class="fw-semibold">
+                            </span>
+
+                        </div>
+
                     </div>
 
                 </div>
+
+
+                <!-- ================= PAGOS ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-cash-coin me-1 text-success"></i>
+
+                        Pagos
+
+                    </div>
+
+                    <div class="card-body py-2">
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Total
+                            </span>
+
+                            <span
+                                id="det-total"
+                                class="fw-semibold text-success">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Estado
+                            </span>
+
+                            <span
+                                id="det-pago"
+                                class="badge bg-light text-dark">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Día pago
+                            </span>
+
+                            <span id="det-dia-pago">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= DEPENDENCIA ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-building me-1 text-warning"></i>
+
+                        Dependencia
+
+                    </div>
+
+                    <div class="card-body py-2">
+
+                        <span
+                            id="det-dependencia"
+                            class="fw-semibold">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= FECHAS ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-calendar me-1 text-danger"></i>
+
+                        Fechas
+
+                    </div>
+
+                    <div class="card-body py-2">
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Elaboración
+                            </span>
+
+                            <span id="det-fecha-elaboracion">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Inicio
+                            </span>
+
+                            <span id="det-fecha-inicio">
+                            </span>
+
+                        </div>
+
+
+                        <div class="d-flex justify-content-between py-1">
+
+                            <span class="text-muted">
+                                Fin
+                            </span>
+
+                            <span id="det-fecha-fin">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ================= HISTORIAL ================= -->
+
+                <div class="card border-0 shadow-sm mb-3">
+
+                    <div class="card-header bg-white border-bottom fw-semibold">
+
+                        <i class="bi bi-clock-history text-primary me-1"></i>
+
+                        Auditoría del registro
+
+                    </div>
+
+                    <div class="card-body">
+
+                        <div id="historial-items">
+
+                            <div class="text-muted small">
+
+                                Presiona historial para cargar cambios
+
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="historial-detalle"
+                            class="mt-3"
+                        >
+
+                            <div class="text-muted small">
+
+                                Selecciona un cambio para ver el detalle
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
+
+
+            <!-- ================================================= -->
+            <!-- PANEL DOCUMENTOS                                  -->
+            <!-- ================================================= -->
+
+            <?= documentos('adjudicados', 0) ?>
+
 
         </div>
+
     </div>
+
 </div>
 
 <!-- ================= MODAL EDITAR ADJUDICACION ================= -->
@@ -695,6 +952,7 @@ $anio = $anio ?? date('Y');
     const BASE_URL = '<?= BASE_URL ?>';
 </script>
 
+<script src="<?= BASE_URL ?>assets/js/helpers/documentos.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/pagoToggle.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/2026.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
