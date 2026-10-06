@@ -7,6 +7,7 @@ require_once __DIR__ . '/../../services/DocumentosService.php';
 class DocumentosController extends BaseController
 {
     protected $permitido = true;
+
     // =========================
     // Constructor
     // =========================
@@ -16,24 +17,32 @@ class DocumentosController extends BaseController
             $this->permitido = false;
         }
     }
+
+
     // =========================
     // OBTENER DOCUMENTOS AJAX
     // =========================
     public function documentos()
     {
         header('Content-Type: application/json');
+
         if (!$this->permitido) {
             http_response_code(403);
+
             echo json_encode([
                 'success' => false,
                 'message' => 'No autorizado'
             ]);
+
             exit;
         }
+
         $modulo = trim($_GET['modulo'] ?? '');
+
         $registro_id = (int) (
             $_GET['registro_id'] ?? 0
         );
+
         if (
             $modulo === '' ||
             $registro_id <= 0
@@ -42,19 +51,257 @@ class DocumentosController extends BaseController
                 'success' => false,
                 'message' => 'Datos inválidos'
             ]);
+
             exit;
         }
+
         $modelo = new Documentos();
+
         $documentos = $modelo->obtenerPorRegistro(
             $modulo,
             $registro_id
         );
+
         echo json_encode([
             'success' => true,
             'data' => $documentos
         ]);
+
         exit;
     }
+
+
+    // =========================
+    // VER DOCUMENTO
+    // =========================
+    public function ver()
+    {
+        // =========================
+        // AUTORIZACIÓN
+        // =========================
+        if (!$this->permitido) {
+            http_response_code(403);
+            exit('No autorizado');
+        }
+
+
+        // =========================
+        // OBTENER ID
+        // =========================
+        $documentoId = (int) (
+            $_GET['id'] ?? 0
+        );
+
+
+        // =========================
+        // VALIDAR ID
+        // =========================
+        if ($documentoId <= 0) {
+            http_response_code(400);
+            exit('Documento inválido');
+        }
+
+
+        // =========================
+        // OBTENER DOCUMENTO
+        // =========================
+        $modelo = new Documentos();
+
+        $documento = $modelo->obtenerPorId(
+            $documentoId
+        );
+
+
+        // =========================
+        // DOCUMENTO NO EXISTE
+        // =========================
+        if (!$documento) {
+            http_response_code(404);
+            exit('Documento no encontrado');
+        }
+
+
+        // =========================
+        // DATOS DEL DOCUMENTO
+        // =========================
+        $modulo = $documento['modulo'] ?? '';
+        $registroId = (int) (
+            $documento['registro_id'] ?? 0
+        );
+        $tipo = $documento['tipo'] ?? '';
+        $nombreArchivo = $documento['nombre_archivo'] ?? '';
+        $mime = $documento['mime'] ?? 'application/octet-stream';
+
+
+        // =========================
+        // VALIDAR DATOS
+        // =========================
+        $modulosPermitidos = [
+            'cotizaciones',
+            'servicios',
+            'adjudicados'
+        ];
+
+        $tiposPermitidos = [
+            'solicitud',
+            'cotizacion',
+            'entrega',
+            'factura',
+            'evidencia',
+            'otro'
+        ];
+
+
+        if (
+            !in_array(
+                $modulo,
+                $modulosPermitidos,
+                true
+            ) ||
+            !in_array(
+                $tipo,
+                $tiposPermitidos,
+                true
+            ) ||
+            $registroId <= 0 ||
+            $nombreArchivo === ''
+        ) {
+            http_response_code(400);
+            exit('Datos del documento inválidos');
+        }
+
+
+        // =========================
+        // VALIDAR NOMBRE FÍSICO
+        // =========================
+        if (
+            basename($nombreArchivo) !== $nombreArchivo
+        ) {
+            http_response_code(400);
+            exit('Nombre de archivo inválido');
+        }
+
+
+        // =========================
+        // RUTA FÍSICA
+        // =========================
+        $rutaBase =
+            dirname(__DIR__, 3)
+            . DIRECTORY_SEPARATOR
+            . 'storage'
+            . DIRECTORY_SEPARATOR
+            . 'documentos';
+
+
+        $rutaArchivo =
+            $rutaBase
+            . DIRECTORY_SEPARATOR
+            . $modulo
+            . DIRECTORY_SEPARATOR
+            . $registroId
+            . DIRECTORY_SEPARATOR
+            . $tipo
+            . DIRECTORY_SEPARATOR
+            . $nombreArchivo;
+
+
+        // =========================
+        // VERIFICAR ARCHIVO
+        // =========================
+        if (!is_file($rutaArchivo)) {
+            http_response_code(404);
+            exit('Archivo no encontrado');
+        }
+
+
+        // =========================
+        // VERIFICAR LECTURA
+        // =========================
+        if (!is_readable($rutaArchivo)) {
+            http_response_code(403);
+            exit('No se puede acceder al archivo');
+        }
+
+
+        // =========================
+        // LIMPIAR BUFFER
+        // =========================
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+
+        // =========================
+        // INFORMACIÓN DEL ARCHIVO
+        // =========================
+        $tamano = filesize($rutaArchivo);
+
+        if ($tamano === false) {
+            http_response_code(500);
+            exit('No se pudo determinar el tamaño del archivo');
+        }
+
+
+        // =========================
+        // MIME
+        // =========================
+        $finfo = new finfo(
+            FILEINFO_MIME_TYPE
+        );
+
+        $mimeReal = $finfo->file(
+            $rutaArchivo
+        );
+
+
+        if ($mimeReal) {
+            $mime = $mimeReal;
+        }
+
+
+        // =========================
+        // NOMBRE ORIGINAL
+        // =========================
+        $nombreOriginal =
+            $documento['nombre_original']
+            ?? $nombreArchivo;
+
+
+        // =========================
+        // HEADERS
+        // =========================
+        header(
+            'Content-Type: ' . $mime
+        );
+
+        header(
+            'Content-Length: ' . $tamano
+        );
+
+        header(
+            'Content-Disposition: inline; filename="' .
+            addslashes($nombreOriginal) .
+            '"'
+        );
+
+        header(
+            'X-Content-Type-Options: nosniff'
+        );
+
+        header(
+            'Cache-Control: private, max-age=0, must-revalidate'
+        );
+
+
+        // =========================
+        // ENVIAR ARCHIVO
+        // =========================
+        readfile($rutaArchivo);
+
+        exit;
+    }
+
+
     // =========================
     // SUBIR DOCUMENTO AJAX
     // =========================
@@ -72,10 +319,12 @@ class DocumentosController extends BaseController
         // =========================
         if (!$this->permitido) {
             http_response_code(403);
+
             echo json_encode([
                 'success' => false,
                 'message' => 'No autorizado'
             ]);
+
             exit;
         }
 
@@ -84,10 +333,12 @@ class DocumentosController extends BaseController
         // =========================
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
+
             echo json_encode([
                 'success' => false,
                 'message' => 'Método no permitido'
             ]);
+
             exit;
         }
 
@@ -118,6 +369,7 @@ class DocumentosController extends BaseController
                 'success' => false,
                 'message' => 'Datos del documento inválidos'
             ]);
+
             exit;
         }
 
@@ -132,6 +384,7 @@ class DocumentosController extends BaseController
                 'success' => false,
                 'message' => 'No se recibió correctamente el archivo'
             ]);
+
             exit;
         }
 
@@ -178,6 +431,7 @@ class DocumentosController extends BaseController
                     'mime' => $mimeReal
                 ]
             ]);
+
             exit;
         }
 
@@ -196,6 +450,7 @@ class DocumentosController extends BaseController
                     'tamano' => $archivo['size']
                 ]
             ]);
+
             exit;
         }
 
@@ -294,5 +549,4 @@ class DocumentosController extends BaseController
 
         exit;
     }
-
 }

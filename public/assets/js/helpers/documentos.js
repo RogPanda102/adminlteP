@@ -384,6 +384,159 @@ function inicializarDocumentos(config = {}) {
 
 
                 // ----------------------------------
+                // URL PARA VER DOCUMENTO
+                // ----------------------------------
+
+                const urlDocumento =
+                    `${BASE_URL}${doc.modulo}/documentos/ver` +
+                    `?id=${encodeURIComponent(doc.id)}`;
+
+
+                // ----------------------------------
+                // EXTENSIÓN
+                // ----------------------------------
+
+                const extension =
+                    (doc.extension || '')
+                        .toLowerCase();
+
+
+                // ----------------------------------
+                // TIPO DE PREVISUALIZACIÓN
+                // ----------------------------------
+
+                const esImagen =
+                    [
+                        'jpg',
+                        'jpeg',
+                        'png'
+                    ].includes(extension);
+
+
+                const esPdf =
+                    extension === 'pdf';
+
+
+                let vistaPrevia = '';
+
+
+                if (esImagen) {
+
+                    vistaPrevia = `
+                        <div
+                            class="documento-preview"
+                            style="
+                                display:none;
+                                position:absolute;
+                                z-index:9999;
+                                right:100%;
+                                top:50%;
+                                transform:translateY(-50%);
+                                margin-right:8px;
+                                width:220px;
+                                padding:6px;
+                                background:#fff;
+                                border:1px solid #dee2e6;
+                                border-radius:6px;
+                                box-shadow:0 4px 14px rgba(0,0,0,.15);
+                            "
+                        >
+                            <img
+                                src="${urlDocumento}"
+                                alt="${doc.nombre_original || 'Vista previa'}"
+                                style="
+                                    display:block;
+                                    width:100%;
+                                    max-height:180px;
+                                    object-fit:contain;
+                                    border-radius:4px;
+                                "
+                            >
+
+                            <div
+                                class="text-muted small text-center mt-1 text-truncate"
+                                title="${doc.nombre_original || ''}"
+                            >
+                                ${doc.nombre_original || ''}
+                            </div>
+                        </div>
+                    `;
+
+                } else if (esPdf) {
+
+                    vistaPrevia = `
+                        <div
+                            class="documento-preview"
+                            style="
+                                display:none;
+                                position:absolute;
+                                z-index:9999;
+                                right:100%;
+                                top:50%;
+                                transform:translateY(-50%);
+                                margin-right:8px;
+                                width:260px;
+                                height:220px;
+                                padding:4px;
+                                background:#fff;
+                                border:1px solid #dee2e6;
+                                border-radius:6px;
+                                box-shadow:0 4px 14px rgba(0,0,0,.15);
+                                overflow:hidden;
+                            "
+                        >
+                            <iframe
+                                src="${urlDocumento}"
+                                title="${doc.nombre_original || 'Vista previa PDF'}"
+                                style="
+                                    width:100%;
+                                    height:100%;
+                                    border:0;
+                                "
+                            ></iframe>
+                        </div>
+                    `;
+
+                } else {
+
+                    vistaPrevia = `
+                        <div
+                            class="documento-preview"
+                            style="
+                                display:none;
+                                position:absolute;
+                                z-index:9999;
+                                right:100%;
+                                top:50%;
+                                transform:translateY(-50%);
+                                margin-right:8px;
+                                width:220px;
+                                padding:18px 10px;
+                                background:#fff;
+                                border:1px solid #dee2e6;
+                                border-radius:6px;
+                                box-shadow:0 4px 14px rgba(0,0,0,.15);
+                                text-align:center;
+                            "
+                        >
+                            <i
+                                class="bi bi-file-earmark-text"
+                                style="font-size:48px;"
+                            ></i>
+
+                            <div class="small fw-semibold mt-2 text-break">
+                                ${doc.nombre_original || ''}
+                            </div>
+
+                            <div class="text-muted small mt-1">
+                                ${extension.toUpperCase()}
+                            </div>
+                        </div>
+                    `;
+                }
+
+
+                // ----------------------------------
                 // HTML
                 // ----------------------------------
 
@@ -429,11 +582,24 @@ function inicializarDocumentos(config = {}) {
 
                                 </div>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-sm btn-outline-primary">
-                                    Ver
-                                </button>
+                                <div
+                                    class="position-relative"
+                                    style="z-index:1000;"
+                                >
+
+                                    ${vistaPrevia}
+
+                                    <button
+                                        type="button"
+                                        class="btn btn-sm btn-outline-primary btn-ver-documento"
+                                        data-documento-id="${doc.id}"
+                                        data-url-documento="${urlDocumento}"
+                                    >
+                                        <i class="bi bi-eye me-1"></i>
+                                        Ver
+                                    </button>
+
+                                </div>
 
                             </div>
 
@@ -462,6 +628,112 @@ function inicializarDocumentos(config = {}) {
             });
         }
     }
+
+
+    // =====================================================
+    // MOSTRAR / OCULTAR MINIATURA
+    // =====================================================
+
+    document.addEventListener(
+        'mouseenter',
+        function (event) {
+
+            const boton =
+                event.target.closest(
+                    '.btn-ver-documento'
+                );
+
+            if (!boton) return;
+
+
+            const contenedor =
+                boton.parentElement;
+
+
+            const preview =
+                contenedor?.querySelector(
+                    '.documento-preview'
+                );
+
+
+            if (!preview) return;
+
+
+            preview.style.display =
+                'block';
+        },
+        true
+    );
+
+
+    document.addEventListener(
+        'mouseleave',
+        function (event) {
+
+            const boton =
+                event.target.closest(
+                    '.btn-ver-documento'
+                );
+
+            if (!boton) return;
+
+
+            const contenedor =
+                boton.parentElement;
+
+
+            const preview =
+                contenedor?.querySelector(
+                    '.documento-preview'
+                );
+
+
+            if (!preview) return;
+
+
+            preview.style.display =
+                'none';
+        },
+        true
+    );
+
+
+    // =====================================================
+    // VER DOCUMENTO
+    // =====================================================
+
+    document.addEventListener(
+        'click',
+        function (event) {
+
+            const boton =
+                event.target.closest(
+                    '.btn-ver-documento'
+                );
+
+            if (!boton) return;
+
+
+            const url =
+                boton.dataset.urlDocumento;
+
+
+            if (!url) {
+
+                toastr.error(
+                    'No se encontró la ruta del documento.'
+                );
+
+                return;
+            }
+
+
+            window.open(
+                url,
+                '_blank'
+            );
+        }
+    );
 
 
     // =====================================================

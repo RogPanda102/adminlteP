@@ -64,6 +64,12 @@ $router->post(
     '/cotizaciones/documentos/subir',
     'operaciones\DocumentosController@subirDocumento'
 );
+
+$router->get(
+    '/cotizaciones/documentos/ver',
+    'operaciones\DocumentosController@ver'
+);
+
 $router->get(
     '/cotizaciones/buscar',
     'operaciones\CotizacionesController@buscarAjax'
@@ -128,6 +134,11 @@ $router->get(
 $router->post(
     '/adjudicados/documentos/subir',
     'operaciones\DocumentosController@subirDocumento'
+);
+
+$router->get(
+    '/adjudicados/documentos/ver',
+    'operaciones\DocumentosController@ver'
 );
 
 /*

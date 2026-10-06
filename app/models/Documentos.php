@@ -40,6 +40,34 @@ class Documentos
 
 
     // =========================
+    // OBTENER DOCUMENTO POR ID
+    // =========================
+    public function obtenerPorId($id)
+    {
+        $sql = "
+            SELECT
+                d.*,
+                u.nombre AS usuario_nombre
+            FROM documentos d
+            LEFT JOIN usuarios u
+                ON u.id = d.subido_por
+            WHERE d.id = ?
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            (int) $id
+        ]);
+
+        $documento = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $documento ?: null;
+    }
+
+
+    // =========================
     // GUARDAR DOCUMENTO
     // =========================
     public function guardar(
