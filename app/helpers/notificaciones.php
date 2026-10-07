@@ -66,16 +66,17 @@ function notificacionIcono($tipo)
     switch ($tipo) {
 
         case 'success':
-            return 'fas fa-circle-check';
+            return 'bi bi-check-circle-fill';
 
         case 'warning':
-            return 'fas fa-triangle-exclamation';
+            return 'bi bi-exclamation-triangle-fill';
 
         case 'danger':
-            return 'fas fa-circle-xmark';
+            return 'bi bi-x-circle-fill';
 
+        case 'info':
         default:
-            return 'fas fa-circle-info';
+            return 'bi bi-info-circle-fill';
 
     }
 

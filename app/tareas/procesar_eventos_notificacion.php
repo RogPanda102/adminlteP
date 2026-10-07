@@ -17,11 +17,6 @@ $totalErrores = 0;
 
 foreach ($eventos as $evento) {
 
-    echo "\n";
-    echo "Evento ID: {$evento['id']}\n";
-    echo "Servicio ID: {$evento['servicio_id']}\n";
-    echo "Fecha programada: {$evento['fecha_hora_programada']}\n";
-    echo "Días antes: {$evento['dias_antes']}\n";
 
     $diasAntes = (int) $evento['dias_antes'];
 
@@ -82,10 +77,3 @@ foreach ($eventos as $evento) {
         echo "  ERROR: no se pudo crear la notificación.\n";
     }
 }
-
-echo "\n";
-echo "==============================\n";
-echo "PROCESADOR FINALIZADO\n";
-echo "==============================\n";
-echo "Eventos procesados: {$totalProcesados}\n";
-echo "Errores: {$totalErrores}\n";
