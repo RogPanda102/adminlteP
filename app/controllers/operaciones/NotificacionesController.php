@@ -112,11 +112,103 @@ class NotificacionesController extends BaseController
 
         }
 
-        $modelo->marcarLeida($id);
+        $modelo->marcarLeida($id, $_SESSION['usuario_id']);
 
         redirect(
             ltrim($notificacion['url'], '/')
         );
+
+    }
+
+
+    // =========================
+    // Marcar una notificación como leída
+    // =========================
+    public function marcarLeida()
+    {
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado.'
+            ]);
+
+            exit;
+
+        }
+
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Notificación no válida.'
+            ]);
+
+            exit;
+
+        }
+
+        $modelo = new Notificacion();
+
+        $resultado = $modelo->marcarLeida(
+            $id,
+            $_SESSION['usuario_id']
+        );
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+
+            'ok' => $resultado
+
+        ]);
+
+        exit;
+
+    }
+
+
+    // =========================
+    // Marcar todas como leídas
+    // =========================
+    public function marcarTodas()
+    {
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado.'
+            ]);
+
+            exit;
+
+        }
+
+        $modelo = new Notificacion();
+
+        $resultado = $modelo->marcarTodasLeidas(
+            $_SESSION['usuario_id']
+        );
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+
+            'ok' => $resultado
+
+        ]);
+
+        exit;
 
     }
 
