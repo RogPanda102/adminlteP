@@ -241,20 +241,37 @@ class AdjudicadosController extends BaseController
             $_SESSION['usuario_id']
         ];
         
-        $resultado = $modelo->guardar($datos);
-        if ($resultado) {
+        
+        $adjudicadoId = $modelo->guardar($datos);
+
+        if ($adjudicadoId) {
+
+            notificarExito(
+                null,
+                'Adjudicación registrada',
+                'Se registró la adjudicación con folio "' . $datos['folio'] . '".',
+                '/adjudicados/' . $datos['anio'],
+                'adjudicados',
+                $adjudicadoId,
+                'creado'
+            );
+
             mensaje(
                 'Adjudicación registrada correctamente',
                 ALERT_SUCCESS,
                 3000
             );
+
         } else {
+
             mensaje(
                 'No fue posible registrar la adjudicación',
                 ALERT_DANGER,
                 3000
             );
+
         }
+
         redirect(
             'adjudicados/' . $datos['anio']
         );

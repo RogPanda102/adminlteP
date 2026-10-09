@@ -19,9 +19,10 @@ function notificar(
     $mensaje = '',
     $url = '',
     $tipo = 'info',
-    $modelo = null,
+    $modulo = null,
     $registroId = null,
-    $evento = null
+    $evento = null,
+    $eventoNotificacionId = null
     ) 
     {
 
@@ -54,9 +55,10 @@ function notificar(
 
             'tipo' => $tipo,
 
-            'modulo' => $modelo ?? null,
+            'modulo' => $modulo ?? null,
             'registro_id' => $registroId ?? null,
-            'evento' => $evento ?? null
+            'evento' => $evento ?? null,
+            'evento_notificacion_id' => $eventoNotificacionId ?? null
 
         ]);
 }
@@ -133,7 +135,11 @@ function notificarExito(
     $usuarioId = null,
     $titulo = '',
     $mensaje = '',
-    $url = ''
+    $url = '',
+    $modulo = null,
+    $registroId = null,
+    $evento = null,
+    $eventoNotificacionId = null
 ) {
 
     return notificar(
@@ -141,7 +147,11 @@ function notificarExito(
         $titulo,
         $mensaje,
         $url,
-        'success'
+        'success',
+        $modulo,
+        $registroId,
+        $evento,
+        $eventoNotificacionId
     );
 
 }
@@ -149,7 +159,11 @@ function notificarInfo(
     $usuarioId = null,
     $titulo = '',
     $mensaje = '',
-    $url = ''
+    $url = '',
+    $modulo = null,
+    $registroId = null,
+    $evento = null,
+    $eventoNotificacionId = null
 ) {
 
     return notificar(
@@ -157,7 +171,11 @@ function notificarInfo(
         $titulo,
         $mensaje,
         $url,
-        'info'
+        'info',
+        $modulo,
+        $registroId,
+        $evento,
+        $eventoNotificacionId
     );
 
 }
@@ -165,7 +183,11 @@ function notificarAdvertencia(
     $usuarioId = null,
     $titulo = '',
     $mensaje = '',
-    $url = ''
+    $url = '',
+    $modulo = null,
+    $registroId = null,
+    $evento = null,
+    $eventoNotificacionId = null
 ) {
 
     return notificar(
@@ -173,7 +195,11 @@ function notificarAdvertencia(
         $titulo,
         $mensaje,
         $url,
-        'warning'
+        'warning',
+        $modulo,
+        $registroId,
+        $evento,
+        $eventoNotificacionId
     );
 
 }
@@ -181,7 +207,11 @@ function notificarError(
     $usuarioId = null,
     $titulo = '',
     $mensaje = '',
-    $url = ''
+    $url = '',
+    $modulo = null,
+    $registroId = null,
+    $evento = null,
+    $eventoNotificacionId = null
 ) {
 
     return notificar(
@@ -189,7 +219,11 @@ function notificarError(
         $titulo,
         $mensaje,
         $url,
-        'danger'
+        'danger',
+        $modulo,
+        $registroId,
+        $evento,
+        $eventoNotificacionId
     );
 
 }

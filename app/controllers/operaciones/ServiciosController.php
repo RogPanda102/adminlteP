@@ -336,6 +336,26 @@ class ServiciosController extends BaseController
 
         $servicioId = $modelo->guardar($datos);
 
+        if (!$servicioId) {
+            mensaje(
+                'No fue posible registrar el servicio',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect('servicios/' . $datos['anio']);
+            exit;
+        }
+        
+        notificarExito(
+            null,
+            'Servicio registrado',
+            'Se registró el servicio con folio "' . $datos['folio'] . '".',
+            '/servicios/' . $datos['anio'],
+            'servicios',
+            $servicioId,
+            'creado'
+        );
 
         // ========================================
         // CREAR RECORDATORIOS PREDETERMINADOS

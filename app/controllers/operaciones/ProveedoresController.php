@@ -145,7 +145,10 @@ class ProveedoresController extends BaseController
                 null,
                 'Proveedor registrado',
                 'Se registró el proveedor "' . $datos['proveedor'] . '".',
-                '/proveedores'
+                '/proveedores',
+                'proveedores',
+                $proveedorId,
+                'creado'
             );
 
         }

@@ -203,7 +203,33 @@ class CotizacionesController extends BaseController
 
         ];
 
-        $modelo->guardar($datos);
+        $cotizacionId = $modelo->guardar($datos);
+
+        if (!$cotizacionId) {
+
+            mensaje(
+                'No se pudo registrar la cotización.',
+                ALERT_DANGER,
+                3000
+            );
+
+            redirect(
+                'cotizaciones/' . $datos['anio']
+            );
+
+            exit;
+        }
+
+        notificarExito(
+            null,
+            'Cotización registrada',
+            'Se registró la cotización con folio "' .
+                $datos['folio'] . '".',
+            '/cotizaciones/' . $datos['anio'],
+            'cotizaciones',
+            $cotizacionId,
+            'creado'
+        );
 
         mensaje(
             'Cotización registrada correctamente',
