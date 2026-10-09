@@ -190,157 +190,405 @@
     class="offcanvas offcanvas-end"
     tabindex="-1"
     id="offcanvasDetalleServicio"
-    style="width:420px;"
+    style="width:420px; transition:all .3s ease;"
 >
 
-    <div class="offcanvas-header border-bottom">
+    <!-- ========================================================= -->
+    <!-- HEADER                                                    -->
+    <!-- ========================================================= -->
 
-        <div class="w-100">
+    <div class="offcanvas-header border-bottom flex-column align-items-start">
 
-            <div class="d-flex justify-content-between align-items-start">
+        <div class="d-flex justify-content-between w-100">
 
-                <div>
+            <div>
 
-                    <h5 class="offcanvas-title mb-1">
+                <h5 class="offcanvas-title mb-1 fw-semibold">
 
-                        <i class="bi bi-gear-wide-connected text-primary me-2"></i>
+                    <i class="bi bi-tools text-primary me-2"></i>
 
-                        Servicio
+                    Servicio
 
-                        <span
-                            id="det-titulo-folio"
-                            class="text-primary">
-                        </span>
+                    <span
+                        id="det-titulo-folio"
+                        class="text-primary">
+                    </span>
 
-                    </h5>
+                </h5>
 
-                    <small class="text-muted">
-
-                        Información del servicio
-
-                    </small>
-
-                </div>
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="offcanvas">
-                </button>
+                <small class="text-muted">
+                    Información y periodo del servicio
+                </small>
 
             </div>
 
-            <div class="mt-2 d-flex gap-2">
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas">
+            </button>
 
-                <button
-                    type="button"
-                    class="btn btn-sm btn-primary px-3"
-                    id="btn-editar-servicio">
+        </div>
 
-                    <i class="bi bi-pencil-square me-1"></i>
 
-                    Editar
+        <!-- ACCIONES -->
 
-                </button>
+        <div class="mt-3 d-flex gap-2 flex-wrap">
 
-            </div>
+            <button
+                type="button"
+                class="btn btn-sm btn-primary px-3"
+                id="btn-editar-servicio">
+
+                <i class="bi bi-pencil-square me-1"></i>
+
+                Editar
+
+            </button>
 
         </div>
 
     </div>
 
-    <div class="offcanvas-body bg-light">
 
-        <!-- Información General -->
+    <!-- ========================================================= -->
+    <!-- BODY                                                      -->
+    <!-- ========================================================= -->
 
-        <div class="card shadow-sm border-0 mb-3">
+    <div
+        class="offcanvas-body p-0 bg-light"
+        style="overflow-x:hidden; overflow-y:auto;"
+    >
 
-            <div class="card-header bg-white fw-semibold">
+        <div class="p-3">
 
-                <i class="bi bi-info-circle me-1 text-primary"></i>
+            <!-- ================================================= -->
+            <!-- PERIODO DEL SERVICIO                              -->
+            <!-- ================================================= -->
 
-                Información general
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom fw-semibold">
+
+                    <i class="bi bi-calendar-range text-success me-1"></i>
+
+                    Periodo del servicio
+
+                </div>
+
+
+                <div class="card-body">
+
+
+                    <!-- REQUISICIÓN + DURACIÓN -->
+
+                    <div class="text-center mb-3">
+
+                        <div class="c-flex justify-content-between align-items-center border-bottom pb-2 mb-3">
+
+                            <span
+                                id="det-req"
+                                class="fw-bold text-primary">
+                            </span>
+
+                        </div>
+
+
+                        <div class="text-muted small mb-1">
+                            Duración contratada
+                        </div>
+
+                        <div
+                            id="det-tiempo"
+                            class="fs-4 fw-bold text-primary">
+                        </div>
+
+                    </div>
+
+
+                    <!-- ================================================= -->
+                    <!-- LÍNEA DE TIEMPO                                    -->
+                    <!-- ================================================= -->
+
+                    <div class="position-relative px-2">
+
+
+                        <!-- CONTRATACIÓN -->
+
+                        <div class="d-flex align-items-start gap-3 mb-4">
+
+                            <div
+                                class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:38px;height:38px;"
+                            >
+
+                                <i class="bi bi-file-earmark-check"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="text-muted small">
+                                    Contratación
+                                </div>
+
+                                <div
+                                    id="det-contratacion"
+                                    class="fw-semibold">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- INICIO -->
+
+                        <div class="d-flex align-items-start gap-3 mb-4">
+
+                            <div
+                                class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:38px;height:38px;"
+                            >
+
+                                <i class="bi bi-play-fill"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="text-muted small">
+                                    Inicio del servicio
+                                </div>
+
+                                <div
+                                    id="det-inicio"
+                                    class="fw-bold text-success">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FINALIZACIÓN -->
+
+                        <div class="d-flex align-items-start gap-3">
+
+                            <div
+                                class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center flex-shrink-0"
+                                style="width:38px;height:38px;"
+                            >
+
+                                <i class="bi bi-flag-fill"></i>
+
+                            </div>
+
+
+                            <div>
+
+                                <div class="text-muted small">
+                                    Finalización
+                                </div>
+
+                                <div
+                                    id="det-finalizacion"
+                                    class="fw-bold text-danger">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="card-body py-2">
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">REQ</span>
-                    <span id="det-req"></span>
+            <!-- ================================================= -->
+            <!-- INFORMACIÓN GENERAL                               -->
+            <!-- ================================================= -->
+
+            <div class="card border-0 shadow-sm mb-3">
+
+                <div class="card-header bg-white border-bottom fw-semibold">
+
+                    <i class="bi bi-info-circle me-1 text-primary"></i>
+
+                    Información general
+
                 </div>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Folio</span>
-                    <span id="det-folio"></span>
-                </div>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Año</span>
-                    <span id="det-anio"></span>
-                </div>
+                <div class="card-body py-2">
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Elaboró</span>
-                    <span id="det-elaboro"></span>
-                </div>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Partida</span>
-                    <span id="det-partida"></span>
-                </div>
+                    <!-- FOLIO -->
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Analista</span>
-                    <span id="det-analista"></span>
-                </div>
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Tipo de servicio</span>
-                    <span id="det-tipo-servicio"></span>
-                </div>
+                        <span class="text-muted">
+                            Folio
+                        </span>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Dependencia</span>
-                    <span id="det-dependencia"></span>
+                        <span
+                            id="det-folio"
+                            class="fw-semibold text-end">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ELABORÓ -->
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+
+                        <span class="text-muted">
+                            Elaboró
+                        </span>
+
+                        <span
+                            id="det-elaboro"
+                            class="fw-semibold text-end">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PARTIDA -->
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+
+                        <span class="text-muted">
+                            Partida
+                        </span>
+
+                        <span
+                            id="det-partida"
+                            class="fw-semibold text-end">
+                        </span>
+
+                    </div>
+
+
+                    <!-- ANALISTA -->
+
+                    <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+
+                        <span class="text-muted">
+                            Analista
+                        </span>
+
+                        <span
+                            id="det-analista"
+                            class="fw-semibold text-end">
+                        </span>
+
+                    </div>
+
+
+                    <!-- TIPO DE SERVICIO -->
+
+                    <div class="d-flex justify-content-between align-items-center py-2">
+
+                        <span class="text-muted">
+                            Tipo de servicio
+                        </span>
+
+                        <span
+                            id="det-tipo-servicio"
+                            class="fw-semibold text-end">
+                        </span>
+
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
 
-        <!-- Contratación -->
+            <!-- ================================================= -->
+            <!-- RESUMEN DEL SERVICIO                              -->
+            <!-- ================================================= -->
 
-        <div class="card shadow-sm border-0">
+            <div class="card border-0 shadow-sm">
 
-            <div class="card-header bg-white fw-semibold">
+                <div class="card-header bg-white border-bottom fw-semibold">
 
-                <i class="bi bi-calendar-event text-success me-1"></i>
+                    <i class="bi bi-briefcase text-primary me-1"></i>
 
-                Fechas
+                    Resumen del servicio
 
-            </div>
-
-            <div class="card-body py-2">
-
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Tiempo</span>
-                    <span id="det-tiempo"></span>
                 </div>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Contratación</span>
-                    <span id="det-contratacion"></span>
-                </div>
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Inicio</span>
-                    <span id="det-inicio"></span>
-                </div>
+                <div class="card-body">
 
-                <div class="d-flex justify-content-between py-1">
-                    <span class="text-muted">Finalización</span>
-                    <span id="det-finalizacion"></span>
+                    <!-- SERVICIO -->
+
+                    <div class="d-flex align-items-center gap-3">
+
+                        <div
+                            class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width:42px;height:42px;"
+                        >
+
+                            <i class="bi bi-tools"></i>
+
+                        </div>
+
+
+                        <div class="min-width-0">
+
+                            <div class="fw-semibold">
+                                Servicio contratado
+                            </div>
+
+                            <div class="text-muted small">
+                                Información detallada disponible en la sección anterior.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <!-- DEPENDENCIA -->
+
+                    <div class="d-flex align-items-start gap-3">
+
+                        <div
+                            class="rounded-circle bg-light text-primary d-flex align-items-center justify-content-center flex-shrink-0"
+                            style="width:42px;height:42px;"
+                        >
+
+                            <i class="bi bi-building"></i>
+
+                        </div>
+
+
+                        <div class="min-width-0">
+
+                            <div class="fw-semibold">
+                                Dependencia
+                            </div>
+
+                            <div
+                                id="det-dependencia"
+                                class="text-muted small">
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -798,591 +1046,7 @@
 ></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded',function(){
-    // =====================================
-    // OFFCANVAS
-    // =====================================
-    let servicioSeleccionado = null;
-    const cantidad = document.getElementById('edit-servicio-tiempo-cantidad');
-    const unidad = document.getElementById('edit-servicio-tiempo-unidad');
-    const inicio = document.getElementById('edit-servicio-inicio');
-    const finalizacion = document.getElementById('edit-servicio-finalizacion');
-
-    const elementoOffcanvas =
-        document.getElementById('offcanvasDetalleServicio');
-
-    const offcanvas =
-        bootstrap.Offcanvas.getOrCreateInstance(elementoOffcanvas);
-    
-    // =====================================
-    // MOSTRAR DETALLE
-    // =====================================
-    function mostrarDetalle(servicio){
-
-        servicioSeleccionado = servicio;
-
-        document.getElementById("det-titulo-folio").textContent =
-            servicio.folio ?? "";
-
-        document.getElementById("det-req").textContent =
-            servicio.req ?? "";
-
-        document.getElementById("det-folio").textContent =
-            servicio.folio ?? "";
-
-        document.getElementById("det-elaboro").textContent =
-            servicio.elaboro ?? "";
-
-        document.getElementById("det-anio").textContent =
-            servicio.anio ?? "";
-
-        document.getElementById("det-partida").textContent =
-            servicio.partida ?? "";
-
-        document.getElementById("det-tipo-servicio").textContent =
-            servicio.tipo_servicio ?? "";
-
-        document.getElementById("det-analista").textContent =
-            servicio.analista ?? "";
-
-        document.getElementById("det-dependencia").textContent =
-            servicio.dependencia ?? "";
-        // ==============================
-        // TIEMPO DE CONTRATACIÓN
-        // ==============================
-        const cantidad = servicio.tiempo_cantidad ?? '';
-        const unidad = servicio.tiempo_unidad ?? '';
-
-        document.getElementById("det-tiempo").textContent =
-            cantidad && unidad
-                ? `${cantidad} ${unidad}`
-                : cantidad || unidad || "";
-
-        // ==============================
-        // FECHAS
-        // ==============================
-        
-        document.getElementById("det-contratacion").textContent =
-            servicio.fecha_contratacion ?? "";
-
-        document.getElementById("det-inicio").textContent =
-            servicio.inicio ?? "";
-
-        document.getElementById("det-finalizacion").textContent =
-            servicio.finalizacion ?? "";
-        
-        offcanvas.show();
-
-    }
-        const tabla=new Tabulator('#tabla-servicios',{
-
-            layout:'fitColumns',
-
-            responsiveLayout:false,
-
-            movableColumns:true,
-
-            pagination:true,
-
-            paginationSize:10,
-
-            columns:[
-
-                {
-                    title:'REQ',
-                    field:'req',
-
-                    formatter:function(cell){
-
-                        return `
-                            <span class="fw-semibold">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Folio',
-                    field:'folio',
-                    hozAlign:'center',
-
-                    formatter:function(cell){
-
-                        return `
-                            <span class="folio-badge">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Elaboró',
-                    field:'elaboro',
-
-                    formatter:function(cell){
-
-                        return `
-                            <div class="erp-main-cell">
-                                <div class="erp-title">
-                                    ${cell.getValue() || ''}
-                                </div>
-                            </div>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Partida',
-                    field:'partida',
-
-                    formatter:function(cell){
-
-                        return `
-                            <span class="erp-sub">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Analista',
-                    field:'analista',
-
-                    formatter:function(cell){
-
-                        return `
-                            <span class="erp-sub">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Tiempo',
-                    field:'tiempo_cantidad',
-
-                    formatter:function(cell){
-
-                        const servicio = cell.getRow().getData();
-
-                        const cantidad = servicio.tiempo_cantidad ?? '';
-                        const unidad = servicio.tiempo_unidad ?? '';
-
-                        if (!cantidad && !unidad) {
-                            return '';
-                        }
-
-                        return `
-                            <span class="badge bg-info">
-                                ${cantidad} ${unidad}
-                            </span>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Contratación',
-                    field:'fecha_contratacion',
-                    hozAlign:'center',
-
-                    formatter:function(cell){
-
-                        const v=cell.getValue();
-
-                        if(!v) return '';
-
-                        const f=new Date(v+"T00:00:00");
-
-                        return `
-                            <div class="erp-date">
-                                ${f.toLocaleDateString('es-MX',{
-                                    day:'2-digit',
-                                    month:'short',
-                                    year:'numeric'
-                                })}
-                            </div>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Inicio',
-                    field:'inicio',
-                    hozAlign:'center',
-
-                    formatter:function(cell){
-
-                        const v=cell.getValue();
-
-                        if(!v) return '';
-
-                        const f=new Date(v+"T00:00:00");
-
-                        return `
-                            <div class="erp-date">
-                                ${f.toLocaleDateString('es-MX',{
-                                    day:'2-digit',
-                                    month:'short'
-                                })}
-                            </div>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Finalización',
-                    field:'finalizacion',
-                    hozAlign:'center',
-
-                    formatter:function(cell){
-
-                        const v=cell.getValue();
-
-                        if(!v) return '';
-
-                        const f=new Date(v+"T00:00:00");
-
-                        return `
-                            <div class="erp-date">
-                                ${f.toLocaleDateString('es-MX',{
-                                    day:'2-digit',
-                                    month:'short'
-                                })}
-                            </div>
-                        `;
-
-                    }
-
-                },
-
-                {
-                    title:'Dependencia',
-                    field:'dependencia',
-
-                    formatter:function(cell){
-
-                        return `
-                            <div class="erp-main-cell">
-
-                                <div class="erp-title">
-                                    ${cell.getValue() || ''}
-                                </div>
-
-                            </div>
-                        `;
-
-                    }
-
-                }
-
-            ],
-            
-            data:<?= json_encode($servicios) ?>
-
-        });
-
-        tabla.on('rowClick', function(e, row) {
-
-            
-
-            const servicio = row.getData();
-
-            
-
-            mostrarDetalle(servicio);
-
-        });
-
-        document
-        .getElementById('tabla-servicios')
-        .addEventListener('click', function(e) {
-
-            
-
-        });
-
-        //=====================================
-        // FILTRO GLOBAL
-        //=====================================
-
-        document
-            .getElementById('table-filter')
-            .addEventListener('keyup',function(){
-
-                tabla.setFilter(function(data){
-
-                    const texto=this.value.toLowerCase();
-
-                    return Object.values(data).some(valor=>
-
-                        String(valor ?? '')
-                        .toLowerCase()
-                        .includes(texto)
-
-                    );
-
-                }.bind(this));
-
-            });
-
-        //=====================================
-        // EXPORTAR
-        //=====================================
-
-        document
-            .getElementById('export-csv')
-            .addEventListener('click',function(){
-
-                tabla.download('csv','servicios_2026.csv');
-
-            });
-
-    
-
-        // =====================================
-        // EDITAR SERVICIO
-        // =====================================
-
-        document
-            .getElementById('btn-editar-servicio')
-            .addEventListener('click', function(){
-
-                if (!servicioSeleccionado) {
-                    return;
-                }
-
-                const servicio = servicioSeleccionado;
-
-                // ==============================
-                // IDS
-                // ==============================
-
-                document.getElementById('edit-servicio-id').value =
-                    servicio.id ?? '';
-
-                document.getElementById('edit-servicio-anio').value =
-                    servicio.anio ?? '';
-
-                document.getElementById('edit-servicio-analista_id').value =
-                    servicio.analista_id ?? '';
-
-                document.getElementById('edit-servicio-dependencia_id').value =
-                    servicio.dependencia_id ?? '';
-
-                document.getElementById('edit-servicio-tipo_servicio_id').value =
-                    servicio.tipo_servicio_id ?? '';
-
-                document.getElementById('edit-servicio-adjudicado_id').value =
-                    servicio.adjudicado_id ?? '';
-
-
-                // ==============================
-                // INFORMACIÓN GENERAL
-                // ==============================
-
-                document.getElementById('edit-servicio-req').value =
-                    servicio.req ?? '';
-
-                document.getElementById('edit-servicio-folio').value =
-                    servicio.folio ?? '';
-
-                document.getElementById('edit-servicio-elaboro').value =
-                    servicio.elaboro ?? '';
-
-                document.getElementById('edit-servicio-partida').value =
-                    servicio.partida ?? '';
-
-
-                // ==============================
-                // INFORMACIÓN ADMINISTRATIVA
-                // ==============================
-
-                document.getElementById('edit-servicio-analista').value =
-                    servicio.analista ?? '';
-
-                document.getElementById('edit-servicio-dependencia').value =
-                    servicio.dependencia ?? '';
-
-                document.getElementById('edit-servicio-tipo').value =
-                    servicio.tipo_servicio ?? '';
-
-
-                // ==============================
-                // CONTRATACIÓN
-                // ==============================
-
-                document.getElementById('edit-servicio-tiempo-cantidad').value =
-                    servicio.tiempo_cantidad ?? '';
-
-                document.getElementById('edit-servicio-tiempo-unidad').value =
-                    servicio.tiempo_unidad ?? '';
-
-                document.getElementById('edit-servicio-fecha-contratacion').value =
-                    servicio.fecha_contratacion ?? '';
-
-                document.getElementById('edit-servicio-inicio').value =
-                    servicio.inicio ?? '';
-
-                document.getElementById('edit-servicio-finalizacion').value =
-                    servicio.finalizacion ?? '';
-
-
-                // ==============================
-                // MOSTRAR MODAL
-                // ==============================
-
-                const modalElemento =
-                    document.getElementById('modalEditarServicio');
-
-                const modal =
-                    bootstrap.Modal.getOrCreateInstance(modalElemento);
-
-                modal.show();
-
-                recalcularFinalizacionVisual();
-
-            });
-        
-        //==============================
-        // RECALCULAR FECHA DE FINALIZACIÓN
-        //==============================
-
-        
-        function recalcularFinalizacionVisual() {
-
-        const cantidadValor = cantidad.value;
-        const unidadValor = unidad.value;
-        const inicioValor = inicio.value;
-
-        if (!cantidadValor || !unidadValor || !inicioValor) {
-            finalizacion.value = '';
-            return;
-        }
-
-        const fechaInicio = new Date(inicioValor + 'T00:00:00');
-
-        if (isNaN(fechaInicio.getTime())) {
-            finalizacion.value = '';
-            return;
-        }
-
-        const cantidadNumero = parseInt(cantidadValor, 10);
-
-        if (cantidadNumero <= 0) {
-            finalizacion.value = '';
-            return;
-        }
-
-        let fechaFinal = new Date(fechaInicio);
-
-        if (unidadValor === 'dias') {
-            fechaFinal.setDate(
-                fechaFinal.getDate() + cantidadNumero
-            );
-        }
-
-        if (unidadValor === 'meses') {
-            fechaFinal.setMonth(
-                fechaFinal.getMonth() + cantidadNumero
-            );
-        }
-
-        if (unidadValor === 'años') {
-            fechaFinal.setFullYear(
-                fechaFinal.getFullYear() + cantidadNumero
-            );
-        }
-
-        const año = fechaFinal.getFullYear();
-        const mes = String(
-            fechaFinal.getMonth() + 1
-        ).padStart(2, '0');
-
-        const dia = String(
-            fechaFinal.getDate()
-        ).padStart(2, '0');
-
-        finalizacion.value =
-            `${año}-${mes}-${dia}`;
-    }
-    cantidad.addEventListener(
-        'input',
-        recalcularFinalizacionVisual
-    );
-
-    unidad.addEventListener(
-        'change',
-        recalcularFinalizacionVisual
-    );
-
-    inicio.addEventListener(
-        'change',
-        recalcularFinalizacionVisual
-    );
-
-    document
-    .getElementById('formEditarServicio')
-    .addEventListener('submit', function(e) {
-
-        e.preventDefault();
-
-        const datos = {
-            id: document.getElementById('edit-servicio-id').value,
-            tiempo_cantidad: document.getElementById('edit-servicio-tiempo-cantidad').value,
-            tiempo_unidad: document.getElementById('edit-servicio-tiempo-unidad').value,
-            fecha_contratacion: document.getElementById('edit-servicio-fecha-contratacion').value,
-            inicio: document.getElementById('edit-servicio-inicio').value,
-            finalizacion: document.getElementById('edit-servicio-finalizacion').value
-        };
-
-        fetch('<?= BASE_URL ?>servicios/actualizar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(datos)
-        })
-        .then(response => response.json())
-        .then(data => {
-
-            console.log('RESPUESTA DEL SERVIDOR:', data);
-
-            if (!data.success) {
-                alert(data.message);
-                return;
-            }
-
-            alert(data.message);
-
-        })
-        .catch(error => {
-
-            console.error('ERROR:', error);
-
-            alert('Ocurrió un error al actualizar el servicio.');
-
-        });
-    });
-
-    });
+    window.servicios = <?= json_encode($servicios) ?>;
+    window.BASE_URL = '<?= BASE_URL ?>';
 </script>
+<script src="<?= BASE_URL ?>assets/js/especificos/servicios/index.js"></script>
