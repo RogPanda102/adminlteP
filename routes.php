@@ -313,11 +313,6 @@ $router->get(
     'operaciones\NotificacionesController@abrir'
 );
 
-$router->get(
-    '/notificaciones/ajax',
-    'operaciones\NotificacionesController@ajax'
-);
-
 $router->post(
     '/notificaciones/marcar-leida',
     'operaciones\NotificacionesController@marcarLeida'

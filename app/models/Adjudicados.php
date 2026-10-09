@@ -212,7 +212,7 @@ class Adjudicados
 
         $stmt = $this->db->prepare($sql);
 
-        return $stmt->execute([
+        $ok = $stmt->execute([
 
             ':req' => $datos['req'],
             ':folio' => $datos['folio'],
@@ -231,6 +231,11 @@ class Adjudicados
             ':creado_por' => $datos['creado_por']
 
         ]);
+        if (!$ok) {
+            return false;
+        }
+
+        return (int) $this->db->lastInsertId();
     }
 
 
