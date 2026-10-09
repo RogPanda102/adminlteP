@@ -10,125 +10,353 @@ document.addEventListener('DOMContentLoaded', function () {
         paginationSize: 10,
         movableColumns: true,
         responsiveLayout: "collapse",
+        responsiveLayoutCollapseStartOpen: false,
+
         // ==============================
         // ESTADO VISUAL DE FILA
         // ==============================
         rowFormatter: function (row) {
+
             const data = row.getData();
             const estado = (data.pago || '').toLowerCase();
             const el = row.getElement();
+
+            // Limpiar clases anteriores
             el.classList.remove(
                 'row-pagado',
                 'row-pendiente',
-                'row-cancelado'
+                'row-cancelado',
+                'adjudicado-mobile-card'
             );
+
+            // =====================================================
+            // VISTA MÓVIL
+            // =====================================================
+
+            if (window.innerWidth <= 767) {
+
+                el.classList.add('adjudicado-mobile-card');
+
+                // ---------------------------------------------
+                // ESTADO
+                // ---------------------------------------------
+
+                let claseEstado = 'bg-secondary';
+
+                switch (estado) {
+
+                    case 'pagado':
+                        claseEstado = 'bg-success';
+                        break;
+
+                    case 'parcial':
+                        claseEstado = 'bg-warning text-dark';
+                        break;
+
+                    case 'cancelado':
+                        claseEstado = 'bg-danger';
+                        break;
+
+                    case 'pendiente':
+                        claseEstado = 'bg-secondary';
+                        break;
+                }
+
+                // ---------------------------------------------
+                // FECHA
+                // ---------------------------------------------
+
+                let fecha = '';
+
+                if (data.fecha_elaboracion) {
+
+                    const f = new Date(
+                        data.fecha_elaboracion + 'T00:00:00'
+                    );
+
+                    fecha = f.toLocaleDateString(
+                        'es-MX',
+                        {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        }
+                    );
+                }
+
+                // ---------------------------------------------
+                // TOTAL
+                // ---------------------------------------------
+
+                const total = parseFloat(data.total || 0);
+
+                const totalFormateado = total.toLocaleString(
+                    'es-MX',
+                    {
+                        style: 'currency',
+                        currency: 'MXN'
+                    }
+                );
+
+                // ---------------------------------------------
+                // TARJETA
+                // ---------------------------------------------
+
+                el.innerHTML = `
+
+                    <div class="adjudicado-mobile-header">
+
+                        <div class="adjudicado-mobile-title">
+
+                            <div class="adjudicado-mobile-icon">
+                                <i class="bi bi-clipboard-check"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="adjudicado-mobile-label">
+                                    ADJUDICACIÓN
+                                </div>
+
+                                <div class="adjudicado-mobile-folio">
+                                    ${data.folio || 'Sin folio'}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <span class="badge ${claseEstado} rounded-pill px-3 py-2">
+                            ${data.pago || 'Sin estado'}
+                        </span>
+
+                    </div>
+
+
+                    <div class="adjudicado-mobile-body">
+
+
+                        <div class="adjudicado-mobile-row">
+
+                            <span class="adjudicado-mobile-label-data">
+
+                                <i class="bi bi-hash"></i>
+
+                                REQ
+
+                            </span>
+
+                            <span class="adjudicado-mobile-value">
+
+                                ${data.req || '—'}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="adjudicado-mobile-row">
+
+                            <span class="adjudicado-mobile-label-data">
+
+                                <i class="bi bi-person"></i>
+
+                                Elaboró
+
+                            </span>
+
+                            <span class="adjudicado-mobile-value">
+
+                                ${data.elaboro || '—'}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="adjudicado-mobile-row">
+
+                            <span class="adjudicado-mobile-label-data">
+
+                                <i class="bi bi-box-seam"></i>
+
+                                Partida
+
+                            </span>
+
+                            <span class="adjudicado-mobile-value">
+
+                                ${data.partida || '—'}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="adjudicado-mobile-row">
+
+                            <span class="adjudicado-mobile-label-data">
+
+                                <i class="bi bi-calendar3"></i>
+
+                                Fecha
+
+                            </span>
+
+                            <span class="adjudicado-mobile-value">
+
+                                ${fecha || '—'}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="adjudicado-mobile-row">
+
+                            <span class="adjudicado-mobile-label-data">
+
+                                <i class="bi bi-currency-dollar"></i>
+
+                                Total
+
+                            </span>
+
+                            <span class="adjudicado-mobile-value adjudicado-mobile-total">
+
+                                ${totalFormateado}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="adjudicado-mobile-footer">
+
+                        <span>
+
+                            <i class="bi bi-hand-index-thumb me-1"></i>
+
+                            Toca para ver el detalle
+
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </div>
+
+                `;
+
+                return;
+            }
+
+            // =====================================================
+            // VISTA DESKTOP
+            // =====================================================
+
             if (estado === 'pagado') {
+
                 el.classList.add('row-pagado');
+
             } else if (estado === 'pendiente') {
+
                 el.classList.add('row-pendiente');
+
             } else if (estado === 'cancelado') {
+
                 el.classList.add('row-cancelado');
+
             }
         },
+
         columns: [
+
             // ==============================
             // REQ
             // ==============================
             {
                 title: "REQ",
                 field: "req",
-                
                 hozAlign: "center",
-                formatter: function (cell) {
-                    return `
-                    <span class="fw-semibold">
-                        ${cell.getValue() || ''}
-                    </span>
-                `;
+                minWidth: 100,
 
+                formatter: function (cell) {
+
+                    return `
+                        <span class="fw-semibold">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-
 
             // ==============================
             // FOLIO
             // ==============================
-
             {
                 title: "FOLIO",
                 field: "folio",
-                
                 hozAlign: "center",
+                minWidth: 85,
 
                 formatter: function (cell) {
 
                     return `
-                    <span class="folio-badge">
-                        ${cell.getValue() || ''}
-                    </span>
-                `;
-
+                        <span class="folio-badge">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-
 
             // ==============================
             // ELABORÓ
             // ==============================
-
             {
                 title: "ELABORÓ",
                 field: "elaboro",
-                
+                minWidth: 120,
+
                 formatter: function (cell) {
 
                     return `
-
-                <div class="erp-main-cell">
-
-                    <div class="erp-title">
-                        ${cell.getValue() || ''}
-                    </div>
-
-                </div>
-
-                `;
-
+                        <div class="erp-main-cell">
+                            <div class="erp-title">
+                                ${cell.getValue() || ''}
+                            </div>
+                        </div>
+                    `;
                 }
             },
-
 
             // ==============================
             // PARTIDA
             // ==============================
-
             {
                 title: "PARTIDA",
                 field: "partida",
-                
+                minWidth: 90,
 
                 formatter: function (cell) {
 
                     return `
-
-                    <span class="erp-sub">
-                        ${cell.getValue() || ''}
-                    </span>
-
-                `;
-
+                        <span class="erp-sub">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-
 
             // ==============================
             // FECHA
             // ==============================
-
             {
                 title: "FECHA ELABORACIÓN",
                 field: "fecha_elaboracion",
-               
+                minWidth: 125,
 
                 formatter: function (cell) {
 
@@ -136,44 +364,31 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     if (!v) return "";
 
-
                     const f = new Date(v + "T00:00:00");
 
-
                     return `
-
-                    <div class="erp-date">
-
-                        ${f.toLocaleDateString(
-                        'es-MX',
-                        {
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric'
-                        }
-                    )}
-
-                    </div>
-
-                `;
-
+                        <div class="erp-date">
+                            ${f.toLocaleDateString(
+                                'es-MX',
+                                {
+                                    day: '2-digit',
+                                    month: 'short',
+                                    year: 'numeric'
+                                }
+                            )}
+                        </div>
+                    `;
                 }
-
             },
-
 
             // ==============================
             // TOTAL
             // ==============================
-
             {
                 title: "TOTAL",
                 field: "total",
-
                 hozAlign: "right",
-
-                width: 150,
-
+                minWidth: 130,
 
                 formatter: function (cell) {
 
@@ -181,32 +396,42 @@ document.addEventListener('DOMContentLoaded', function () {
                         cell.getValue() || 0
                     );
 
-
                     return `
-
-                    <div class="erp-total">
-
-                        ${v.toLocaleString(
-                        'es-MX',
-                        {
-                            style: 'currency',
-                            currency: 'MXN'
-                        }
-                    )}
-
-                    </div>
-
-                `;
-
+                        <div class="erp-total">
+                            ${v.toLocaleString(
+                                'es-MX',
+                                {
+                                    style: 'currency',
+                                    currency: 'MXN'
+                                }
+                            )}
+                        </div>
+                    `;
                 }
-
             }
-
-
         ],
 
-
         data: window.adjudicados || []
+    });
+
+    // =====================================================
+    // REDIBUJAR ADJUDICADOS AL CAMBIAR ENTRE MÓVIL Y PC
+    // =====================================================
+
+    let vistaMovilAnterior = window.innerWidth <= 767;
+
+    window.addEventListener('resize', function () {
+
+        const vistaMovilActual = window.innerWidth <= 767;
+
+        // Solo redibuja cuando realmente cambia
+        // entre móvil y escritorio
+        if (vistaMovilActual !== vistaMovilAnterior) {
+
+            vistaMovilAnterior = vistaMovilActual;
+
+            tabla.redraw(true);
+        }
 
     });
 

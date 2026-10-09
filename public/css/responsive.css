@@ -1,0 +1,1429 @@
+/* =========================================================
+   RESPONSIVE - ADMINLTE
+   Ajustes generales para teléfonos y tablets
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   TABLETS Y PANTALLAS MEDIANAS
+   --------------------------------------------------------- */
+
+@media (max-width: 991.98px) {
+
+    /* Evita que el contenido quede demasiado pegado
+       a los bordes de la pantalla */
+    .app-content,
+    .app-content-header {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    /* El contenido principal debe poder reducirse
+       sin provocar desbordamientos horizontales */
+    .app-main {
+        min-width: 0;
+    }
+
+    /* Permite que elementos flex puedan encogerse */
+    .app-content .container-fluid,
+    .app-content-header .container-fluid {
+        min-width: 0;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   TELÉFONOS
+   --------------------------------------------------------- */
+
+@media (max-width: 575.98px) {
+
+    /* Menor espacio lateral */
+    .app-content,
+    .app-content-header {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    /* Evita que textos largos provoquen
+       desplazamiento horizontal */
+    .app-main {
+        overflow-x: hidden;
+    }
+
+    /* Contenedor completamente aprovechable */
+    .app-content .container-fluid,
+    .app-content-header .container-fluid {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    /* El footer puede ocupar varias líneas */
+    .app-footer {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .app-footer strong {
+        display: inline;
+    }
+
+}
+
+
+/* =========================================================
+   DASHBOARD - CARDS RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    /* 2 cards por fila */
+    .app-content .row.mb-4 > [class*="col-"] {
+        width: 50%;
+        padding-left: 0.35rem;
+        padding-right: 0.35rem;
+    }
+
+    /* Cards más compactas */
+    .app-content .small-box {
+        margin-bottom: 0.7rem;
+        min-height: 100px;
+    }
+
+    /* Contenido */
+    .app-content .small-box .inner {
+        padding: 0.75rem;
+        padding-right: 2.5rem;
+    }
+
+    /* Número */
+    .app-content .small-box h3 {
+        font-size: 1.6rem;
+        margin-bottom: 0.2rem;
+    }
+
+    /* Texto */
+    .app-content .small-box p {
+        font-size: 0.8rem;
+        line-height: 1.15;
+        margin-bottom: 0;
+    }
+
+    /* Iconos */
+    .app-content .small-box .icon {
+        font-size: 2.5rem;
+    }
+
+    .app-content .small-box .small-box-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+}
+
+/* =========================================================
+   DASHBOARD - ENCABEZADO Y SELECTORES RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 575.98px) {
+
+    /* Encabezado del resumen */
+    .app-content h2 {
+        font-size: 1.25rem;
+        line-height: 1.25;
+        margin-bottom: 0.75rem;
+    }
+
+    /* Contenedor de controles del dashboard */
+    .app-content .d-flex {
+        flex-wrap: wrap;
+    }
+
+    /* Selectores */
+    .app-content select {
+        max-width: 100%;
+    }
+
+}
+
+/* =========================================================
+   COTIZACIONES - TARJETAS RESPONSIVE
+   Vista móvil profesional
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    /* Contenedor de la tabla */
+    #tabla-cotizaciones {
+        width: 100%;
+        overflow: visible;
+    }
+
+    
+
+    /* Cada registro */
+    #tabla-cotizaciones .tabulator-row.cotizacion-mobile-card {
+        display: block;
+        width: 100%;
+        min-height: auto;
+
+        margin-bottom: 0.85rem;
+
+        border: 1px solid #e5e7eb;
+        border-left: 4px solid #0d6efd;
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 2px 6px rgba(15, 23, 42, 0.06);
+
+        overflow: hidden;
+
+        cursor: pointer;
+
+        transition:
+            transform .15s ease,
+            box-shadow .15s ease,
+            border-color .15s ease;
+    }
+
+    /* Efecto al tocar */
+    #tabla-cotizaciones .tabulator-row.cotizacion-mobile-card:active {
+        transform: scale(.99);
+
+        box-shadow:
+            0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+    /* =====================================================
+       HEADER DE LA TARJETA
+       ===================================================== */
+
+    #tabla-cotizaciones .cotizacion-mobile-header {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 0.75rem;
+
+        padding: 0.9rem 0.95rem;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f8fafc 0%,
+                #ffffff 100%
+            );
+
+        border-bottom: 1px solid #edf0f3;
+    }
+
+
+    /* Grupo icono + folio */
+
+    #tabla-cotizaciones .cotizacion-mobile-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 0.7rem;
+
+        min-width: 0;
+    }
+
+
+    /* Icono */
+
+    #tabla-cotizaciones .cotizacion-mobile-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #eaf2ff;
+
+        color: #0d6efd;
+
+        font-size: 1.15rem;
+    }
+
+
+    /* Texto pequeño */
+
+    #tabla-cotizaciones .cotizacion-mobile-label {
+
+        font-size: .68rem;
+
+        font-weight: 700;
+
+        letter-spacing: .06em;
+
+        color: #64748b;
+
+        line-height: 1.1;
+    }
+
+
+    /* Folio */
+
+    #tabla-cotizaciones .cotizacion-mobile-folio {
+
+        margin-top: .15rem;
+
+        font-size: 1.05rem;
+
+        font-weight: 700;
+
+        color: #0f172a;
+
+        line-height: 1.2;
+
+        word-break: break-word;
+    }
+
+
+    /* Badge estatus */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-header
+    .badge {
+
+        flex-shrink: 0;
+
+        font-size: .72rem;
+
+        white-space: normal;
+
+        text-align: center;
+
+        line-height: 1.2;
+    }
+
+
+    /* =====================================================
+       CUERPO
+       ===================================================== */
+
+    #tabla-cotizaciones .cotizacion-mobile-body {
+
+        padding: .35rem .95rem .45rem;
+    }
+
+
+    /* Cada dato */
+
+    #tabla-cotizaciones .cotizacion-mobile-row {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(90px, 34%)
+            minmax(0, 1fr);
+
+        align-items: start;
+
+        gap: .75rem;
+
+        padding: .68rem 0;
+
+        border-bottom: 1px solid #f1f3f5;
+    }
+
+
+    /* Quitar línea del último */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-row:last-child {
+
+        border-bottom: 0;
+    }
+
+
+    /* Etiqueta */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-label-data {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: .4rem;
+
+        color: #64748b;
+
+        font-size: .78rem;
+
+        font-weight: 600;
+
+        line-height: 1.35;
+    }
+
+
+    /* Icono de etiqueta */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-label-data i {
+
+        width: 17px;
+
+        text-align: center;
+
+        color: #0d6efd;
+
+        font-size: .85rem;
+    }
+
+
+    /* Valor */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-value {
+
+        min-width: 0;
+
+        color: #111827;
+
+        font-size: .86rem;
+
+        font-weight: 600;
+
+        line-height: 1.4;
+
+        text-align: right;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+    }
+
+
+    /* Nombres largos */
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-long {
+
+        font-weight: 500;
+
+        color: #374151;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    #tabla-cotizaciones .cotizacion-mobile-footer {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: .5rem;
+
+        padding: .65rem .95rem;
+
+        background: #f8fafc;
+
+        border-top: 1px solid #edf0f3;
+
+        color: #64748b;
+
+        font-size: .72rem;
+
+        font-weight: 500;
+    }
+
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-footer i {
+
+        color: #0d6efd;
+
+        font-size: .9rem;
+    }
+
+
+    /* =====================================================
+       PAGINACIÓN
+       ===================================================== */
+
+    #tabla-cotizaciones .tabulator-footer {
+
+        margin-top: .5rem;
+
+        border-top: 0;
+
+        background: transparent;
+    }
+
+
+    #tabla-cotizaciones
+    .tabulator-footer
+    .tabulator-paginator {
+
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: .25rem;
+    }
+
+
+    /* =====================================================
+       OCULTAR ELEMENTOS INTERNOS DE TABULATOR
+       ===================================================== */
+
+    #tabla-cotizaciones
+    .tabulator-tableholder {
+
+        overflow: visible !important;
+    }
+
+
+    #tabla-cotizaciones
+    .tabulator-table {
+
+        width: 100% !important;
+    }
+
+        /* =====================================================
+       OCULTAR ENCABEZADO DE TABULATOR EN MÓVIL
+       ===================================================== */
+
+    #tabla-cotizaciones
+    .tabulator-header {
+
+        display: none !important;
+    }
+
+
+    #tabla-cotizaciones
+    .tabulator-row
+    .tabulator-cell {
+
+        display: none !important;
+    }
+}
+
+
+/* =========================================================
+   CELULARES MUY PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-header
+    .badge {
+
+        align-self: flex-start;
+    }
+
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-row {
+
+        grid-template-columns: 1fr;
+
+        gap: .2rem;
+
+        padding: .6rem 0;
+    }
+
+
+    #tabla-cotizaciones
+    .cotizacion-mobile-value {
+
+        text-align: left;
+
+        padding-left: 1.35rem;
+    }
+}
+
+/* =========================================================
+   ADJUDICADOS - TARJETAS RESPONSIVE
+   Vista móvil profesional
+   ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    #tabla-adjudicados {
+        width: 100%;
+        overflow: visible;
+    }
+
+    #tabla-adjudicados .tabulator-row.adjudicado-mobile-card {
+        display: block;
+        width: 100%;
+        min-height: auto;
+        margin-bottom: 0.85rem;
+
+        border: 1px solid #e5e7eb;
+        border-left: 4px solid #0d6efd;
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+
+        overflow: hidden;
+        cursor: pointer;
+
+        transition:
+            transform .15s ease,
+            box-shadow .15s ease,
+            border-color .15s ease;
+    }
+
+    #tabla-adjudicados
+    .tabulator-row.adjudicado-mobile-card:active {
+        transform: scale(.99);
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: .75rem;
+
+        padding: .9rem .95rem;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f8fafc 0%,
+                #ffffff 100%
+            );
+
+        border-bottom: 1px solid #edf0f3;
+    }
+
+
+    #tabla-adjudicados .adjudicado-mobile-title {
+        display: flex;
+        align-items: center;
+
+        gap: .7rem;
+
+        min-width: 0;
+    }
+
+
+    /* =====================================================
+       ICONO
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-icon {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #eaf2ff;
+        color: #0d6efd;
+
+        font-size: 1.15rem;
+    }
+
+
+    /* =====================================================
+       TITULO / FOLIO
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-label {
+        font-size: .68rem;
+        font-weight: 700;
+
+        letter-spacing: .06em;
+
+        color: #64748b;
+
+        line-height: 1.1;
+    }
+
+
+    #tabla-adjudicados .adjudicado-mobile-folio {
+        margin-top: .15rem;
+
+        font-size: 1.05rem;
+        font-weight: 700;
+
+        color: #0f172a;
+
+        line-height: 1.2;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       BADGE ESTADO
+       ===================================================== */
+
+    #tabla-adjudicados
+    .adjudicado-mobile-header
+    .badge {
+
+        flex-shrink: 0;
+
+        font-size: .72rem;
+
+        white-space: normal;
+
+        text-align: center;
+
+        line-height: 1.2;
+    }
+
+
+    /* =====================================================
+       CUERPO
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-body {
+        padding: .35rem .95rem .45rem;
+    }
+
+
+    /* =====================================================
+       FILAS
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-row {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(90px, 34%)
+            minmax(0, 1fr);
+
+        align-items: start;
+
+        gap: .75rem;
+
+        padding: .68rem 0;
+
+        border-bottom: 1px solid #f1f3f5;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-row:last-child {
+
+        border-bottom: 0;
+    }
+
+
+    /* =====================================================
+       ETIQUETAS
+       ===================================================== */
+
+    #tabla-adjudicados
+    .adjudicado-mobile-label-data {
+
+        display: flex;
+        align-items: center;
+
+        gap: .4rem;
+
+        color: #64748b;
+
+        font-size: .78rem;
+        font-weight: 600;
+
+        line-height: 1.35;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-label-data i {
+
+        width: 17px;
+
+        text-align: center;
+
+        color: #0d6efd;
+
+        font-size: .85rem;
+    }
+
+
+    /* =====================================================
+       VALORES
+       ===================================================== */
+
+    #tabla-adjudicados
+    .adjudicado-mobile-value {
+
+        min-width: 0;
+
+        color: #111827;
+
+        font-size: .86rem;
+        font-weight: 600;
+
+        line-height: 1.4;
+
+        text-align: right;
+
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       TOTAL
+       ===================================================== */
+
+    #tabla-adjudicados
+    .adjudicado-mobile-total {
+
+        font-weight: 700;
+
+        color: #0f172a;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    #tabla-adjudicados .adjudicado-mobile-footer {
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: .5rem;
+
+        padding: .65rem .95rem;
+
+        background: #f8fafc;
+
+        border-top: 1px solid #edf0f3;
+
+        color: #64748b;
+
+        font-size: .72rem;
+        font-weight: 500;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-footer i {
+
+        color: #0d6efd;
+
+        font-size: .9rem;
+    }
+
+
+    /* =====================================================
+       PAGINACIÓN
+       ===================================================== */
+
+    #tabla-adjudicados .tabulator-footer {
+
+        margin-top: .5rem;
+
+        border-top: 0;
+
+        background: transparent;
+    }
+
+
+    #tabla-adjudicados
+    .tabulator-footer
+    .tabulator-paginator {
+
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: .25rem;
+    }
+
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    #tabla-adjudicados
+    .tabulator-tableholder {
+
+        overflow: visible !important;
+    }
+
+
+    #tabla-adjudicados
+    .tabulator-table {
+
+        width: 100% !important;
+    }
+
+
+    /* Ocultar encabezado en móvil */
+
+    #tabla-adjudicados
+    .tabulator-header {
+
+        display: none !important;
+    }
+
+
+    /* Ocultar celdas originales */
+
+    #tabla-adjudicados
+    .tabulator-row
+    .tabulator-cell {
+
+        display: none !important;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES MUY PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    #tabla-adjudicados
+    .adjudicado-mobile-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-header
+    .badge {
+
+        align-self: flex-start;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-row {
+
+        grid-template-columns: 1fr;
+
+        gap: .2rem;
+
+        padding: .6rem 0;
+    }
+
+
+    #tabla-adjudicados
+    .adjudicado-mobile-value {
+
+        text-align: left;
+
+        padding-left: 1.35rem;
+    }
+
+}
+
+ /* =========================================================
+    SERVICIOS - TARJETAS RESPONSIVE
+    Vista móvil profesional
+    ========================================================= */
+
+@media (max-width: 767.98px) {
+
+    #tabla-servicios {
+        width: 100%;
+        overflow: visible;
+    }
+
+
+    /* =====================================================
+       TARJETA
+       ===================================================== */
+
+    #tabla-servicios
+    .tabulator-row.servicio-mobile-card {
+
+        display: block;
+
+        width: 100%;
+
+        min-height: auto;
+
+        margin-bottom: .85rem;
+
+        border: 1px solid #e5e7eb;
+
+        border-left: 4px solid #0d6efd;
+
+        border-radius: 12px;
+
+        background: #ffffff;
+
+        box-shadow:
+            0 2px 6px rgba(15, 23, 42, .06);
+
+        overflow: hidden;
+
+        cursor: pointer;
+
+        transition:
+            transform .15s ease,
+            box-shadow .15s ease,
+            border-color .15s ease;
+    }
+
+
+    #tabla-servicios
+    .tabulator-row.servicio-mobile-card:active {
+
+        transform: scale(.99);
+
+        box-shadow:
+            0 1px 3px rgba(15, 23, 42, .08);
+    }
+
+
+    /* =====================================================
+       HEADER
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-header {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: .75rem;
+
+        padding: .9rem .95rem;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f8fafc 0%,
+                #ffffff 100%
+            );
+
+        border-bottom: 1px solid #edf0f3;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-title {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: .7rem;
+
+        min-width: 0;
+    }
+
+
+    /* =====================================================
+       ICONO
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        min-width: 40px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #eaf2ff;
+
+        color: #0d6efd;
+
+        font-size: 1.15rem;
+    }
+
+
+    /* =====================================================
+       TITULO / FOLIO
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-label {
+
+        font-size: .68rem;
+
+        font-weight: 700;
+
+        letter-spacing: .06em;
+
+        color: #64748b;
+
+        line-height: 1.1;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-folio {
+
+        margin-top: .15rem;
+
+        font-size: 1.05rem;
+
+        font-weight: 700;
+
+        color: #0f172a;
+
+        line-height: 1.2;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       BADGE TIPO SERVICIO
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-header
+    .badge {
+
+        flex-shrink: 0;
+
+        max-width: 45%;
+
+        font-size: .72rem;
+
+        white-space: normal;
+
+        text-align: center;
+
+        line-height: 1.2;
+
+        overflow-wrap: anywhere;
+    }
+
+
+    /* =====================================================
+       CUERPO
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-body {
+
+        padding: .35rem .95rem .45rem;
+    }
+
+
+    /* =====================================================
+       FILAS
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-row {
+
+        display: grid;
+
+        grid-template-columns:
+            minmax(90px, 34%)
+            minmax(0, 1fr);
+
+        align-items: start;
+
+        gap: .75rem;
+
+        padding: .68rem 0;
+
+        border-bottom: 1px solid #f1f3f5;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-row:last-child {
+
+        border-bottom: 0;
+    }
+
+
+    /* =====================================================
+       ETIQUETAS
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-label-data {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: .4rem;
+
+        color: #64748b;
+
+        font-size: .78rem;
+
+        font-weight: 600;
+
+        line-height: 1.35;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-label-data i {
+
+        width: 17px;
+
+        text-align: center;
+
+        color: #0d6efd;
+
+        font-size: .85rem;
+    }
+
+
+    /* =====================================================
+       VALORES
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-value {
+
+        min-width: 0;
+
+        color: #111827;
+
+        font-size: .86rem;
+
+        font-weight: 600;
+
+        line-height: 1.4;
+
+        text-align: right;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+    }
+
+
+    /* Campos largos */
+
+    #tabla-servicios
+    .servicio-mobile-long {
+
+        font-weight: 500;
+
+        color: #374151;
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    #tabla-servicios
+    .servicio-mobile-footer {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: .5rem;
+
+        padding: .65rem .95rem;
+
+        background: #f8fafc;
+
+        border-top: 1px solid #edf0f3;
+
+        color: #64748b;
+
+        font-size: .72rem;
+
+        font-weight: 500;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-footer i {
+
+        color: #0d6efd;
+
+        font-size: .9rem;
+    }
+
+
+    /* =====================================================
+       PAGINACIÓN
+       ===================================================== */
+
+    #tabla-servicios
+    .tabulator-footer {
+
+        margin-top: .5rem;
+
+        border-top: 0;
+
+        background: transparent;
+    }
+
+
+    #tabla-servicios
+    .tabulator-footer
+    .tabulator-paginator {
+
+        display: flex;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: .25rem;
+    }
+
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    #tabla-servicios
+    .tabulator-tableholder {
+
+        overflow: visible !important;
+    }
+
+
+    #tabla-servicios
+    .tabulator-table {
+
+        width: 100% !important;
+    }
+
+
+    /* Ocultar encabezado */
+
+    #tabla-servicios
+    .tabulator-header {
+
+        display: none !important;
+    }
+
+
+    /* Ocultar celdas originales */
+
+    #tabla-servicios
+    .tabulator-row
+    .tabulator-cell {
+
+        display: none !important;
+    }
+
+}
+
+
+/* =========================================================
+   CELULARES MUY PEQUEÑOS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    #tabla-servicios
+    .servicio-mobile-header {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-header
+    .badge {
+
+        align-self: flex-start;
+
+        max-width: 100%;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-row {
+
+        grid-template-columns: 1fr;
+
+        gap: .2rem;
+
+        padding: .6rem 0;
+    }
+
+
+    #tabla-servicios
+    .servicio-mobile-value {
+
+        text-align: left;
+
+        padding-left: 1.35rem;
+    }
+
+}
+

@@ -65,6 +65,7 @@ $nombre_usuario = $nombre_usuario ?? '';
 
   <!--begin::Required Plugin(AdminLTE)-->
   <link rel="stylesheet" href="<?= BASE_URL ?>css/adminlte.css" />
+  <link rel="stylesheet" href="<?= BASE_URL ?>css/responsive.css" />
   <!--end::Required Plugin(AdminLTE)-->
 
   <!-- apexcharts -->
@@ -87,7 +88,7 @@ $nombre_usuario = $nombre_usuario ?? '';
 <!--end::Head-->
 <!--begin::Body-->
 
-<body class="sidebar-mini sidebar-collapse">
+<body class="sidebar-mini sidebar-collapse sidebar-expand-lg">
   <!--begin::App Wrapper-->
   <div class="app-wrapper">
     <!--begin::Header-->

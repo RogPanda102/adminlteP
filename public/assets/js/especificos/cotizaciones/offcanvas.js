@@ -63,156 +63,388 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     const tabla = new Tabulator('#tabla-cotizaciones', {
+
         layout: 'fitColumns',
-        responsiveLayout: "collapse",
+
+        responsiveLayout: false,
+
         movableColumns: true,
+
         pagination: true,
+
         paginationSize: 10,
+
+        rowFormatter: function (row) {
+
+            const data = row.getData();
+            const el = row.getElement();
+
+            if (window.innerWidth <= 767) {
+
+                el.classList.add('cotizacion-mobile-card');
+
+                const estado = (data.estatus || '').toLowerCase();
+
+                let claseEstado = 'bg-secondary';
+
+                switch (estado) {
+                    case 'enviado':
+                        claseEstado = 'bg-success';
+                        break;
+
+                    case 'respaldo':
+                        claseEstado = 'bg-warning text-dark';
+                        break;
+
+                    case 'no se cotiza':
+                        claseEstado = 'bg-danger';
+                        break;
+
+                    case 'n/a':
+                        claseEstado = 'bg-info text-dark';
+                        break;
+
+                    case 'pendiente':
+                        claseEstado = 'bg-secondary';
+                        break;
+                }
+
+                const fecha = data.fecha
+                    ? new Date(data.fecha + 'T00:00:00')
+                        .toLocaleDateString('es-MX', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric'
+                        })
+                    : '';
+
+                el.innerHTML = `
+                    <div class="cotizacion-mobile-header">
+
+                        <div class="cotizacion-mobile-title">
+
+                            <div class="cotizacion-mobile-icon">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+
+                            <div>
+                                <div class="cotizacion-mobile-label">
+                                    COTIZACIÓN
+                                </div>
+
+                                <div class="cotizacion-mobile-folio">
+                                    ${data.folio || 'Sin folio'}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <span class="badge ${claseEstado} rounded-pill px-3 py-2">
+                            ${data.estatus || 'Sin estatus'}
+                        </span>
+
+                    </div>
+
+
+                    <div class="cotizacion-mobile-body">
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-calendar3"></i>
+                                Fecha
+                            </span>
+
+                            <span class="cotizacion-mobile-value">
+                                ${fecha}
+                            </span>
+                        </div>
+
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-hash"></i>
+                                REQ
+                            </span>
+
+                            <span class="cotizacion-mobile-value">
+                                ${data.req || '—'}
+                            </span>
+                        </div>
+
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-person"></i>
+                                Elaboró
+                            </span>
+
+                            <span class="cotizacion-mobile-value">
+                                ${data.elaboro || '—'}
+                            </span>
+                        </div>
+
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-box-seam"></i>
+                                Partida
+                            </span>
+
+                            <span class="cotizacion-mobile-value">
+                                ${data.partida || '—'}
+                            </span>
+                        </div>
+
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-building"></i>
+                                Proveedor
+                            </span>
+
+                            <span class="cotizacion-mobile-value cotizacion-mobile-long">
+                                ${data.proveedor || '—'}
+                            </span>
+                        </div>
+
+
+                        <div class="cotizacion-mobile-row">
+                            <span class="cotizacion-mobile-label-data">
+                                <i class="bi bi-person-badge"></i>
+                                Analista
+                            </span>
+
+                            <span class="cotizacion-mobile-value cotizacion-mobile-long">
+                                ${data.analista || '—'}
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="cotizacion-mobile-footer">
+
+                        <span>
+                            <i class="bi bi-hand-index-thumb me-1"></i>
+                            Toca para ver el detalle
+                        </span>
+
+                        <i class="bi bi-chevron-right"></i>
+
+                    </div>
+                `;
+
+            } else {
+
+                el.classList.remove('cotizacion-mobile-card');
+
+            }
+        },
+
+
         columns: [
-            // ======================================
-            // FECHA
-            // ======================================
+
             {
                 title: 'Fecha',
                 field: 'fecha',
                 hozAlign: 'center',
+                minWidth: 110,
+
                 formatter: function (cell) {
+
                     const v = cell.getValue();
+
                     if (!v) return "";
+
                     const f = new Date(v + "T00:00:00");
+
                     return `
-                            <div class="erp-date">
-                                ${f.toLocaleDateString('es-MX', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric'
-                    })}
-                            </div>
-                        `;
+                        <div class="erp-date">
+                            ${f.toLocaleDateString('es-MX', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            })}
+                        </div>
+                    `;
                 }
             },
-            // ======================================
-            // REQ
-            // ======================================
+
+
             {
                 title: 'REQ',
                 field: 'req',
+                minWidth: 100,
+
                 formatter: function (cell) {
+
                     return `
-                            <span class="fw-semibold">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
+                        <span class="fw-semibold">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-            // ======================================
-            // FOLIO
-            // ======================================
+
+
             {
                 title: 'Folio',
                 field: 'folio',
                 hozAlign: 'center',
+                minWidth: 85,
+
                 formatter: function (cell) {
+
                     return `
-                            <span class="folio-badge">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
+                        <span class="folio-badge">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-            // ======================================
-            // ELABORÓ
-            // ======================================
+
+
             {
                 title: 'Elaboró',
                 field: 'elaboro',
+                minWidth: 120,
+
                 formatter: function (cell) {
+
                     return `
-                            <div class="erp-main-cell">
-                                <div class="erp-title">
-                                    ${cell.getValue() || ''}
-                                </div>
+                        <div class="erp-main-cell">
+
+                            <div class="erp-title">
+                                ${cell.getValue() || ''}
                             </div>
-                        `;
+
+                        </div>
+                    `;
                 }
             },
-            // ======================================
-            // PARTIDA
-            // ======================================
+
+
             {
                 title: 'Partida',
                 field: 'partida',
+                minWidth: 90,
+
                 formatter: function (cell) {
+
                     return `
-                            <span class="erp-sub">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
+                        <span class="erp-sub">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-            // ======================================
-            // PROVEEDOR
-            // ======================================
+
+
             {
                 title: 'Proveedor',
                 field: 'proveedor',
+                minWidth: 150,
+
                 formatter: function (cell) {
+
                     return `
-                            <div class="erp-main-cell">
-                                <div class="erp-title">
-                                    ${cell.getValue() || ''}
-                                </div>
+                        <div class="erp-main-cell">
+
+                            <div class="erp-title">
+                                ${cell.getValue() || ''}
                             </div>
-                        `;
+
+                        </div>
+                    `;
                 }
             },
-            // ======================================
-            // ANALISTA
-            // ======================================
+
+
             {
                 title: 'Analista',
                 field: 'analista',
+                minWidth: 120,
+
                 formatter: function (cell) {
+
                     return `
-                            <span class="erp-sub">
-                                ${cell.getValue() || ''}
-                            </span>
-                        `;
+                        <span class="erp-sub">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             },
-            // ======================================
-            // ESTATUS
-            // ======================================
+
+
             {
                 title: 'Estatus',
                 field: 'estatus',
                 hozAlign: 'center',
+                minWidth: 110,
+
                 formatter: function (cell) {
-                    const estado = (cell.getValue() || '').toLowerCase();
+
+                    const estado =
+                        (cell.getValue() || '').toLowerCase();
+
                     let clase = "bg-secondary";
+
                     switch (estado) {
+
                         case "enviado":
                             clase = "bg-success";
                             break;
+
                         case "respaldo":
                             clase = "bg-warning text-dark";
                             break;
+
                         case "no se cotiza":
                             clase = "bg-danger";
                             break;
+
                         case "pendiente":
                             clase = "bg-secondary";
                             break;
+
+                        case "n/a":
+                            clase = "bg-info text-dark";
+                            break;
                     }
+
                     return `
-                                    <span class="badge ${clase} rounded-pill px-3 py-2 fw-semibold">
-                                        ${cell.getValue() || ''}
-                                    </span>
-                                `;
+                        <span class="badge ${clase} rounded-pill px-3 py-2 fw-semibold">
+                            ${cell.getValue() || ''}
+                        </span>
+                    `;
                 }
             }
+
         ],
+
         data: window.cotizaciones || []
+
+    });
+
+    // =========================================================
+    // REDIBUJAR COTIZACIONES AL CAMBIAR ENTRE MÓVIL Y PC
+    // =========================================================
+
+    let vistaMovilAnterior = window.innerWidth <= 767;
+
+    window.addEventListener('resize', function () {
+
+        const vistaMovilActual = window.innerWidth <= 767;
+
+        // Solo redibuja cuando realmente cambia
+        // entre móvil y escritorio
+        if (vistaMovilActual !== vistaMovilAnterior) {
+
+            vistaMovilAnterior = vistaMovilActual;
+
+            tabla.redraw(true);
+        }
+
     });
 
     // =====================================================
