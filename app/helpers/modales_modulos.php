@@ -925,36 +925,67 @@
 
                     </div>
 
-
-                    <!-- ================= ARCHIVO ================= -->
+                    <!-- ================= ARCHIVOS ================= -->
 
                     <div class="mb-3">
 
-                        <label
-                            for="documento-archivo"
-                            class="form-label fw-semibold">
-
-                            Archivo
-
+                        <label class="form-label fw-semibold">
+                            Archivos del documento
                         </label>
 
-                        <input
-                            type="file"
-                            id="documento-archivo"
-                            class="form-control">
-
-                        <div class="form-text">
-
-                            Selecciona el archivo que deseas asociar a esta cotización.
-
-                        </div>
-
+                        <!-- ZONA DRAG & DROP -->
                         <div
+                            id="zona-arrastre-documentos"
+                            class="border border-2 border-dashed rounded-3 p-4 text-center"
+                            style="
+                                border-color: #b6c2d2 !important;
+                                background: #f8fafc;
+                                cursor: pointer;
+                                transition: background .2s, border-color .2s;
+                            "
+                        >
 
-                            id="info-documento-archivo"
-                            class="mt-2 d-none">
+                            <div class="mb-2">
+                                <i class="bi bi-cloud-arrow-up text-primary"
+                                   style="font-size: 2.5rem;"></i>
+                            </div>
+
+                            <div class="fw-semibold">
+                                Arrastra y suelta tus archivos aquí
+                            </div>
+
+                            <div class="text-muted small mt-1">
+                                o selecciónalos desde tu equipo
+                            </div>
+
+                            <button
+                                type="button"
+                                id="btn-seleccionar-documentos"
+                                class="btn btn-sm btn-outline-primary mt-3"
+                            >
+                                <i class="bi bi-folder2-open me-1"></i>
+                                Seleccionar archivos
+                            </button>
+
+                            <div class="text-muted small mt-3">
+                                PDF, imágenes, Word y Excel · Máximo 5 MB por archivo
+                            </div>
+
+                            <input
+                                type="file"
+                                id="documento-archivo"
+                                class="d-none"
+                                multiple
+                                accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+                            >
 
                         </div>
+
+                        <!-- LISTA VISUAL DE ARCHIVOS -->
+                        <div
+                            id="info-documento-archivo"
+                            class="mt-3 d-none"
+                        ></div>
 
                     </div>
 
