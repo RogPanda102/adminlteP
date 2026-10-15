@@ -48,6 +48,75 @@ class EventoNotificacion
         ]);
     }
 
+    // =========================================
+    // CALCULAR FECHA DEL RECORDATORIO
+    // =========================================
+    private function calcularFechaEvento($fechaFinalizacion, $recordatorio)
+    {
+        $zonaHoraria = new DateTimeZone('America/Mexico_City');
+
+        // Usar la misma zona horaria que utiliza $hoy
+        $fecha = new DateTimeImmutable(
+            $fechaFinalizacion,
+            $zonaHoraria
+        );
+
+        $cantidad = (int)$recordatorio['cantidad'];
+        $unidad = $recordatorio['unidad'];
+        $momento = $recordatorio['momento'];
+
+        // Determinar si el recordatorio es previo o posterior
+        $signo = ($momento === 'antes') ? -1 : 1;
+
+        // Recordatorios expresados en días
+        if ($unidad === 'dias') {
+            $dias = $signo * $cantidad;
+
+            return $fecha->modify(
+                ($dias >= 0 ? '+' : '') . $dias . ' days'
+            );
+        }
+
+        // Recordatorios expresados en meses calendario
+        if ($unidad === 'meses') {
+            $meses = $signo * $cantidad;
+
+            $anio = (int)$fecha->format('Y');
+            $mes = (int)$fecha->format('n');
+            $dia = (int)$fecha->format('j');
+
+            // Calcular el año y mes destino
+            $totalMeses = ($anio * 12) + ($mes - 1) + $meses;
+
+            $anioDestino = intdiv($totalMeses, 12);
+            $mesDestino = ($totalMeses % 12) + 1;
+
+            // Evitar desbordamientos en meses más cortos
+            $ultimoDia = cal_days_in_month(
+                CAL_GREGORIAN,
+                $mesDestino,
+                $anioDestino
+            );
+
+            $diaDestino = min($dia, $ultimoDia);
+
+            return new DateTimeImmutable(
+                sprintf(
+                    '%04d-%02d-%02d',
+                    $anioDestino,
+                    $mesDestino,
+                    $diaDestino
+                ),
+                $zonaHoraria
+            );
+        }
+
+        throw new InvalidArgumentException(
+            'Unidad de recordatorio no válida: ' . $unidad
+        );
+    }
+
+
     // =========================
     // Generar eventos para un servicio
     // =========================
@@ -73,10 +142,16 @@ class EventoNotificacion
             return true;
         }
 
-        $fechaFinalizacion =
-            new DateTime($servicio['finalizacion']);
+        $zonaHoraria = new DateTimeZone('America/Mexico_City');
+        $hoy = new DateTimeImmutable('today', $zonaHoraria);
 
-        $hoy = new DateTime();
+        error_log('DEBUG recordatorios: ' . json_encode([
+            'servicio_id' => $servicioId,
+            'finalizacion' => $servicio['finalizacion'],
+            'hoy_php' => $hoy->format('Y-m-d H:i:s'),
+            'ahora_php' => (new DateTimeImmutable())->format('Y-m-d H:i:s'),
+            'zona_horaria' => date_default_timezone_get()
+        ]));
 
         $horarios = [
             '09:00:00',
@@ -86,16 +161,36 @@ class EventoNotificacion
 
         foreach ($recordatorios as $recordatorio) {
 
-            $diasAntes = (int)$recordatorio['dias_antes'];
-
-            $fechaEvento = clone $fechaFinalizacion;
-
-            if ($diasAntes > 0) {
-                $fechaEvento->modify("-{$diasAntes} days");
+            // Validar la configuración del recordatorio
+            if (
+                !isset(
+                    $recordatorio['cantidad'],
+                    $recordatorio['unidad'],
+                    $recordatorio['momento']
+                ) ||
+                !in_array($recordatorio['unidad'], ['dias', 'meses'], true) ||
+                !in_array($recordatorio['momento'], ['antes', 'despues'], true) ||
+                (int)$recordatorio['cantidad'] < 0
+            ) {
+                continue;
             }
 
-            // No generar eventos cuya fecha ya pasó
-            if ($fechaEvento->format('Y-m-d') < $hoy->format('Y-m-d')) {
+            try {
+                $fechaEvento = $this->calcularFechaEvento(
+                    $servicio['finalizacion'],
+                    $recordatorio
+                );
+            } catch (Throwable $e) {
+                error_log(
+                    'Error calculando recordatorio ' .
+                        $recordatorio['id'] . ': ' . $e->getMessage()
+                );
+
+                continue;
+            }
+
+            // No generar eventos de días que ya pasaron
+            if ($fechaEvento < $hoy) {
                 continue;
             }
 
@@ -104,6 +199,7 @@ class EventoNotificacion
                 $fechaHoraProgramada =
                     $fechaEvento->format('Y-m-d') . ' ' . $hora;
 
+                // Evitar duplicar el mismo evento
                 if ($this->existe(
                     $recordatorio['id'],
                     $fechaHoraProgramada
@@ -111,12 +207,20 @@ class EventoNotificacion
                     continue;
                 }
 
-                $this->crear([
+                $creado = $this->crear([
                     'servicio_id' => $servicioId,
                     'recordatorio_id' => $recordatorio['id'],
                     'usuario_id' => $servicio['creado_por'],
                     'fecha_hora_programada' => $fechaHoraProgramada
                 ]);
+
+                if (!$creado) {
+                    error_log(
+                        'No se pudo crear el evento del recordatorio ' .
+                            $recordatorio['id'] .
+                            ' para ' . $fechaHoraProgramada
+                    );
+                }
             }
         }
 
@@ -136,7 +240,9 @@ class EventoNotificacion
                 e.usuario_id,
                 e.fecha_hora_programada,
                 e.enviado,
-                r.dias_antes,
+                r.cantidad,
+                r.unidad,
+                r.momento,
                 s.req,
                 s.folio,
                 s.finalizacion,
@@ -252,4 +358,18 @@ class EventoNotificacion
 
         return $stmt->fetch(PDO::FETCH_ASSOC) !== false;
     }
+
+    
+    public function eliminarEventosVencidos()
+    {
+        $sql = "DELETE FROM eventos_notificacion
+                WHERE enviado = 0
+                AND fecha_hora_programada < CURDATE()
+                ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute();
+    }
+
 }

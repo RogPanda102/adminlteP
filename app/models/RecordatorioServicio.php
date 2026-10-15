@@ -20,13 +20,17 @@ class RecordatorioServicio
             INSERT INTO recordatorios_servicio
             (
                 servicio_id,
-                dias_antes,
+                cantidad,
+                unidad,
+                momento,
                 activo
             )
             VALUES
             (
                 :servicio_id,
-                :dias_antes,
+                :cantidad,
+                :unidad,
+                :momento,
                 :activo
             )
         ";
@@ -35,7 +39,9 @@ class RecordatorioServicio
 
         return $stmt->execute([
             ':servicio_id' => $datos['servicio_id'],
-            ':dias_antes' => $datos['dias_antes'],
+            ':cantidad' => $datos['cantidad'],
+            ':unidad' => $datos['unidad'],
+            ':momento' => $datos['momento'],
             ':activo' => $datos['activo'] ?? 1
         ]);
     }
@@ -50,13 +56,20 @@ class RecordatorioServicio
             SELECT
                 id,
                 servicio_id,
-                dias_antes,
+                cantidad,
+                unidad,
+                momento,
                 activo,
                 fecha_creacion,
                 fecha_actualizacion
             FROM recordatorios_servicio
             WHERE servicio_id = :servicio_id
-            ORDER BY dias_antes DESC
+            ORDER BY
+                CASE momento
+                    WHEN 'antes' THEN 1
+                    WHEN 'despues' THEN 2
+                END,
+                cantidad DESC
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -77,12 +90,19 @@ class RecordatorioServicio
             SELECT
                 id,
                 servicio_id,
-                dias_antes,
+                cantidad,
+                unidad,
+                momento,
                 activo
             FROM recordatorios_servicio
             WHERE servicio_id = :servicio_id
             AND activo = 1
-            ORDER BY dias_antes DESC
+            ORDER BY
+                CASE momento
+                    WHEN 'antes' THEN 1
+                    WHEN 'despues' THEN 2
+                END,
+                cantidad DESC
         ";
 
         $stmt = $this->db->prepare($sql);

@@ -357,6 +357,7 @@ class ServiciosController extends BaseController
             'creado'
         );
 
+        
         // ========================================
         // CREAR RECORDATORIOS PREDETERMINADOS
         // ========================================
@@ -364,20 +365,72 @@ class ServiciosController extends BaseController
         $recordatorioModelo = new RecordatorioServicio();
 
         $recordatoriosPredeterminados = [
-            90,
-            30,
-            7,
-            0
+            // Antes del vencimiento
+            [
+                'cantidad' => 6,
+                'unidad'   => 'meses',
+                'momento'  => 'antes'
+            ],
+            [
+                'cantidad' => 3,
+                'unidad'   => 'meses',
+                'momento'  => 'antes'
+            ],
+            [
+                'cantidad' => 30,
+                'unidad'   => 'dias',
+                'momento'  => 'antes'
+            ],
+            [
+                'cantidad' => 7,
+                'unidad'   => 'dias',
+                'momento'  => 'antes'
+            ],
+            [
+                'cantidad' => 0,
+                'unidad'   => 'dias',
+                'momento'  => 'antes'
+            ],
+
+            // Después del vencimiento
+            [
+                'cantidad' => 1,
+                'unidad'   => 'dias',
+                'momento'  => 'despues'
+            ],
+            [
+                'cantidad' => 3,
+                'unidad'   => 'dias',
+                'momento'  => 'despues'
+            ],
+            [
+                'cantidad' => 7,
+                'unidad'   => 'dias',
+                'momento'  => 'despues'
+            ],
+            [
+                'cantidad' => 15,
+                'unidad'   => 'dias',
+                'momento'  => 'despues'
+            ],
+            [
+                'cantidad' => 30,
+                'unidad'   => 'dias',
+                'momento'  => 'despues'
+            ]
         ];
 
-        foreach ($recordatoriosPredeterminados as $diasAntes) {
+        foreach ($recordatoriosPredeterminados as $recordatorio) {
 
             $recordatorioModelo->crear([
                 'servicio_id' => $servicioId,
-                'dias_antes' => $diasAntes,
-                'activo' => 1
+                'cantidad'    => $recordatorio['cantidad'],
+                'unidad'      => $recordatorio['unidad'],
+                'momento'     => $recordatorio['momento'],
+                'activo'      => 1
             ]);
         }
+
 
         // ========================================
         // GENERAR EVENTOS DE NOTIFICACIÓN
