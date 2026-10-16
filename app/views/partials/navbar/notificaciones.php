@@ -339,6 +339,19 @@ $notificaciones =
 
     }
 
+        #navbar-notificaciones-menu .notificaciones-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #navbar-notificaciones-menu .btn-navbar-marcar-todas {
+        font-size: 0.78rem;
+        text-decoration: none;
+    }
+
 </style>
 
 
@@ -351,13 +364,26 @@ $notificaciones =
          ENCABEZADO
          ========================= -->
 
-    <div class="notificaciones-header">
+    
+        <div class="notificaciones-header">
 
-        Últimas
-        <?php echo count($notificaciones); ?>
-        notificaciones
+            <span>
+                Últimas
+                <?php echo count($notificaciones); ?>
+                notificaciones
+            </span>
 
-    </div>
+            <?php if (!empty($navbarNotificaciones['total'])) : ?>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-link p-0 btn-navbar-marcar-todas"
+                >
+                    Marcar todas como leídas
+                </button>
+            <?php endif; ?>
+
+        </div>
+
 
 
     <div class="dropdown-divider"></div>
