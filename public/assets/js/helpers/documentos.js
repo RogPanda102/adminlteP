@@ -78,6 +78,8 @@ function inicializarDocumentos(config = {}) {
     ];
 
     const maximoBytes = 5 * 1024 * 1024;
+    const estadoCompresionDocumentos = new WeakMap();
+    let procesandoArchivosDocumento = false;
 
     // =====================================================
     // UTILIDADES
@@ -110,6 +112,311 @@ function inicializarDocumentos(config = {}) {
             bytes / Math.pow(1024, indice)
         ).toFixed(indice === 0 ? 0 : 2) + ' ' + unidades[indice];
     }
+
+    // =====================================================
+    // COMPRESION DE IMAGENES EN EL NAVEGADOR
+    // =====================================================
+
+    function crearBlobCanvas(canvas, tipo, calidad) {
+        return new Promise((resolve, reject) => {
+            canvas.toBlob(
+                blob => {
+                    if (!blob) {
+                        reject(new Error('No se pudo procesar la imagen.'));
+                        return;
+                    }
+
+                    resolve(blob);
+                },
+                tipo,
+                calidad
+            );
+        });
+    }
+
+    async function comprimirImagenDocumento(archivo) {
+        const tipo = archivo.type;
+        const esJPEG = tipo === 'image/jpeg';
+        const esPNG = tipo === 'image/png';
+
+        if (!esJPEG && !esPNG) {
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: archivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+        }
+
+        let imagenURL = null;
+
+        try {
+            imagenURL = URL.createObjectURL(archivo);
+
+            const imagen = new Image();
+
+            await new Promise((resolve, reject) => {
+                imagen.onload = resolve;
+                imagen.onerror = () => {
+                    reject(new Error('No se pudo abrir la imagen.'));
+                };
+
+                imagen.src = imagenURL;
+            });
+
+            const anchoOriginal = imagen.naturalWidth;
+            const altoOriginal = imagen.naturalHeight;
+
+            if (!anchoOriginal || !altoOriginal) {
+                throw new Error('La imagen no tiene dimensiones válidas.');
+            }
+
+            let mejorArchivo = archivo;
+
+            const escalas = [
+                1, 0.85, 0.70, 0.55, 0.40,
+                0.30, 0.22, 0.15, 0.10
+            ];
+
+            const calidades = esJPEG
+                ? [0.85, 0.70, 0.55, 0.40, 0.30]
+                : [undefined];
+
+            for (const escala of escalas) {
+                const canvas = document.createElement('canvas');
+
+                canvas.width = Math.max(
+                    1,
+                    Math.round(anchoOriginal * escala)
+                );
+
+                canvas.height = Math.max(
+                    1,
+                    Math.round(altoOriginal * escala)
+                );
+
+                const contexto = canvas.getContext('2d');
+
+                if (!contexto) {
+                    throw new Error('No se pudo procesar la imagen.');
+                }
+
+                contexto.drawImage(
+                    imagen,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                for (const calidad of calidades) {
+                    const blob = await crearBlobCanvas(
+                        canvas,
+                        tipo,
+                        calidad
+                    );
+
+                    const candidato = new File(
+                        [blob],
+                        archivo.name,
+                        {
+                            type: tipo,
+                            lastModified: archivo.lastModified
+                        }
+                    );
+
+                    if (candidato.size < mejorArchivo.size) {
+                        mejorArchivo = candidato;
+                    }
+
+                    if (candidato.size <= maximoBytes) {
+                        canvas.width = 1;
+                        canvas.height = 1;
+
+                        return {
+                            archivo: candidato,
+                            comprimido: candidato.size < archivo.size,
+                            errorPeso: false,
+                            tamanoOriginal: archivo.size
+                        };
+                    }
+                }
+
+                canvas.width = 1;
+                canvas.height = 1;
+            }
+
+            return {
+                archivo: mejorArchivo,
+                comprimido: mejorArchivo.size < archivo.size,
+                errorPeso: mejorArchivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+
+        } catch (error) {
+            console.error(
+                `Error al comprimir ${archivo.name}:`,
+                error
+            );
+
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: archivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+
+        } finally {
+            if (imagenURL) {
+                URL.revokeObjectURL(imagenURL);
+            }
+        }
+    }
+
+    
+    async function comprimirImagenDocumento(archivo) {
+        const tipo = archivo.type;
+        const esJPEG = tipo === 'image/jpeg';
+        const esPNG = tipo === 'image/png';
+
+        if (!esJPEG && !esPNG) {
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: archivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+        }
+
+        let imagenURL = null;
+
+        try {
+            imagenURL = URL.createObjectURL(archivo);
+
+            const imagen = new Image();
+
+            await new Promise((resolve, reject) => {
+                imagen.onload = resolve;
+                imagen.onerror = () => reject(
+                    new Error('No se pudo abrir la imagen.')
+                );
+
+                imagen.src = imagenURL;
+            });
+
+            const anchoOriginal = imagen.naturalWidth;
+            const altoOriginal = imagen.naturalHeight;
+
+            if (!anchoOriginal || !altoOriginal) {
+                throw new Error('La imagen no tiene dimensiones válidas.');
+            }
+
+            let mejorArchivo = archivo;
+
+            // Reducir progresivamente las dimensiones.
+            const escalas = [
+                1, 0.85, 0.70, 0.55, 0.40,
+                0.30, 0.22, 0.15, 0.10
+            ];
+
+            // En JPEG también se reduce la calidad.
+            // En PNG se conservan los colores y la transparencia.
+            const calidades = esJPEG
+                ? [0.85, 0.70, 0.55, 0.40, 0.30]
+                : [undefined];
+
+            for (const escala of escalas) {
+                const canvas = document.createElement('canvas');
+
+                canvas.width = Math.max(
+                    1,
+                    Math.round(anchoOriginal * escala)
+                );
+
+                canvas.height = Math.max(
+                    1,
+                    Math.round(altoOriginal * escala)
+                );
+
+                const contexto = canvas.getContext('2d');
+
+                if (!contexto) {
+                    throw new Error('No se pudo procesar la imagen.');
+                }
+
+                contexto.drawImage(
+                    imagen,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                for (const calidad of calidades) {
+                    const blob = await crearBlobCanvas(
+                        canvas,
+                        tipo,
+                        calidad
+                    );
+
+                    const candidato = new File(
+                        [blob],
+                        archivo.name,
+                        {
+                            type: tipo,
+                            lastModified: archivo.lastModified
+                        }
+                    );
+
+                    // Conservar la versión de menor tamaño encontrada.
+                    if (candidato.size < mejorArchivo.size) {
+                        mejorArchivo = candidato;
+                    }
+
+                    // Detenerse cuando ya cumple el límite.
+                    if (candidato.size <= maximoBytes) {
+                        return {
+                            archivo: candidato,
+                            comprimido: candidato !== archivo,
+                            errorPeso: false,
+                            tamanoOriginal: archivo.size
+                        };
+                    }
+                }
+
+                // Liberar memoria del lienzo antes de continuar.
+                canvas.width = 1;
+                canvas.height = 1;
+            }
+
+            // Si no alcanza el límite, conservar la mejor versión obtenida.
+            return {
+                archivo: mejorArchivo,
+                comprimido: mejorArchivo !== archivo,
+                errorPeso: mejorArchivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+
+        } catch (error) {
+            console.error(
+                `Error al comprimir ${archivo.name}:`,
+                error
+            );
+
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: true,
+                tamanoOriginal: archivo.size
+            };
+
+        } finally {
+            if (imagenURL) {
+                URL.revokeObjectURL(imagenURL);
+            }
+        }
+    }
+
 
     function obtenerContenedor(tipo) {
         return document.getElementById(`documentos-${tipo}`);
@@ -152,59 +459,119 @@ function inicializarDocumentos(config = {}) {
             ? partes.pop().toLowerCase()
             : '';
     }
-
-    function agregarArchivosDocumento(listaArchivos) {
+    // Carga de archivos 
+    async function agregarArchivosDocumento(listaArchivos) {
         const archivos = Array.from(listaArchivos || []);
 
-        if (!archivos.length) {
+        if (!archivos.length || procesandoArchivosDocumento) {
             return;
         }
 
-        archivos.forEach(archivo => {
-            const extension = obtenerExtension(archivo.name);
+        const archivosPesados = archivos.filter(
+            archivo => archivo.size > maximoBytes
+        );
 
-            // Validacion de extension.
-            if (!extensionesPermitidas.includes(extension)) {
-                mostrarAviso(
-                    `${archivo.name}: la extension no esta permitida.`
-                );
-                return;
-            }
-
-            // Si el navegador informa un MIME, comprobarlo.
-            // Si viene vacio, se deja la validacion definitiva al servidor.
-            if (
-                archivo.type &&
-                !mimesPermitidos.includes(archivo.type)
-            ) {
-                mostrarAviso(
-                    `${archivo.name}: el tipo de archivo no esta permitido.`
-                );
-                return;
-            }
-
-            if (archivo.size > maximoBytes) {
-                mostrarAviso(
-                    `${archivo.name}: supera el limite de 5 MB.`
-                );
-                return;
-            }
-
-            const duplicado = archivosDocumentoSeleccionados.some(
-                existente =>
-                    existente.name === archivo.name &&
-                    existente.size === archivo.size &&
-                    existente.lastModified === archivo.lastModified
+        if (archivosPesados.length) {
+            mostrarAviso(
+                'Algunos archivos superan el límite. Se intentará reducir ' +
+                'su tamaño para ser almacenados y guardados correctamente.'
             );
+        }
 
-            if (duplicado) {
-                return;
+        procesandoArchivosDocumento = true;
+
+        if (btnConfirmarDocumento) {
+            btnConfirmarDocumento.disabled = true;
+        }
+
+        try {
+            for (const archivoOriginal of archivos) {
+                const extension = obtenerExtension(archivoOriginal.name);
+
+                if (!extensionesPermitidas.includes(extension)) {
+                    mostrarAviso(
+                        `${archivoOriginal.name}: la extensión no está permitida.`
+                    );
+                    continue;
+                }
+
+                if (
+                    archivoOriginal.type &&
+                    !mimesPermitidos.includes(archivoOriginal.type)
+                ) {
+                    mostrarAviso(
+                        `${archivoOriginal.name}: el tipo de archivo no está permitido.`
+                    );
+                    continue;
+                }
+
+                const duplicado = archivosDocumentoSeleccionados.some(
+                    existente =>
+                        existente.name === archivoOriginal.name &&
+                        existente.size === archivoOriginal.size &&
+                        existente.lastModified === archivoOriginal.lastModified
+                );
+
+                if (duplicado) {
+                    continue;
+                }
+
+                let resultado = {
+                    archivo: archivoOriginal,
+                    comprimido: false,
+                    errorPeso: archivoOriginal.size > maximoBytes,
+                    tamanoOriginal: archivoOriginal.size
+                };
+
+                if (archivoOriginal.size > maximoBytes) {
+                    const esImagen = [
+                        'jpg',
+                        'jpeg',
+                        'png'
+                    ].includes(extension);
+
+                    if (esImagen) {
+                        resultado = await comprimirImagenDocumento(
+                            archivoOriginal
+                        );
+                    }
+                }
+
+                const archivoFinal = resultado.archivo;
+
+                estadoCompresionDocumentos.set(archivoFinal, {
+                    errorPeso: resultado.errorPeso,
+                    comprimido: resultado.comprimido,
+                    tamanoOriginal: resultado.tamanoOriginal
+                });
+
+                archivosDocumentoSeleccionados.push(archivoFinal);
+
+                if (resultado.errorPeso) {
+                    mostrarAviso(
+                        `${archivoOriginal.name}: sigue superando los 5 MB. ` +
+                        'Elimínalo de la selección para poder subir los demás.'
+                    );
+                } else if (resultado.comprimido) {
+                    if (typeof toastr !== 'undefined') {
+                        toastr.success(
+                            `${archivoOriginal.name}: reducido de ` +
+                            `${formatearTamanoDocumento(resultado.tamanoOriginal)} ` +
+                            `a ${formatearTamanoDocumento(archivoFinal.size)}.`
+                        );
+                    }
+                }
             }
 
-            archivosDocumentoSeleccionados.push(archivo);
-        });
+            renderizarArchivosDocumento();
 
-        renderizarArchivosDocumento();
+        } finally {
+            procesandoArchivosDocumento = false;
+
+            if (btnConfirmarDocumento) {
+                btnConfirmarDocumento.disabled = false;
+            }
+        }
     }
 
     function renderizarArchivosDocumento() {
@@ -245,9 +612,21 @@ function inicializarDocumentos(config = {}) {
             fila.className =
                 'd-flex align-items-center gap-2 border rounded p-2 mb-2 bg-white';
 
+            const estado = estadoCompresionDocumentos.get(archivo) || {
+                errorPeso: archivo.size > maximoBytes,
+                comprimido: false,
+                tamanoOriginal: archivo.size
+            };
+
             const icono = document.createElement('i');
-            icono.className =
-                'bi bi-file-earmark text-primary fs-4';
+            icono.className = estado.errorPeso
+                ? 'bi bi-exclamation-triangle-fill text-danger fs-4'
+                : 'bi bi-file-earmark text-primary fs-4';
+
+            if (estado.errorPeso) {
+                icono.title = 'Archivo demasiado pesado. Elimínalo para continuar.';
+                icono.setAttribute('aria-label', 'Archivo que supera el límite de 5 MB');
+            }
 
             const detalles = document.createElement('div');
             detalles.className = 'flex-grow-1 overflow-hidden';
@@ -257,9 +636,15 @@ function inicializarDocumentos(config = {}) {
             nombre.textContent = archivo.name;
 
             const tamano = document.createElement('div');
-            tamano.className = 'text-muted small';
-            tamano.textContent =
-                formatearTamanoDocumento(archivo.size);
+            tamano.className = estado.errorPeso
+                ? 'text-danger small'
+                : 'text-muted small';
+
+            tamano.textContent = estado.errorPeso
+                ? `! ${formatearTamanoDocumento(archivo.size)} — supera el límite de 5 MB`
+                : estado.comprimido
+                    ? `${formatearTamanoDocumento(estado.tamanoOriginal)} → ${formatearTamanoDocumento(archivo.size)}`
+                    : formatearTamanoDocumento(archivo.size);
 
             detalles.append(nombre, tamano);
 
@@ -267,10 +652,7 @@ function inicializarDocumentos(config = {}) {
             quitar.type = 'button';
             quitar.className = 'btn btn-sm btn-outline-danger';
             quitar.title = 'Quitar archivo';
-            quitar.setAttribute(
-                'aria-label',
-                `Quitar ${archivo.name}`
-            );
+            quitar.setAttribute('aria-label', `Quitar ${archivo.name}`);
 
             const iconoQuitar = document.createElement('i');
             iconoQuitar.className = 'bi bi-x-lg';
@@ -819,6 +1201,31 @@ function inicializarDocumentos(config = {}) {
         if (!archivos.length) {
             toastr.warning('Selecciona al menos un archivo.');
             btnSeleccionarDocumentos?.focus();
+            return;
+        }
+
+                if (!archivos.length) {
+            toastr.warning('Selecciona al menos un archivo.');
+            btnSeleccionarDocumentos?.focus();
+            return;
+        }
+
+        // =====================================================
+        // VALIDAR ARCHIVOS QUE SUPERAN LOS 5 MB
+        // =====================================================
+        const archivosPesados = archivos.filter(archivo => {
+            const estado = estadoCompresionDocumentos.get(archivo);
+
+            return estado
+                ? estado.errorPeso || archivo.size > maximoBytes
+                : archivo.size > maximoBytes;
+        });
+
+        if (archivosPesados.length) {
+            toastr.warning(
+                'No se pueden subir los archivos marcados con !. ' +
+                'Elimínalos de la selección para continuar.'
+            );
             return;
         }
 
