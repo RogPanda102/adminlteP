@@ -214,18 +214,20 @@ class Notificacion
     // =========================
     // Marcar una como leída
     // =========================
-    public function marcarLeida($id)
+    public function marcarLeida($id, $usuarioId)
     {
 
         $sql = "UPDATE notificaciones
                 SET leida = 1
-                WHERE id = :id";
+                WHERE id = :id
+                AND usuario_id = :usuario_id";
 
         $query = $this->conexion->prepare($sql);
 
         return $query->execute([
 
-            ':id' => $id
+            ':id' => $id,
+            ':usuario_id' => $usuarioId
 
         ]);
 

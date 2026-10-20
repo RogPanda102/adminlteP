@@ -213,7 +213,7 @@ $nombre_usuario = $nombre_usuario ?? '';
             ?>
           <!--begin::Notifications Dropdown Menu-->
           <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" href="#">
+            <a class="nav-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" href="#">
               <i class="bi bi-bell-fill"></i>
               <span
                 id="navbar-notificaciones-total"

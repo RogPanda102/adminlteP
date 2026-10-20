@@ -112,7 +112,7 @@ class NotificacionesController extends BaseController
 
         }
 
-        $modelo->marcarLeida($id);
+        $modelo->marcarLeida($id, $_SESSION['usuario_id']);
 
         redirect(
             ltrim($notificacion['url'], '/')
@@ -120,15 +120,36 @@ class NotificacionesController extends BaseController
 
     }
 
+
     // =========================
-    // AJAX Navbar
+    // Marcar una notificación como leída
     // =========================
-    public function ajax()
+    public function marcarLeida()
     {
 
         if (!$this->permitido) {
 
             http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado.'
+            ]);
+
+            exit;
+
+        }
+
+        $id = (int)($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Notificación no válida.'
+            ]);
 
             exit;
 
@@ -136,42 +157,54 @@ class NotificacionesController extends BaseController
 
         $modelo = new Notificacion();
 
-        $total = $modelo->contarNoLeidas(
+        $resultado = $modelo->marcarLeida(
+            $id,
             $_SESSION['usuario_id']
         );
-        
-        $notificaciones = $modelo->obtenerParaNavbar(
-            $_SESSION['usuario_id'],
-            5
-        );
-
-        // =========================
-        // DATOS PARA LA VISTA
-        // =========================
-
-        $navbarNotificaciones = [
-            'total' => (int)$total['total'],
-            'notificaciones' => $notificaciones
-        ];
-
-        // =========================
-        // GENERAR HTML
-        // =========================
-
-        ob_start();
-
-        require APP_PATH .
-            '/views/partials/navbar/notificaciones.php';
-
-        $html = ob_get_clean();
 
         header('Content-Type: application/json');
 
         echo json_encode([
 
-            'total' => (int)$total['total'],
+            'ok' => $resultado
 
-            'html' => $html
+        ]);
+
+        exit;
+
+    }
+
+
+    // =========================
+    // Marcar todas como leídas
+    // =========================
+    public function marcarTodas()
+    {
+
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado.'
+            ]);
+
+            exit;
+
+        }
+
+        $modelo = new Notificacion();
+
+        $resultado = $modelo->marcarTodasLeidas(
+            $_SESSION['usuario_id']
+        );
+
+        header('Content-Type: application/json');
+
+        echo json_encode([
+
+            'ok' => $resultado
 
         ]);
 

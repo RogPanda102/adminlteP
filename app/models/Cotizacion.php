@@ -272,7 +272,7 @@ class Cotizacion
         $stmt=$this->db->prepare($sql);
 
 
-        return $stmt->execute([
+        $ok = $stmt->execute([
 
             ':fecha'=>$datos['fecha'],
             ':req'=>$datos['req'],
@@ -288,7 +288,7 @@ class Cotizacion
             ':creado_por'=>$datos['creado_por']
 
         ]);
-
+        if (!$ok) { return false; } return (int) $this->db->lastInsertId();
     }
 
     // =========================
