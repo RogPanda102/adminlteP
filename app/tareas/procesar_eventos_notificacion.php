@@ -4,191 +4,238 @@ require_once __DIR__ . '/../models/EventoNotificacion.php';
 require_once __DIR__ . '/../models/Notificacion.php';
 require_once __DIR__ . '/../models/Servicios.php';
 
-$eventoModelo = new EventoNotificacion();
-$notificacionModelo = new Notificacion();
-$servicioModelo = new Servicio();
+class ProcesadorNotificaciones
+{
+    public function procesar()
+    {
+        $eventoModelo = new EventoNotificacion();
+        $notificacionModelo = new Notificacion();
+        $servicioModelo = new Servicio();
 
+        $resultado = [
+            'servicios_revisados' => 0,
+            'eventos_encontrados' => 0,
+            'notificaciones_creadas' => 0,
+            'duplicados' => 0,
+            'errores' => 0
+        ];
 
+        // 1. Generar eventos para los servicios.
+        $servicios = $servicioModelo
+            ->obtenerServiciosParaNotificaciones();
 
-// =========================================
-// GENERAR EVENTOS PARA TODOS LOS SERVICIOS
-// =========================================
+        foreach ($servicios as $servicio) {
+            try {
+                $generado = $eventoModelo->generarParaServicio(
+                    (int) $servicio['id']
+                );
 
-$servicios = $servicioModelo->obtenerServiciosParaNotificaciones();
+                if ($generado) {
+                    $resultado['servicios_revisados']++;
+                }
+            } catch (Throwable $e) {
+                $resultado['errores']++;
 
-$totalServiciosRevisados = 0;
-
-foreach ($servicios as $servicio) {
-
-    $resultado = $eventoModelo->generarParaServicio(
-        (int) $servicio['id']
-    );
-
-    if ($resultado) {
-        $totalServiciosRevisados++;
-    }
-}
-
-echo "Servicios revisados: {$totalServiciosRevisados}\n";
-
-// =========================================
-// ELIMINAR EVENTOS CUYA HORA YA PASÓ
-// =========================================
-
-$eventoModelo->eliminarEventosVencidos();
-
-// =========================================
-// OBTENER EVENTOS LISTOS PARA PROCESAR
-// =========================================
-
-$eventos = $eventoModelo->obtenerPendientes();
-
-if (!$eventos) {
-    die("No hay eventos pendientes para procesar.\n");
-}
-
-$totalProcesados = 0;
-$totalErrores = 0;
-
-if (!$eventos) {
-    die("No hay eventos pendientes para procesar.\n");
-}
-
-$totalProcesados = 0;
-$totalErrores = 0;
-
-
-foreach ($eventos as $evento) {
-
-    $cantidad = (int)$evento['cantidad'];
-    $unidad = $evento['unidad'];
-    $momento = $evento['momento'];
-
-    // Validar los datos del recordatorio
-    if (
-        $cantidad < 0 ||
-        !in_array($unidad, ['dias', 'meses'], true) ||
-        !in_array($momento, ['antes', 'despues'], true)
-    ) {
-        $totalErrores++;
-        echo "  ERROR: configuración de recordatorio no válida. Evento ID: {$evento['id']}\n";
-        continue;
-    }
-
-    $unidadTexto = ($unidad === 'meses')
-        ? ($cantidad === 1 ? 'mes' : 'meses')
-        : ($cantidad === 1 ? 'día' : 'días');
-
-    $referenciaServicio =
-        "El servicio {$evento['req']} - {$evento['folio']}";
-
-    // Variables de la notificación
-    $eventoNombreAnterior = null;
-
-    // =========================================
-    // AVISO EL DÍA DEL VENCIMIENTO
-    // =========================================
-    if ($momento === 'antes' && $cantidad === 0) {
-
-        $titulo = 'Servicio vence hoy';
-        $mensaje = "{$referenciaServicio} vence hoy.";
-        $tipo = 'danger';
-        $eventoNombre = 'vencimiento_hoy';
-
-        // =========================================
-        // AVISO ANTES DEL VENCIMIENTO
-        // =========================================
-    } elseif ($momento === 'antes') {
-
-        $titulo = "Servicio vence en {$cantidad} {$unidadTexto}";
-        $mensaje = "{$referenciaServicio} vence en {$cantidad} {$unidadTexto}.";
-        $tipo = 'warning';
-
-        $eventoNombre =
-            "vencimiento_antes_{$cantidad}_{$unidad}";
-
-        // Compatibilidad con nombres de eventos anteriores
-        if ($unidad === 'dias') {
-            $eventoNombreAnterior = "vencimiento_{$cantidad}";
-        } elseif ($cantidad === 3 && $unidad === 'meses') {
-            // Antes, este recordatorio se identificaba como 90 días
-            $eventoNombreAnterior = 'vencimiento_90';
+                error_log(
+                    'Error generando eventos del servicio ' .
+                    $servicio['id'] . ': ' . $e->getMessage()
+                );
+            }
         }
 
-        // =========================================
-        // AVISO DESPUÉS DEL VENCIMIENTO
-        // =========================================
-    } else {
+        // 2. Limpiar eventos pendientes de días anteriores.
+        try {
+            $eventoModelo->eliminarEventosVencidos();
+        } catch (Throwable $e) {
+            $resultado['errores']++;
 
-        $titulo = "Servicio vencido hace {$cantidad} {$unidadTexto}";
-        $mensaje = "{$referenciaServicio} venció hace {$cantidad} {$unidadTexto}.";
-        $tipo = 'danger';
+            error_log(
+                'Error eliminando eventos vencidos: ' .
+                $e->getMessage()
+            );
+        }
 
-        $eventoNombre =
-            "vencimiento_despues_{$cantidad}_{$unidad}";
-    }
+        // 3. Obtener eventos que ya deben procesarse.
+        try {
+            $eventos = $eventoModelo->obtenerPendientes();
+        } catch (Throwable $e) {
+            $resultado['errores']++;
 
-    // =========================================
-    // EVITAR NOTIFICACIONES DUPLICADAS
-    // =========================================
-    $existe = $notificacionModelo->existeEvento(
-        $evento['usuario_id'],
-        'servicios',
-        $evento['servicio_id'],
-        $eventoNombre,
-        $evento['id']
-    );
+            error_log(
+                'Error obteniendo eventos pendientes: ' .
+                $e->getMessage()
+            );
 
-    // Comprobar también el nombre antiguo, si aplica
-    if (
-        !$existe &&
-        $eventoNombreAnterior !== null
-    ) {
-        $existe = $notificacionModelo->existeEvento(
-            $evento['usuario_id'],
-            'servicios',
-            $evento['servicio_id'],
-            $eventoNombreAnterior,
-            $evento['id']
-        );
-    }
+            return $resultado;
+        }
 
-    if ($existe) {
+        $resultado['eventos_encontrados'] = count($eventos);
 
-        echo "  La notificación ya existe. Se marca el evento como enviado.\n";
+        foreach ($eventos as $evento) {
+            try {
+                $cantidad = (int) $evento['cantidad'];
+                $unidad = $evento['unidad'];
+                $momento = $evento['momento'];
 
-        $eventoModelo->marcarEnviado($evento['id']);
+                // Validar la configuración del recordatorio.
+                if (
+                    $cantidad < 0 ||
+                    !in_array($unidad, ['dias', 'meses'], true) ||
+                    !in_array($momento, ['antes', 'despues'], true)
+                ) {
+                    $resultado['errores']++;
 
-        continue;
-    }
+                    error_log(
+                        'Configuración no válida. Evento ID: ' .
+                        $evento['id']
+                    );
 
-    // =========================================
-    // CREAR NOTIFICACIÓN
-    // =========================================
-    $resultado = $notificacionModelo->crear([
-        'usuario_id' => $evento['usuario_id'],
-        'titulo' => $titulo,
-        'mensaje' => $mensaje,
-        'url' => 'servicios/' . $evento['anio'],
-        'tipo' => $tipo,
-        'modulo' => 'servicios',
-        'registro_id' => $evento['servicio_id'],
-        'evento' => $eventoNombre,
-        'evento_notificacion_id' => $evento['id']
-    ]);
+                    continue;
+                }
 
-    if ($resultado) {
+                $unidadTexto = ($unidad === 'meses')
+                    ? ($cantidad === 1 ? 'mes' : 'meses')
+                    : ($cantidad === 1 ? 'día' : 'días');
 
-        $eventoModelo->marcarEnviado($evento['id']);
+                $referenciaServicio =
+                    "El servicio {$evento['req']} - {$evento['folio']}";
 
-        $totalProcesados++;
+                $eventoNombreAnterior = null;
 
-        echo "  Notificación creada correctamente.\n";
-        echo "  Evento marcado como enviado.\n";
-    } else {
+                // Aviso el día del vencimiento.
+                if ($momento === 'antes' && $cantidad === 0) {
+                    $titulo = 'Servicio vence hoy';
+                    $mensaje = "{$referenciaServicio} vence hoy.";
+                    $tipo = 'danger';
+                    $eventoNombre = 'vencimiento_hoy';
 
-        $totalErrores++;
+                // Aviso previo al vencimiento.
+                } elseif ($momento === 'antes') {
+                    $titulo =
+                        "Servicio vence en {$cantidad} {$unidadTexto}";
 
-        echo "  ERROR: no se pudo crear la notificación.\n";
+                    $mensaje =
+                        "{$referenciaServicio} vence en " .
+                        "{$cantidad} {$unidadTexto}.";
+
+                    $tipo = 'warning';
+
+                    $eventoNombre =
+                        "vencimiento_antes_{$cantidad}_{$unidad}";
+
+                    // Compatibilidad con nombres anteriores.
+                    if ($unidad === 'dias') {
+                        $eventoNombreAnterior =
+                            "vencimiento_{$cantidad}";
+
+                    } elseif (
+                        $cantidad === 3 &&
+                        $unidad === 'meses'
+                    ) {
+                        $eventoNombreAnterior = 'vencimiento_90';
+                    }
+
+                // Aviso posterior al vencimiento.
+                } else {
+                    $titulo =
+                        "Servicio vencido hace {$cantidad} {$unidadTexto}";
+
+                    $mensaje =
+                        "{$referenciaServicio} venció hace " .
+                        "{$cantidad} {$unidadTexto}.";
+
+                    $tipo = 'danger';
+
+                    $eventoNombre =
+                        "vencimiento_despues_{$cantidad}_{$unidad}";
+                }
+
+                // Comprobar si ya existe la notificación.
+                $existe = $notificacionModelo->existeEvento(
+                    $evento['usuario_id'],
+                    'servicios',
+                    $evento['servicio_id'],
+                    $eventoNombre,
+                    $evento['id']
+                );
+
+                // Comprobar también el nombre anterior.
+                if (
+                    !$existe &&
+                    $eventoNombreAnterior !== null
+                ) {
+                    $existe = $notificacionModelo->existeEvento(
+                        $evento['usuario_id'],
+                        'servicios',
+                        $evento['servicio_id'],
+                        $eventoNombreAnterior,
+                        $evento['id']
+                    );
+                }
+
+                if ($existe) {
+                    if (!$eventoModelo->marcarEnviado($evento['id'])) {
+                        $resultado['errores']++;
+
+                        error_log(
+                            'No se pudo marcar como enviado el evento ' .
+                            $evento['id']
+                        );
+                    } else {
+                        $resultado['duplicados']++;
+                    }
+
+                    continue;
+                }
+
+                // Crear la notificación.
+                $creada = $notificacionModelo->crear([
+                    'usuario_id' => $evento['usuario_id'],
+                    'titulo' => $titulo,
+                    'mensaje' => $mensaje,
+                    'url' => 'servicios/' . $evento['anio'],
+                    'tipo' => $tipo,
+                    'modulo' => 'servicios',
+                    'registro_id' => $evento['servicio_id'],
+                    'evento' => $eventoNombre,
+                    'evento_notificacion_id' => $evento['id']
+                ]);
+
+                if (!$creada) {
+                    $resultado['errores']++;
+
+                    error_log(
+                        'No se pudo crear la notificación del evento ' .
+                        $evento['id']
+                    );
+
+                    continue;
+                }
+
+                // Marcar únicamente después de crear la notificación.
+                if (!$eventoModelo->marcarEnviado($evento['id'])) {
+                    $resultado['errores']++;
+
+                    error_log(
+                        'La notificación del evento ' . $evento['id'] .
+                        ' se creó, pero no se pudo marcar como enviado.'
+                    );
+
+                    continue;
+                }
+
+                $resultado['notificaciones_creadas']++;
+
+            } catch (Throwable $e) {
+                $resultado['errores']++;
+
+                error_log(
+                    'Error procesando evento ' . $evento['id'] .
+                    ': ' . $e->getMessage()
+                );
+            }
+        }
+
+        return $resultado;
     }
 }

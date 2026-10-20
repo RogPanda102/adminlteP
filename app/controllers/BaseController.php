@@ -29,6 +29,24 @@ class BaseController
     // Renderizar vistas
     protected function render($vista, $datos = [])
     {
+        // Procesar recordatorios solo para usuarios autenticados.
+        if (isset($_SESSION['logueado'])) {
+            try {
+                require_once __DIR__ . '/../tareas/CoordinadorNotificaciones.php';
+
+                $coordinador = new CoordinadorNotificaciones();
+                $coordinador->ejecutar();
+
+            } catch (Throwable $e) {
+                // Un error en los recordatorios no debe impedir
+                // que se muestre la página del usuario.
+                error_log(
+                    'Error en el coordinador de notificaciones: ' .
+                    $e->getMessage()
+                );
+            }
+        }
+
         $datos['menu'] = crear_menu_panel();
         $datos['navbarNotificaciones'] =
         obtenerNotificacionesNavbar();
