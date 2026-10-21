@@ -134,145 +134,6 @@ function inicializarDocumentos(config = {}) {
         });
     }
 
-    async function comprimirImagenDocumento(archivo) {
-        const tipo = archivo.type;
-        const esJPEG = tipo === 'image/jpeg';
-        const esPNG = tipo === 'image/png';
-
-        if (!esJPEG && !esPNG) {
-            return {
-                archivo,
-                comprimido: false,
-                errorPeso: archivo.size > maximoBytes,
-                tamanoOriginal: archivo.size
-            };
-        }
-
-        let imagenURL = null;
-
-        try {
-            imagenURL = URL.createObjectURL(archivo);
-
-            const imagen = new Image();
-
-            await new Promise((resolve, reject) => {
-                imagen.onload = resolve;
-                imagen.onerror = () => {
-                    reject(new Error('No se pudo abrir la imagen.'));
-                };
-
-                imagen.src = imagenURL;
-            });
-
-            const anchoOriginal = imagen.naturalWidth;
-            const altoOriginal = imagen.naturalHeight;
-
-            if (!anchoOriginal || !altoOriginal) {
-                throw new Error('La imagen no tiene dimensiones válidas.');
-            }
-
-            let mejorArchivo = archivo;
-
-            const escalas = [
-                1, 0.85, 0.70, 0.55, 0.40,
-                0.30, 0.22, 0.15, 0.10
-            ];
-
-            const calidades = esJPEG
-                ? [0.85, 0.70, 0.55, 0.40, 0.30]
-                : [undefined];
-
-            for (const escala of escalas) {
-                const canvas = document.createElement('canvas');
-
-                canvas.width = Math.max(
-                    1,
-                    Math.round(anchoOriginal * escala)
-                );
-
-                canvas.height = Math.max(
-                    1,
-                    Math.round(altoOriginal * escala)
-                );
-
-                const contexto = canvas.getContext('2d');
-
-                if (!contexto) {
-                    throw new Error('No se pudo procesar la imagen.');
-                }
-
-                contexto.drawImage(
-                    imagen,
-                    0,
-                    0,
-                    canvas.width,
-                    canvas.height
-                );
-
-                for (const calidad of calidades) {
-                    const blob = await crearBlobCanvas(
-                        canvas,
-                        tipo,
-                        calidad
-                    );
-
-                    const candidato = new File(
-                        [blob],
-                        archivo.name,
-                        {
-                            type: tipo,
-                            lastModified: archivo.lastModified
-                        }
-                    );
-
-                    if (candidato.size < mejorArchivo.size) {
-                        mejorArchivo = candidato;
-                    }
-
-                    if (candidato.size <= maximoBytes) {
-                        canvas.width = 1;
-                        canvas.height = 1;
-
-                        return {
-                            archivo: candidato,
-                            comprimido: candidato.size < archivo.size,
-                            errorPeso: false,
-                            tamanoOriginal: archivo.size
-                        };
-                    }
-                }
-
-                canvas.width = 1;
-                canvas.height = 1;
-            }
-
-            return {
-                archivo: mejorArchivo,
-                comprimido: mejorArchivo.size < archivo.size,
-                errorPeso: mejorArchivo.size > maximoBytes,
-                tamanoOriginal: archivo.size
-            };
-
-        } catch (error) {
-            console.error(
-                `Error al comprimir ${archivo.name}:`,
-                error
-            );
-
-            return {
-                archivo,
-                comprimido: false,
-                errorPeso: archivo.size > maximoBytes,
-                tamanoOriginal: archivo.size
-            };
-
-        } finally {
-            if (imagenURL) {
-                URL.revokeObjectURL(imagenURL);
-            }
-        }
-    }
-
     
     async function comprimirImagenDocumento(archivo) {
         const tipo = archivo.type;
@@ -429,6 +290,203 @@ function inicializarDocumentos(config = {}) {
             console.warn(mensaje);
         }
     }
+    
+    // =====================================================
+    // COMPRESION REAL DE PDF EN EL NAVEGADOR
+    // =====================================================
+
+    async function comprimirPDFDocumento(archivo) {
+        if (
+            typeof pdfjsLib === 'undefined' ||
+            typeof window.jspdf === 'undefined'
+        ) {
+            console.error('PDF.js o jsPDF no están cargados.');
+
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: archivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+        }
+
+        let mejorArchivo = archivo;
+        let pdfCargado = null;
+
+        // Cada intento reduce progresivamente la calidad y resolución.
+        const intentos = [
+            { escala: 1.4, calidad: 0.75 },
+            { escala: 1.2, calidad: 0.65 },
+            { escala: 1.0, calidad: 0.55 },
+            { escala: 0.85, calidad: 0.45 },
+            { escala: 0.70, calidad: 0.35 }
+        ];
+
+        try {
+            const datos = new Uint8Array(
+                await archivo.arrayBuffer()
+            );
+
+            pdfCargado = await pdfjsLib.getDocument({
+                data: datos
+            }).promise;
+
+            const { jsPDF } = window.jspdf;
+
+            for (const intento of intentos) {
+                let documentoNuevo = null;
+
+                try {
+                    for (
+                        let numeroPagina = 1;
+                        numeroPagina <= pdfCargado.numPages;
+                        numeroPagina++
+                    ) {
+                        const pagina = await pdfCargado.getPage(
+                            numeroPagina
+                        );
+
+                        const vistaBase = pagina.getViewport({
+                            scale: 1
+                        });
+
+                        const vista = pagina.getViewport({
+                            scale: intento.escala
+                        });
+
+                        const canvas = document.createElement('canvas');
+
+                        canvas.width = Math.max(
+                            1,
+                            Math.ceil(vista.width)
+                        );
+
+                        canvas.height = Math.max(
+                            1,
+                            Math.ceil(vista.height)
+                        );
+
+                        const contexto = canvas.getContext('2d', {
+                            alpha: false
+                        });
+
+                        if (!contexto) {
+                            throw new Error(
+                                'No se pudo crear el lienzo del PDF.'
+                            );
+                        }
+
+                        contexto.fillStyle = '#FFFFFF';
+                        contexto.fillRect(
+                            0,
+                            0,
+                            canvas.width,
+                            canvas.height
+                        );
+
+                        await pagina.render({
+                            canvasContext: contexto,
+                            viewport: vista
+                        }).promise;
+
+                        const imagen = canvas.toDataURL(
+                            'image/jpeg',
+                            intento.calidad
+                        );
+
+                        if (!documentoNuevo) {
+                            documentoNuevo = new jsPDF({
+                                orientation:
+                                    vistaBase.width > vistaBase.height
+                                        ? 'landscape'
+                                        : 'portrait',
+                                unit: 'pt',
+                                format: [
+                                    vistaBase.width,
+                                    vistaBase.height
+                                ],
+                                compress: true
+                            });
+                        } else {
+                            documentoNuevo.addPage([
+                                vistaBase.width,
+                                vistaBase.height
+                            ]);
+                        }
+
+                        documentoNuevo.addImage(
+                            imagen,
+                            'JPEG',
+                            0,
+                            0,
+                            vistaBase.width,
+                            vistaBase.height,
+                            undefined,
+                            'FAST'
+                        );
+
+                        // Liberar memoria de la página procesada.
+                        canvas.width = 1;
+                        canvas.height = 1;
+                        pagina.cleanup();
+                    }
+
+                    const blob = documentoNuevo.output('blob');
+
+                    const candidato = new File(
+                        [blob],
+                        archivo.name,
+                        {
+                            type: 'application/pdf',
+                            lastModified: archivo.lastModified
+                        }
+                    );
+
+                    if (candidato.size < mejorArchivo.size) {
+                        mejorArchivo = candidato;
+                    }
+
+                    // Detenerse si ya cumple el límite.
+                    if (candidato.size <= maximoBytes) {
+                        return {
+                            archivo: candidato,
+                            comprimido: true,
+                            errorPeso: false,
+                            tamanoOriginal: archivo.size
+                        };
+                    }
+
+                } finally {
+                    documentoNuevo = null;
+                }
+            }
+
+            return {
+                archivo: mejorArchivo,
+                comprimido: mejorArchivo !== archivo,
+                errorPeso: mejorArchivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+
+        } catch (error) {
+            console.error(
+                `Error al comprimir el PDF ${archivo.name}:`,
+                error
+            );
+
+            return {
+                archivo,
+                comprimido: false,
+                errorPeso: archivo.size > maximoBytes,
+                tamanoOriginal: archivo.size
+            };
+
+        } finally {
+            if (pdfCargado) {
+                await pdfCargado.destroy();
+            }
+        }
+    }
 
     // =====================================================
     // ARCHIVOS SELECCIONADOS
@@ -532,6 +590,10 @@ function inicializarDocumentos(config = {}) {
 
                     if (esImagen) {
                         resultado = await comprimirImagenDocumento(
+                            archivoOriginal
+                        );
+                    } else if (extension === 'pdf') {
+                        resultado = await comprimirPDFDocumento(
                             archivoOriginal
                         );
                     }
