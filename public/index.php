@@ -40,10 +40,16 @@ if (isset($_SESSION['logueado'])) {
 
         session_destroy();
 
-        // Marcar que la sesión expiró
+        // Crear una nueva sesión para informar que expiró
         session_start();
 
         $_SESSION['sesion_expirada'] = true;
+
+    } else {
+
+        // Actualizar la última actividad registrada
+        $_SESSION['ultima_actividad'] = time();
+
     }
 }
 
@@ -63,16 +69,13 @@ require_once dirname(__DIR__) . '/app/config/app.php';
 
 require_once CORE_PATH . '/router.php';
 
-
 /*
 |--------------------------------------------------------------------------
-| constantes
+| Constantes
 |--------------------------------------------------------------------------
 */
 
-
 require_once CONFIG_PATH . '/constantes.php';
-
 
 /*
 |--------------------------------------------------------------------------
