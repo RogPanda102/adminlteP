@@ -398,6 +398,20 @@ $nombre_usuario = $nombre_usuario ?? '';
   </div>
   <!--end::App Wrapper-->
   <!--begin::Script-->
+
+  <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+
+    <!-- PDF.js: leer y renderizar páginas -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+  <!-- jsPDF: reconstruir el PDF comprimido -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Configurar el worker de PDF.js -->
+  <script>
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  </script>
   <!--begin::Third Party Plugin(OverlayScrollbars)-->
   <script
     src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
@@ -654,3 +668,4 @@ $nombre_usuario = $nombre_usuario ?? '';
 <!--end::Body-->
 
 </html>
+
