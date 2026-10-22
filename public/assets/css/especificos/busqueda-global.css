@@ -1,0 +1,222 @@
+/* El elemento de búsqueda no debe aumentar la altura del navbar */
+.navbar-search-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+/* El panel no debe alterar el tamaño de la fila cuando está cerrado */
+.navbar-search-panel {
+    width: 0;
+    min-width: 0;
+    height: 38px;
+    overflow: hidden;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    /* El movimiento parte desde el extremo de la lupa. */
+    transform: translateX(8px);
+    flex-shrink: 1;
+
+    transition:
+        width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 180ms ease,
+        transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s linear 280ms;
+}
+
+/* Buscador abierto: se expande hacia la izquierda. */
+.navbar-search-wrapper.is-open .navbar-search-panel {
+    width: clamp(220px, 42vw, 560px);
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+
+    transform: translateX(0);
+
+    transition:
+        width 280ms cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 180ms ease,
+        transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0s;
+}
+
+/* El formulario y el campo mantienen una altura uniforme */
+.navbar-search-panel form,
+.navbar-search-panel .input-group {
+    width: 100%;
+    height: 100%;
+}
+
+/* El botón de la lupa no se comprime */
+.navbar-search-toggle {
+    flex-shrink: 0;
+}
+
+
+/* Resultados alineados con el buscador */
+.navbar-search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 1050;
+
+    width: min(560px, calc(100vw - 24px));
+    max-height: 360px;
+    overflow-y: auto;
+
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 12%);
+}
+
+.navbar-search-results[hidden],
+.navbar-search-wrapper:not(.is-open) .navbar-search-results {
+    display: none !important;
+}
+
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 575.98px) {
+    .navbar-search-wrapper.is-open .navbar-search-panel {
+        width: clamp(150px, 45vw, 280px);
+    }
+
+    .navbar-search-results {
+        right: 12px;
+        width: calc(100vw - 24px);
+    }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .navbar-search-panel,
+    .navbar-search-wrapper.is-open .navbar-search-panel {
+        transition: none;
+    }
+}
+
+
+/* ========================================
+   RESULTADOS DE LA BÚSQUEDA GLOBAL
+======================================== */
+
+.navbar-search-results {
+    padding: 8px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: 10px;
+    background: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 14%);
+    max-height: 420px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* Barra de desplazamiento */
+.navbar-search-results::-webkit-scrollbar {
+    width: 7px;
+}
+
+.navbar-search-results::-webkit-scrollbar-thumb {
+    background: var(--bs-border-color);
+    border-radius: 10px;
+}
+
+.navbar-search-results::-webkit-scrollbar-thumb:hover {
+    background: var(--bs-secondary-color);
+}
+
+/* Mensajes: buscando, sin resultados o errores */
+.busqueda-global-mensaje {
+    padding: 18px 12px;
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--bs-secondary-color);
+}
+
+.busqueda-global-mensaje.text-danger {
+    color: var(--bs-danger) !important;
+}
+
+/* Separación entre módulos */
+.busqueda-global-grupo + .busqueda-global-grupo {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+/* Encabezado de cada módulo */
+.busqueda-global-grupo-titulo {
+    padding: 7px 10px;
+    color: var(--bs-secondary-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+/* Cada resultado */
+.busqueda-global-resultado {
+    position: relative;
+    padding: 10px 12px;
+    margin: 2px 0;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    cursor: default;
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        transform 160ms ease;
+}
+
+/* Efecto al pasar el cursor */
+.busqueda-global-resultado:hover {
+    background: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    transform: translateX(2px);
+}
+
+/* Folio principal */
+.busqueda-global-resultado-folio {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--bs-emphasis-color);
+    overflow-wrap: anywhere;
+}
+
+/* Requisición y año */
+.busqueda-global-resultado-req,
+.busqueda-global-resultado-anio {
+    color: var(--bs-secondary-color);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+/* Pantallas pequeñas */
+@media (max-width: 575.98px) {
+    .navbar-search-results {
+        max-height: 60vh;
+        padding: 6px;
+    }
+
+    .busqueda-global-resultado {
+        padding: 10px;
+    }
+}
+
+/* Respeta la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .busqueda-global-resultado {
+        transition: none;
+    }
+}

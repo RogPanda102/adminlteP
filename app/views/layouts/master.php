@@ -84,6 +84,8 @@ $nombre_usuario = $nombre_usuario ?? '';
 
   <!-- TOASTR CSS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/busqueda-global.css">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -107,12 +109,61 @@ $nombre_usuario = $nombre_usuario ?? '';
 
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
-          <!--begin::Navbar Search-->
-          <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-              <i class="bi bi-search"></i>
-            </a>
+          <!--begin::Navbar Search-->     
+          <!-- Búsqueda global -->
+          <li class="nav-item navbar-search-wrapper" id="navbar-busqueda-global">
+
+              <div
+                  id="navbar-busqueda-panel"
+                  class="navbar-search-panel"
+                  aria-hidden="true">
+
+                  <form id="form-busqueda-global" role="search" autocomplete="off" data-url="<?= BASE_URL ?>busqueda-global">
+                      <label for="input-busqueda-global" class="visually-hidden">
+                          Buscar en el sistema
+                      </label>
+
+                      <div class="input-group">
+
+                          <input
+                              type="search"
+                              id="input-busqueda-global"
+                              class="form-control"
+                              placeholder="Folio, requisición o proveedor..."
+                              autocomplete="off"
+                              aria-label="Buscar en el sistema">
+
+                          <button
+                              type="button"
+                              class="btn btn-outline-secondary"
+                              id="navbar-busqueda-cerrar"
+                              aria-label="Cerrar búsqueda">
+                              <i class="bi bi-x-lg"></i>
+                          </button>
+                      </div>
+                  </form>
+
+              </div>
+
+              <button
+                  type="button"
+                  class="nav-link navbar-search-toggle"
+                  id="navbar-busqueda-toggle"
+                  aria-label="Abrir búsqueda global"
+                  aria-expanded="false"
+                  aria-controls="navbar-busqueda-panel">
+                  <i class="bi bi-search"></i>
+              </button>
+          
+
+            <!-- Resultados independientes del campo -->
+            <div id="resultados-busqueda-global"
+                class="navbar-search-results"
+                aria-live="polite">
+            </div>
           </li>
+          <!-- Fin búsqueda global -->
+
           <!--end::Navbar Search-->
 
           <!--begin::Messages Dropdown Menu-->
@@ -662,6 +713,10 @@ $nombre_usuario = $nombre_usuario ?? '';
   </script>
   <script 
     src="<?php echo BASE_URL; ?>assets/js/especificos/notificaciones/notificaciones.js">
+  </script>
+
+  <script
+      src="<?= BASE_URL ?>assets/js/especificos/busqueda-global/busqueda-global.js">
   </script>
 
 </body>
