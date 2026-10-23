@@ -181,6 +181,19 @@
 
         $menu['contactos'] = $menu_item;
 
+        /*
+        |--------------------------------------------------------------------------
+        | Documentos
+        |--------------------------------------------------------------------------
+        */
+        $menu_item['is_active'] = FALSE;
+        $menu_item['href'] = BASE_URL . 'documentos';
+        $menu_item['icon'] = 'bi bi-folder2-open';
+        $menu_item['text'] = 'Documentos';
+        $menu_item['submenu'] = array();
+
+        $menu['documentos'] = $menu_item;
+
         return $menu;
     }
 
