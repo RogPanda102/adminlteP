@@ -322,6 +322,17 @@ $router->post(
     '/notificaciones/marcar-todas',
     'operaciones\NotificacionesController@marcarTodas'
 );
+/*
+|--------------------------------------------------------------------------
+| DOCUMENTOS
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/documentos',
+    'operaciones\DocumentosController@index'
+);
+
 
 /*
 |--------------------------------------------------------------------------

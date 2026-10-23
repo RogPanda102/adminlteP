@@ -18,6 +18,66 @@ class DocumentosController extends BaseController
         }
     }
 
+    // =========================
+    // VISTA GENERAL DE DOCUMENTOS
+    // =========================
+    public function index()
+    {
+        // =========================
+        // AUTORIZACIÓN
+        // =========================
+        if (!$this->permitido) {
+
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+
+        }
+
+        // =========================
+        // DATOS GENERALES
+        // =========================
+        $datos = array();
+
+        // =========================
+        // USUARIO
+        // =========================
+        $datos['nombre_usuario'] =
+            $_SESSION['usuario_nombre'] ?? '';
+
+        $datos['foto_usuario'] =
+            BASE_URL . 'assets/upload/usuarios/' .
+            ($_SESSION['foto_usuario'] ?? '');
+
+        // =========================
+        // MÓDULO
+        // =========================
+        $datos['nombre_pagina'] = 'Documentos';
+        $datos['tarea'] = 'Documentos';
+
+        // =========================
+        // BREADCRUMB
+        // =========================
+        $breadcrumb = array(
+            array(
+                'tarea' => 'Documentos',
+                'href'  => '#'
+            )
+        );
+
+        $datos['breadcrumb'] = breadcrumb(
+            $datos['tarea'],
+            $breadcrumb
+        );
+
+        // =========================
+        // VISTA
+        // =========================
+        $this->render(
+            'operaciones/documentos/administrador_documentos',
+            $datos
+        );
+    }
+
 
     // =========================
     // OBTENER DOCUMENTOS AJAX
