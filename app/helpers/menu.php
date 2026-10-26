@@ -22,15 +22,29 @@
         | AÑOS DISPONIBLES - COTIZACIONES
         |--------------------------------------------------------------------------
         */
+
         $modeloCotizacion = new Cotizacion();
 
         $aniosCotizaciones = $modeloCotizacion->obtenerAnios();
 
+        // Garantizar que el año actual esté disponible.
+        $anioActual = (int) date('Y');
+
+        $aniosDisponibles = array_map(
+            'intval',
+            array_column($aniosCotizaciones, 'anio')
+        );
+
+        if (!in_array($anioActual, $aniosDisponibles, true)) {
+            $aniosDisponibles[] = $anioActual;
+        }
+
+        // Ordenar los años de mayor a menor.
+        rsort($aniosDisponibles);
+
         $submenuCotizaciones = array();
 
-        foreach ($aniosCotizaciones as $item) {
-
-            $anio = (int) $item['anio'];
+        foreach ($aniosDisponibles as $anio) {
 
             $submenuCotizaciones[] = array(
                 'is_active' => FALSE,
@@ -46,15 +60,27 @@
         | AÑOS DISPONIBLES - ADJUDICADOS
         |--------------------------------------------------------------------------
         */
+
         $modeloAdjudicados = new Adjudicados();
 
         $aniosAdjudicados = $modeloAdjudicados->obtenerAnios();
 
+        $aniosDisponibles = array_map(
+            'intval',
+            array_column($aniosAdjudicados, 'anio')
+        );
+
+        $anioActual = (int) date('Y');
+
+        if (!in_array($anioActual, $aniosDisponibles, true)) {
+            $aniosDisponibles[] = $anioActual;
+        }
+
+        rsort($aniosDisponibles);
+
         $submenuAdjudicados = array();
 
-        foreach ($aniosAdjudicados as $item) {
-
-            $anio = (int) $item['anio'];
+        foreach ($aniosDisponibles as $anio) {
 
             $submenuAdjudicados[] = array(
                 'is_active' => FALSE,
@@ -69,15 +95,27 @@
         | AÑOS DISPONIBLES - SERVICIOS
         |--------------------------------------------------------------------------
         */
+
         $modeloServicios = new Servicio();
 
         $aniosServicios = $modeloServicios->obtenerAnios();
 
+        $aniosDisponibles = array_map(
+            'intval',
+            array_column($aniosServicios, 'anio')
+        );
+
+        $anioActual = (int) date('Y');
+
+        if (!in_array($anioActual, $aniosDisponibles, true)) {
+            $aniosDisponibles[] = $anioActual;
+        }
+
+        rsort($aniosDisponibles);
+
         $submenuServicios = array();
 
-        foreach ($aniosServicios as $item) {
-
-            $anio = (int) $item['anio'];
+        foreach ($aniosDisponibles as $anio) {
 
             $submenuServicios[] = array(
                 'is_active' => FALSE,
