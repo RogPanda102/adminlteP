@@ -25,6 +25,14 @@
     let temporizador = null;
     let controladorPeticion = null;
     let ultimaBusqueda = 0;
+    let registrosActuales = [];
+    let filtroActual = 'todo';
+
+    const MODULOS = [
+        { clave: 'cotizacion', nombre: 'Cotización' },
+        { clave: 'adjudicado', nombre: 'Adjudicado' },
+        { clave: 'servicio', nombre: 'Servicio' }
+    ];
 
     // =========================================
     // ABRIR Y CERRAR
@@ -40,7 +48,6 @@
 
         input.focus();
 
-        // Si ya hay texto, permite consultar al volver a abrir.
         if (input.value.trim().length >= 2) {
             buscar(input.value.trim());
         }
@@ -54,7 +61,6 @@
 
         panel.setAttribute('aria-hidden', 'true');
 
-        // Se conserva el texto y los resultados.
         clearTimeout(temporizador);
     }
 
@@ -71,20 +77,23 @@
 
     closeButton.addEventListener('click', (event) => {
         event.preventDefault();
+        event.stopPropagation();
         cerrarBusqueda();
     });
 
-    // Cerrar al hacer clic fuera.
     document.addEventListener('click', (event) => {
-        const dentroBusqueda = wrapper.contains(event.target);
-        const dentroResultados = resultados.contains(event.target);
+        const rutaEvento = event.composedPath();
 
-        if (!dentroBusqueda && !dentroResultados) {
-            cerrarBusqueda();
+        if (
+            rutaEvento.includes(wrapper) ||
+            rutaEvento.includes(resultados)
+        ) {
+            return;
         }
+
+        cerrarBusqueda();
     });
 
-    // Cerrar con Escape.
     document.addEventListener('keydown', (event) => {
         if (
             event.key === 'Escape' &&
@@ -96,21 +105,8 @@
     });
 
     // =========================================
-    // PRESENTACIÓN DE ESTADOS
+    // ELEMENTOS Y MENSAJES
     // =========================================
-
-    function mostrarMensaje(mensaje, tipo = 'info') {
-        resultados.replaceChildren();
-
-        const elemento = document.createElement('div');
-
-        elemento.className = `busqueda-global-mensaje text-${tipo}`;
-        elemento.setAttribute('role', 'status');
-        elemento.textContent = mensaje;
-
-        resultados.appendChild(elemento);
-        resultados.hidden = false;
-    }
 
     function crearElemento(etiqueta, clase, texto) {
         const elemento = document.createElement(etiqueta);
@@ -124,90 +120,236 @@
         return elemento;
     }
 
+    function mostrarMensaje(mensaje, tipo = 'info') {
+        resultados.replaceChildren();
+
+        const elemento = crearElemento(
+            'div',
+            `busqueda-global-mensaje text-${tipo}`,
+            mensaje
+        );
+
+        elemento.setAttribute('role', 'status');
+
+        resultados.appendChild(elemento);
+        resultados.hidden = false;
+    }
+
+    // =========================================
+    // FILTROS
+    // =========================================
+
+    function obtenerModulos(registro) {
+        if (Array.isArray(registro.modulos)) {
+            return registro.modulos;
+        }
+
+        if (registro.tipo) {
+            return [registro.tipo];
+        }
+
+        return [];
+    }
+
+    function contarPorModulo(registros, nombreModulo) {
+        return registros.filter((registro) =>
+            obtenerModulos(registro).includes(nombreModulo)
+        ).length;
+    }
+
+    function crearFiltros() {
+        const filtros = crearElemento(
+            'div',
+            'busqueda-global-filtros'
+        );
+
+        filtros.setAttribute('role', 'tablist');
+        filtros.setAttribute('aria-label', 'Filtrar resultados');
+
+        const opciones = [
+            { id: 'todo', texto: 'Todo' },
+            {
+                id: 'cotizacion',
+                texto: 'Cotizaciones',
+                modulo: 'Cotización'
+            },
+            {
+                id: 'adjudicado',
+                texto: 'Adjudicaciones',
+                modulo: 'Adjudicado'
+            },
+            {
+                id: 'servicio',
+                texto: 'Servicios',
+                modulo: 'Servicio'
+            }
+        ];
+
+        opciones.forEach((opcion) => {
+            const cantidad = opcion.modulo
+                ? contarPorModulo(registrosActuales, opcion.modulo)
+                : registrosActuales.length;
+
+            const boton = document.createElement('button');
+
+            boton.type = 'button';
+            boton.className = 'busqueda-global-filtro';
+
+            if (filtroActual === opcion.id) {
+                boton.classList.add('active');
+            }
+
+            boton.setAttribute('role', 'tab');
+            boton.setAttribute(
+                'aria-selected',
+                filtroActual === opcion.id ? 'true' : 'false'
+            );
+
+            boton.append(
+                crearElemento(
+                    'span',
+                    'busqueda-global-filtro-texto',
+                    opcion.texto
+                ),
+                crearElemento(
+                    'span',
+                    'busqueda-global-filtro-contador',
+                    String(cantidad)
+                )
+            );
+
+            boton.addEventListener('click', (event) => {
+                // Evita que el clic llegue al detector global de cierre.
+                event.preventDefault();
+                event.stopPropagation();
+
+                filtroActual = opcion.id;
+                dibujarResultados();
+            });
+
+            filtros.appendChild(boton);
+        });
+
+        return filtros;
+    }
+
+    // =========================================
+    // TARJETAS
+    // =========================================
+
+    function crearTarjeta(registro) {
+        const tarjeta = crearElemento(
+            'article',
+            'busqueda-global-resultado'
+        );
+
+        const folio = crearElemento(
+            'div',
+            'busqueda-global-resultado-folio',
+            registro.folio ? String(registro.folio) : 'Sin folio'
+        );
+
+        const detalles = crearElemento(
+            'div',
+            'busqueda-global-resultado-detalles'
+        );
+
+        detalles.append(
+            crearElemento(
+                'div',
+                'busqueda-global-resultado-req',
+                `Requisición: ${registro.req || 'Sin requisición'}`
+            ),
+            crearElemento(
+                'div',
+                'busqueda-global-resultado-anio',
+                `Año: ${registro.anio || 'Sin año'}`
+            )
+        );
+
+        tarjeta.append(folio, detalles);
+
+        return tarjeta;
+    }
+
     // =========================================
     // DIBUJAR RESULTADOS
     // =========================================
 
-    function mostrarResultados(registros) {
+    function dibujarResultados() {
         resultados.replaceChildren();
         resultados.hidden = false;
 
-        if (!registros.length) {
-            mostrarMensaje('No se encontraron coincidencias.');
+        resultados.appendChild(crearFiltros());
+
+        let registrosFiltrados = registrosActuales;
+
+        if (filtroActual !== 'todo') {
+            const modulo = MODULOS.find(
+                (item) => item.clave === filtroActual
+            );
+
+            registrosFiltrados = registrosActuales.filter((registro) =>
+                modulo && obtenerModulos(registro).includes(modulo.nombre)
+            );
+        }
+
+        resultados.appendChild(
+            crearElemento(
+                'div',
+                'busqueda-global-resumen',
+                `${registrosFiltrados.length} ${
+                    registrosFiltrados.length === 1
+                        ? 'registro encontrado'
+                        : 'registros encontrados'
+                }`
+            )
+        );
+
+        if (!registrosFiltrados.length) {
+            resultados.appendChild(
+                crearElemento(
+                    'div',
+                    'busqueda-global-mensaje',
+                    'No hay resultados en este módulo.'
+                )
+            );
+
             return;
         }
 
-        const grupos = [
-            { tipo: 'Cotización', titulo: 'Cotizaciones' },
-            { tipo: 'Adjudicado', titulo: 'Adjudicaciones' },
-            { tipo: 'Servicio', titulo: 'Servicios' }
-        ];
+        const lista = crearElemento(
+            'div',
+            'busqueda-global-lista'
+        );
 
-        grupos.forEach((grupo) => {
-            const elementos = registros.filter(
-                (registro) => registro.tipo === grupo.tipo
-            );
-
-            if (!elementos.length) {
-                return;
-            }
-
-            const seccion = document.createElement('section');
-            seccion.className = 'busqueda-global-grupo';
-
-            const encabezado = crearElemento(
-                'div',
-                'busqueda-global-grupo-titulo',
-                grupo.titulo
-            );
-
-            seccion.appendChild(encabezado);
-
-            elementos.forEach((registro) => {
-                const tarjeta = document.createElement('div');
-                tarjeta.className = 'busqueda-global-resultado';
-
-                const folio = registro.folio
-                    ? String(registro.folio)
-                    : 'Sin folio';
-
-                const requisicion = registro.req
-                    ? String(registro.req)
-                    : 'Sin requisición';
-
-                const anio = registro.anio
-                    ? String(registro.anio)
-                    : 'Sin año';
-
-                tarjeta.appendChild(
-                    crearElemento(
-                        'div',
-                        'busqueda-global-resultado-folio',
-                        folio
-                    )
-                );
-
-                tarjeta.appendChild(
-                    crearElemento(
-                        'div',
-                        'busqueda-global-resultado-req',
-                        `Requisición: ${requisicion}`
-                    )
-                );
-
-                tarjeta.appendChild(
-                    crearElemento(
-                        'div',
-                        'busqueda-global-resultado-anio',
-                        `Año: ${anio}`
-                    )
-                );
-
-                seccion.appendChild(tarjeta);
-            });
-
-            resultados.appendChild(seccion);
+        registrosFiltrados.forEach((registro) => {
+            lista.appendChild(crearTarjeta(registro));
         });
+
+        resultados.appendChild(lista);
+    }
+
+    function mostrarResultados(registros) {
+        registrosActuales = Array.isArray(registros) ? registros : [];
+        filtroActual = 'todo';
+
+        if (!registrosActuales.length) {
+            resultados.replaceChildren();
+
+            resultados.appendChild(
+                crearElemento(
+                    'div',
+                    'busqueda-global-mensaje',
+                    'No se encontraron coincidencias.'
+                )
+            );
+
+            resultados.hidden = false;
+            return;
+        }
+
+        dibujarResultados();
     }
 
     // =========================================
@@ -217,7 +359,6 @@
     async function buscar(termino) {
         termino = termino.trim();
 
-        // Invalidar respuestas anteriores.
         const idBusqueda = ++ultimaBusqueda;
 
         if (controladorPeticion) {
@@ -226,6 +367,7 @@
         }
 
         if (termino.length < 2) {
+            registrosActuales = [];
             resultados.replaceChildren();
             resultados.hidden = true;
             return;
@@ -243,7 +385,7 @@
 
         controladorPeticion = new AbortController();
 
-        mostrarMensaje('Buscando...', 'secondary');
+        mostrarMensaje('Buscando coincidencias...', 'secondary');
 
         try {
             const separador = urlBase.includes('?') ? '&' : '?';
@@ -327,6 +469,7 @@
                 controladorPeticion = null;
             }
 
+            registrosActuales = [];
             resultados.replaceChildren();
             resultados.hidden = true;
             return;
@@ -337,7 +480,6 @@
         }, 300);
     });
 
-    // Evitar recargar la página al enviar el formulario.
     form.addEventListener('submit', (event) => {
         event.preventDefault();
 
