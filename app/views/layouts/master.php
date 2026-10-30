@@ -711,6 +711,7 @@ $nombre_usuario = $nombre_usuario ?? '';
           baseUrl: "<?php echo BASE_URL; ?>"
       };
   </script>
+  
   <script 
     src="<?php echo BASE_URL; ?>assets/js/especificos/notificaciones/notificaciones.js">
   </script>
