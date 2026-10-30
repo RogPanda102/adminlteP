@@ -265,3 +265,322 @@ if (!function_exists('buscarGlobalmente')) {
         return array_values($resultados);
     }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Obtener detalle completo de un expediente desde la búsqueda global
+|--------------------------------------------------------------------------
+*/
+
+if (!function_exists('obtenerDetalleBusquedaGlobal')) {
+
+    function obtenerDetalleBusquedaGlobal(array $ids): array
+    {
+        $idCotizacion = (int) ($ids['cotizacion'] ?? 0);
+        $idAdjudicado = (int) ($ids['adjudicado'] ?? 0);
+        $idServicio = (int) ($ids['servicio'] ?? 0);
+
+        if (
+            $idCotizacion <= 0 &&
+            $idAdjudicado <= 0 &&
+            $idServicio <= 0
+        ) {
+            return [];
+        }
+
+        $db = Database::connect();
+
+        $cotizacion = null;
+        $adjudicado = null;
+        $servicios = [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Consultar cotización
+        |--------------------------------------------------------------------------
+        */
+
+        $consultarCotizacion = function ($id) use ($db) {
+            $sql = "
+                SELECT
+                    c.*,
+                    COALESCE(
+                        NULLIF(d.nombre, ''),
+                        c.dependencia
+                    ) AS dependencia_nombre,
+                    an.nombre AS analista_nombre
+                FROM cotizaciones c
+                LEFT JOIN dependencias d
+                    ON d.id = c.dependencia_id
+                LEFT JOIN analistas an
+                    ON an.id = c.analista_id
+                WHERE c.id = ?
+                  AND COALESCE(c.eliminado, 0) = 0
+                LIMIT 1
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([(int) $id]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        };
+
+        /*
+        |--------------------------------------------------------------------------
+        | Consultar adjudicación
+        |--------------------------------------------------------------------------
+        */
+
+        $consultarAdjudicado = function ($id) use ($db) {
+            $sql = "
+                SELECT
+                    a.*,
+                    d.nombre AS dependencia_nombre,
+                    an.nombre AS analista_nombre
+                FROM adjudicados a
+                LEFT JOIN dependencias d
+                    ON d.id = a.dependencia_id
+                LEFT JOIN analistas an
+                    ON an.id = a.analista_id
+                WHERE a.id = ?
+                  AND COALESCE(a.eliminado, 0) = 0
+                LIMIT 1
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([(int) $id]);
+
+            return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        };
+
+        /*
+        |--------------------------------------------------------------------------
+        | Consultar servicios relacionados con una adjudicación
+        |--------------------------------------------------------------------------
+        */
+
+        $consultarServicios = function ($idAdjudicacion) use ($db) {
+            $sql = "
+                SELECT
+                    s.*,
+                    d.nombre AS dependencia_nombre,
+                    an.nombre AS analista_nombre,
+                    ts.nombre AS tipo_servicio
+                FROM servicios s
+                LEFT JOIN dependencias d
+                    ON d.id = s.dependencia_id
+                LEFT JOIN analistas an
+                    ON an.id = s.analista_id
+                LEFT JOIN tipos_servicio ts
+                    ON ts.id = s.tipo_servicio_id
+                WHERE s.adjudicado_id = ?
+                ORDER BY s.anio DESC, s.id DESC
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([(int) $idAdjudicacion]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        };
+
+        /*
+        |--------------------------------------------------------------------------
+        | Resolver el expediente a partir del registro seleccionado
+        |--------------------------------------------------------------------------
+        */
+
+        if ($idCotizacion > 0) {
+
+            $cotizacion = $consultarCotizacion($idCotizacion);
+
+            if ($cotizacion) {
+                $sql = "
+                    SELECT id
+                    FROM adjudicados
+                    WHERE cotizacion_id = ?
+                      AND COALESCE(eliminado, 0) = 0
+                    LIMIT 1
+                ";
+
+                $stmt = $db->prepare($sql);
+                $stmt->execute([$idCotizacion]);
+
+                $filaAdjudicado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($filaAdjudicado) {
+                    $adjudicado = $consultarAdjudicado(
+                        $filaAdjudicado['id']
+                    );
+
+                    if ($adjudicado) {
+                        $servicios = $consultarServicios(
+                            $adjudicado['id']
+                        );
+                    }
+                }
+            }
+
+        } elseif ($idAdjudicado > 0) {
+
+            $adjudicado = $consultarAdjudicado($idAdjudicado);
+
+            if ($adjudicado) {
+
+                if (!empty($adjudicado['cotizacion_id'])) {
+                    $cotizacion = $consultarCotizacion(
+                        $adjudicado['cotizacion_id']
+                    );
+                }
+
+                $servicios = $consultarServicios(
+                    $adjudicado['id']
+                );
+            }
+
+        } elseif ($idServicio > 0) {
+
+            $sql = "
+                SELECT
+                    s.*,
+                    d.nombre AS dependencia_nombre,
+                    an.nombre AS analista_nombre,
+                    ts.nombre AS tipo_servicio
+                FROM servicios s
+                LEFT JOIN dependencias d
+                    ON d.id = s.dependencia_id
+                LEFT JOIN analistas an
+                    ON an.id = s.analista_id
+                LEFT JOIN tipos_servicio ts
+                    ON ts.id = s.tipo_servicio_id
+                WHERE s.id = ?
+                LIMIT 1
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$idServicio]);
+
+            $servicioSeleccionado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($servicioSeleccionado) {
+
+                if (!empty($servicioSeleccionado['adjudicado_id'])) {
+
+                    $adjudicado = $consultarAdjudicado(
+                        $servicioSeleccionado['adjudicado_id']
+                    );
+
+                    if ($adjudicado) {
+
+                        if (!empty($adjudicado['cotizacion_id'])) {
+                            $cotizacion = $consultarCotizacion(
+                                $adjudicado['cotizacion_id']
+                            );
+                        }
+
+                        $servicios = $consultarServicios(
+                            $adjudicado['id']
+                        );
+                    }
+                }
+
+                if (!$adjudicado) {
+                    $servicios = [$servicioSeleccionado];
+                }
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Consultar documentos asociados a cada registro
+        |--------------------------------------------------------------------------
+        */
+
+        $consultarDocumentos = function (
+            string $modulo,
+            int $registroId
+        ) use ($db) {
+            $sql = "
+                SELECT
+                    id,
+                    modulo,
+                    registro_id,
+                    tipo,
+                    nombre_original,
+                    extension,
+                    mime,
+                    tamano,
+                    fecha_creacion
+                FROM documentos
+                WHERE modulo = ?
+                  AND registro_id = ?
+                ORDER BY fecha_creacion DESC
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$modulo, $registroId]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        };
+
+        if ($cotizacion) {
+            $cotizacion['documentos'] = $consultarDocumentos(
+                'cotizaciones',
+                (int) $cotizacion['id']
+            );
+        }
+
+        if ($adjudicado) {
+            $adjudicado['documentos'] = $consultarDocumentos(
+                'adjudicados',
+                (int) $adjudicado['id']
+            );
+        }
+
+        foreach ($servicios as &$servicio) {
+            $servicio['documentos'] = $consultarDocumentos(
+                'servicios',
+                (int) $servicio['id']
+            );
+        }
+
+        unset($servicio);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Determinar la etapa actual del expediente
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($servicios)) {
+            $etapaActual = 'Servicio';
+        } elseif ($adjudicado) {
+            $etapaActual = 'Adjudicación';
+        } elseif ($cotizacion) {
+            $etapaActual = 'Cotización';
+        } else {
+            $etapaActual = 'Sin información';
+        }
+
+        $totalDocumentos = 0;
+
+        if ($cotizacion) {
+            $totalDocumentos += count($cotizacion['documentos']);
+        }
+
+        if ($adjudicado) {
+            $totalDocumentos += count($adjudicado['documentos']);
+        }
+
+        foreach ($servicios as $servicio) {
+            $totalDocumentos += count($servicio['documentos']);
+        }
+
+        return [
+            'cotizacion' => $cotizacion,
+            'adjudicado' => $adjudicado,
+            'servicios' => $servicios,
+            'etapa_actual' => $etapaActual,
+            'total_documentos' => $totalDocumentos
+        ];
+    }
+}
