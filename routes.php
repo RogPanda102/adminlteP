@@ -345,6 +345,11 @@ $router->get(
     'operaciones\BusquedaGlobalController@buscar'
 );
 
+$router->get(
+    '/busqueda-global/detalle',
+    'operaciones\BusquedaGlobalController@detalle'
+);
+
 /*
 |--------------------------------------------------------------------------
 | EJECUTAR ROUTER
