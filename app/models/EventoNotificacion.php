@@ -16,6 +16,7 @@ class EventoNotificacion
     // =========================================
     // CREAR EVENTO
     // =========================================
+    
     public function crear($datos)
     {
         $sql = "
@@ -25,7 +26,8 @@ class EventoNotificacion
                 recordatorio_id,
                 usuario_id,
                 fecha_hora_programada,
-                enviado
+                enviado,
+                correo_estado
             )
             VALUES
             (
@@ -33,7 +35,8 @@ class EventoNotificacion
                 :recordatorio_id,
                 :usuario_id,
                 :fecha_hora_programada,
-                :enviado
+                :enviado,
+                :correo_estado
             )
         ";
 
@@ -44,9 +47,11 @@ class EventoNotificacion
             ':recordatorio_id' => $datos['recordatorio_id'],
             ':usuario_id' => $datos['usuario_id'],
             ':fecha_hora_programada' => $datos['fecha_hora_programada'],
-            ':enviado' => $datos['enviado'] ?? 0
+            ':enviado' => $datos['enviado'] ?? 0,
+            ':correo_estado' => $datos['correo_estado'] ?? 'no_aplica'
         ]);
     }
+
 
     // =========================================
     // CALCULAR FECHA DEL RECORDATORIO
@@ -211,7 +216,10 @@ class EventoNotificacion
                     'servicio_id' => $servicioId,
                     'recordatorio_id' => $recordatorio['id'],
                     'usuario_id' => $servicio['creado_por'],
-                    'fecha_hora_programada' => $fechaHoraProgramada
+                    'fecha_hora_programada' => $fechaHoraProgramada,
+                    'correo_estado' => ($hora === '09:00:00')
+                        ? 'pendiente'
+                        : 'no_aplica'
                 ]);
 
                 if (!$creado) {
@@ -365,11 +373,153 @@ class EventoNotificacion
         $sql = "DELETE FROM eventos_notificacion
                 WHERE enviado = 0
                 AND fecha_hora_programada < CURDATE()
+                AND correo_estado IN ('enviado', 'no_aplica')
                 ";
 
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute();
+    }
+
+    // =========================================
+    // OBTENER CORREOS PENDIENTES O POR REINTENTAR
+    // =========================================
+    public function obtenerCorreosPendientes()
+    {
+        $sql = "
+            SELECT
+                e.id,
+                e.servicio_id,
+                e.recordatorio_id,
+                e.usuario_id,
+                e.fecha_hora_programada,
+                e.correo_intentos,
+                e.correo_estado,
+                r.cantidad,
+                r.unidad,
+                r.momento,
+                s.req,
+                s.folio,
+                s.finalizacion,
+                s.anio
+            FROM eventos_notificacion e
+
+            INNER JOIN recordatorios_servicio r
+                ON r.id = e.recordatorio_id
+
+            INNER JOIN servicios s
+                ON s.id = e.servicio_id
+
+            WHERE TIME(e.fecha_hora_programada) = '09:00:00'
+            AND e.fecha_hora_programada <= NOW()
+            AND r.activo = 1
+            AND e.correo_intentos < 5
+            AND (
+                (
+                    e.correo_estado IN ('pendiente', 'fallido')
+                    AND (
+                        e.correo_proximo_intento IS NULL
+                        OR e.correo_proximo_intento <= NOW()
+                    )
+                )
+                OR (
+                    e.correo_estado = 'enviando'
+                    AND e.correo_proximo_intento <= NOW()
+                )
+            )
+
+            ORDER BY e.fecha_hora_programada ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    // =========================================
+    // TOMAR UN CORREO PARA PROCESAR
+    // =========================================
+    public function iniciarEnvioCorreo($id)
+    {
+        $sql = "
+            UPDATE eventos_notificacion
+            SET
+                correo_estado = 'enviando',
+                correo_intentos = correo_intentos + 1,
+                correo_proximo_intento = DATE_ADD(NOW(), INTERVAL 10 MINUTE)
+            WHERE id = :id
+            AND correo_intentos < 5
+            AND (
+                (
+                    correo_estado IN ('pendiente', 'fallido')
+                    AND (
+                        correo_proximo_intento IS NULL
+                        OR correo_proximo_intento <= NOW()
+                    )
+                )
+                OR (
+                    correo_estado = 'enviando'
+                    AND correo_proximo_intento <= NOW()
+                )
+            )
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id' => $id]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+
+    // =========================================
+    // MARCAR CORREO COMO ENVIADO
+    // =========================================
+    public function marcarCorreoEnviado($id)
+    {
+        $sql = "
+            UPDATE eventos_notificacion
+            SET
+                correo_estado = 'enviado',
+                correo_fecha_envio = NOW(),
+                correo_proximo_intento = NULL
+            WHERE id = :id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([':id' => $id]);
+    }
+
+
+    // =========================================
+    // REGISTRAR FALLO Y PROGRAMAR REINTENTO
+    // =========================================
+    public function marcarCorreoFallido($id)
+    {
+        $sql = "
+            UPDATE eventos_notificacion
+            SET
+                correo_estado = 'fallido',
+                correo_proximo_intento = CASE
+                    WHEN correo_intentos = 1
+                        THEN DATE_ADD(NOW(), INTERVAL 15 MINUTE)
+                    WHEN correo_intentos = 2
+                        THEN DATE_ADD(NOW(), INTERVAL 1 HOUR)
+                    WHEN correo_intentos = 3
+                        THEN DATE_ADD(NOW(), INTERVAL 6 HOUR)
+                    WHEN correo_intentos = 4
+                        THEN DATE_ADD(NOW(), INTERVAL 24 HOUR)
+                    ELSE NULL
+                END
+            WHERE id = :id
+            AND correo_estado = 'enviando'
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([':id' => $id]);
     }
 
 }

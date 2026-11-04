@@ -1,8 +1,10 @@
+
 <?php
 
 require_once __DIR__ . '/../models/EventoNotificacion.php';
 require_once __DIR__ . '/../models/Notificacion.php';
 require_once __DIR__ . '/../models/Servicios.php';
+require_once __DIR__ . '/../services/CorreoService.php';
 
 class ProcesadorNotificaciones
 {
@@ -17,10 +19,16 @@ class ProcesadorNotificaciones
             'eventos_encontrados' => 0,
             'notificaciones_creadas' => 0,
             'duplicados' => 0,
+            'correos_encontrados' => 0,
+            'correos_enviados' => 0,
+            'correos_fallidos' => 0,
             'errores' => 0
         ];
 
-        // 1. Generar eventos para los servicios.
+        // =========================================
+        // 1. GENERAR EVENTOS PARA LOS SERVICIOS
+        // =========================================
+
         $servicios = $servicioModelo
             ->obtenerServiciosParaNotificaciones();
 
@@ -43,19 +51,12 @@ class ProcesadorNotificaciones
             }
         }
 
-        // 2. Limpiar eventos pendientes de días anteriores.
-        try {
-            $eventoModelo->eliminarEventosVencidos();
-        } catch (Throwable $e) {
-            $resultado['errores']++;
+        // =========================================
+        // 2. PROCESAR NOTIFICACIONES INTERNAS
+        // =========================================
 
-            error_log(
-                'Error eliminando eventos vencidos: ' .
-                $e->getMessage()
-            );
-        }
+        $eventos = [];
 
-        // 3. Obtener eventos que ya deben procesarse.
         try {
             $eventos = $eventoModelo->obtenerPendientes();
         } catch (Throwable $e) {
@@ -65,8 +66,6 @@ class ProcesadorNotificaciones
                 'Error obteniendo eventos pendientes: ' .
                 $e->getMessage()
             );
-
-            return $resultado;
         }
 
         $resultado['eventos_encontrados'] = count($eventos);
@@ -77,7 +76,7 @@ class ProcesadorNotificaciones
                 $unidad = $evento['unidad'];
                 $momento = $evento['momento'];
 
-                // Validar la configuración del recordatorio.
+                // Validar configuración del recordatorio.
                 if (
                     $cantidad < 0 ||
                     !in_array($unidad, ['dias', 'meses'], true) ||
@@ -188,7 +187,7 @@ class ProcesadorNotificaciones
                     continue;
                 }
 
-                // Crear la notificación.
+                // Crear la notificación interna.
                 $creada = $notificacionModelo->crear([
                     'usuario_id' => $evento['usuario_id'],
                     'titulo' => $titulo,
@@ -212,7 +211,7 @@ class ProcesadorNotificaciones
                     continue;
                 }
 
-                // Marcar únicamente después de crear la notificación.
+                // Marcar después de crear la notificación.
                 if (!$eventoModelo->marcarEnviado($evento['id'])) {
                     $resultado['errores']++;
 
@@ -234,6 +233,219 @@ class ProcesadorNotificaciones
                     ': ' . $e->getMessage()
                 );
             }
+        }
+
+        // =========================================
+        // 3. PROCESAR CORREOS
+        // =========================================
+
+        $destinatario = getenv('MAIL_TO');
+
+        if (!$destinatario) {
+            error_log(
+                'No se procesaron los correos: falta configurar MAIL_TO.'
+            );
+        } else {
+            try {
+                $correos = $eventoModelo->obtenerCorreosPendientes();
+
+                $resultado['correos_encontrados'] = count($correos);
+
+                foreach ($correos as $correo) {
+                    try {
+                        // Reclamar el evento antes de enviar.
+                        // Evita que dos solicitudes lo procesen a la vez.
+                        if (
+                            !$eventoModelo->iniciarEnvioCorreo($correo['id'])
+                        ) {
+                            continue;
+                        }
+
+                        $cantidad = (int) $correo['cantidad'];
+                        $unidad = $correo['unidad'];
+                        $momento = $correo['momento'];
+
+                        $unidadTexto = ($unidad === 'meses')
+                            ? ($cantidad === 1 ? 'mes' : 'meses')
+                            : ($cantidad === 1 ? 'día' : 'días');
+
+                        $referenciaServicio =
+                            "Servicio {$correo['req']} - {$correo['folio']}";
+
+                        if ($momento === 'antes' && $cantidad === 0) {
+                            $descripcion = 'El servicio vence hoy.';
+
+                        } elseif ($momento === 'antes') {
+                            $descripcion =
+                                "El servicio vence en {$cantidad} " .
+                                "{$unidadTexto}.";
+
+                        } else {
+                            $descripcion =
+                                "El servicio venció hace {$cantidad} " .
+                                "{$unidadTexto}.";
+                        }
+
+                        $fechaFinalizacion = date(
+                            'd/m/Y',
+                            strtotime($correo['finalizacion'])
+                        );
+
+                        // Escapar los valores antes de incluirlos en HTML.
+                        $referenciaHtml = htmlspecialchars(
+                            $referenciaServicio,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+
+                        $descripcionHtml = htmlspecialchars(
+                            $descripcion,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+
+                        $fechaHtml = htmlspecialchars(
+                            $fechaFinalizacion,
+                            ENT_QUOTES,
+                            'UTF-8'
+                        );
+
+                        $asunto = "Recordatorio: {$referenciaServicio}";
+
+                        $mensajeHtml = "
+                            <div style='font-family: Arial, sans-serif;
+                                        max-width: 600px;
+                                        margin: 0 auto;
+                                        color: #333;'>
+
+                                <h2 style='color: #343a40;'>
+                                    Recordatorio de servicio
+                                </h2>
+
+                                <p>{$descripcionHtml}</p>
+
+                                <table style='width: 100%;
+                                              border-collapse: collapse;'>
+
+                                    <tr>
+                                        <td style='padding: 8px;
+                                                   border-bottom: 1px solid #ddd;'>
+                                            <strong>Servicio:</strong>
+                                        </td>
+                                        <td style='padding: 8px;
+                                                   border-bottom: 1px solid #ddd;'>
+                                            {$referenciaHtml}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style='padding: 8px;
+                                                   border-bottom: 1px solid #ddd;'>
+                                            <strong>Fecha de finalización:</strong>
+                                        </td>
+                                        <td style='padding: 8px;
+                                                   border-bottom: 1px solid #ddd;'>
+                                            {$fechaHtml}
+                                        </td>
+                                    </tr>
+
+                                </table>
+
+                                <p style='margin-top: 20px;'>
+                                    Este es un aviso automático del sistema.
+                                </p>
+
+                            </div>
+                        ";
+
+                        $mensajeTexto =
+                            "Recordatorio de servicio\n\n" .
+                            "{$descripcion}\n" .
+                            "Servicio: {$referenciaServicio}\n" .
+                            "Fecha de finalización: {$fechaFinalizacion}\n";
+
+                        $envio = CorreoService::enviar(
+                            $destinatario,
+                            $asunto,
+                            $mensajeHtml,
+                            $mensajeTexto
+                        );
+
+                        if (!empty($envio['ok'])) {
+                            if (
+                                $eventoModelo->marcarCorreoEnviado(
+                                    $correo['id']
+                                )
+                            ) {
+                                $resultado['correos_enviados']++;
+                            } else {
+                                $resultado['errores']++;
+
+                                error_log(
+                                    'El correo del evento ' .
+                                    $correo['id'] .
+                                    ' se envió, pero no se pudo registrar.'
+                                );
+                            }
+
+                        } else {
+                            $eventoModelo->marcarCorreoFallido(
+                                $correo['id']
+                            );
+
+                            $resultado['correos_fallidos']++;
+
+                            error_log(
+                                'Falló el envío del correo del evento ' .
+                                $correo['id']
+                            );
+                        }
+
+                    } catch (Throwable $e) {
+                        $resultado['errores']++;
+
+                        error_log(
+                            'Error procesando correo del evento ' .
+                            $correo['id'] . ': ' . $e->getMessage()
+                        );
+
+                        try {
+                            $eventoModelo->marcarCorreoFallido(
+                                $correo['id']
+                            );
+                        } catch (Throwable $errorCorreo) {
+                            error_log(
+                                'No se pudo registrar el fallo del correo ' .
+                                $correo['id'] . ': ' .
+                                $errorCorreo->getMessage()
+                            );
+                        }
+                    }
+                }
+
+            } catch (Throwable $e) {
+                $resultado['errores']++;
+
+                error_log(
+                    'Error obteniendo o procesando correos pendientes: ' .
+                    $e->getMessage()
+                );
+            }
+        }
+
+        // =========================================
+        // 4. LIMPIAR EVENTOS VENCIDOS
+        // =========================================
+
+        try {
+            $eventoModelo->eliminarEventosVencidos();
+        } catch (Throwable $e) {
+            $resultado['errores']++;
+
+            error_log(
+                'Error eliminando eventos vencidos: ' .
+                $e->getMessage()
+            );
         }
 
         return $resultado;
