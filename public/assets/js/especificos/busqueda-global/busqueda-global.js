@@ -413,27 +413,29 @@
             'titulo-detalle-busqueda-global'
         );
 
-        // Este HTML es estático; los datos se insertan usando textContent.
         modalDetalle.innerHTML = `
-            <div class="modal-dialog modal-dialog-scrollable" style="max-width: 80vw; width: 80vw; height: 80vh; max-height: 80vh;">
+            <div class="modal-dialog modal-dialog-scrollable modal-detalle-responsive">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div>
+                        <div class="min-width-0">
                             <h5 class="modal-title" id="titulo-detalle-busqueda-global">
                                 Expediente
                             </h5>
                             <div id="subtitulo-detalle-busqueda-global"
-                                 class="small text-muted mt-1">
+                                class="small text-muted mt-1">
                                 Información relacionada
                             </div>
                         </div>
+
                         <button type="button"
                                 class="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="Cerrar"></button>
                     </div>
+
                     <div class="modal-body" id="contenido-detalle-busqueda-global">
                     </div>
+
                     <div class="modal-footer">
                         <button type="button"
                                 class="btn btn-secondary"
@@ -445,6 +447,210 @@
             </div>
         `;
 
+        // Estilos responsive del modal
+        const estilos = document.createElement('style');
+
+        estilos.textContent = `
+            #modal-detalle-busqueda-global .modal-dialog {
+                width: 80vw;
+                max-width: 80vw;
+                height: 80vh;
+                max-height: 80vh;
+                margin: 10vh auto;
+            }
+
+            #modal-detalle-busqueda-global .modal-content {
+                height: 100%;
+            }
+
+            #modal-detalle-busqueda-global .modal-body {
+                overflow-y: auto;
+            }
+
+            #modal-detalle-busqueda-global .modal-header {
+                gap: 12px;
+            }
+
+            #modal-detalle-busqueda-global .modal-title {
+                overflow-wrap: anywhere;
+            }
+
+            #modal-detalle-busqueda-global .min-width-0 {
+                min-width: 0;
+            }
+                            /* =========================================
+               INDICADOR DE PROGRESO DEL EXPEDIENTE
+            ========================================= */
+
+            #modal-detalle-busqueda-global .expediente-resumen {
+                padding: 14px 16px;
+                margin-bottom: 1.25rem;
+                border: 1px solid #cfe2ff;
+                border-radius: 10px;
+                background: #f4f8ff;
+            }
+
+            #modal-detalle-busqueda-global .expediente-resumen-encabezado {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 8px;
+                margin-bottom: 18px;
+            }
+
+            #modal-detalle-busqueda-global .expediente-resumen-titulo {
+                font-weight: 700;
+                color: #174785;
+                margin: 0;
+            }
+
+            #modal-detalle-busqueda-global .expediente-resumen-subtitulo {
+                color: #64748b;
+                font-size: 0.8rem;
+            }
+
+            #modal-detalle-busqueda-global .expediente-etapa-actual {
+                font-size: 0.75rem;
+                font-weight: 600;
+                padding: 6px 10px;
+                border-radius: 20px;
+                background: #0d6efd;
+                color: #fff;
+            }
+
+            #modal-detalle-busqueda-global .expediente-progreso {
+                display: flex;
+                align-items: flex-start;
+                width: 100%;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso {
+                position: relative;
+                flex: 1;
+                min-width: 0;
+                text-align: center;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                top: 16px;
+                left: calc(50% + 20px);
+                width: calc(100% - 40px);
+                height: 3px;
+                background: #d5deea;
+                border-radius: 5px;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso.completado:not(:last-child)::after {
+                background: #198754;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso-circulo {
+                position: relative;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 34px;
+                height: 34px;
+                margin: 0 auto 7px;
+                border: 2px solid #cbd5e1;
+                border-radius: 50%;
+                background: #fff;
+                color: #64748b;
+                font-weight: 700;
+                font-size: 0.85rem;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso.completado .expediente-paso-circulo {
+                border-color: #198754;
+                background: #198754;
+                color: #fff;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso.actual .expediente-paso-circulo {
+                width: 38px;
+                height: 38px;
+                margin-top: -2px;
+                border: 3px solid #0d6efd;
+                background: #e7f1ff;
+                color: #0d6efd;
+                box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.10);
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso-nombre {
+                display: block;
+                color: #64748b;
+                font-size: 0.78rem;
+                font-weight: 500;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso.completado .expediente-paso-nombre {
+                color: #198754;
+                font-weight: 600;
+            }
+
+            #modal-detalle-busqueda-global .expediente-paso.actual .expediente-paso-nombre {
+                color: #0d6efd;
+                font-weight: 700;
+            }
+
+            @media (max-width: 400px) {
+                #modal-detalle-busqueda-global .expediente-resumen {
+                    padding: 12px 10px;
+                }
+
+                #modal-detalle-busqueda-global .expediente-resumen-encabezado {
+                    margin-bottom: 14px;
+                }
+
+                #modal-detalle-busqueda-global .expediente-paso-nombre {
+                    font-size: 0.68rem;
+                }
+            }
+
+            @media (max-width: 767.98px) {
+                #modal-detalle-busqueda-global .modal-dialog {
+                    width: calc(100% - 16px);
+                    max-width: none;
+                    height: calc(100dvh - 16px);
+                    max-height: none;
+                    margin: 8px auto;
+                }
+
+                #modal-detalle-busqueda-global .modal-header {
+                    padding: 12px;
+                }
+
+                #modal-detalle-busqueda-global .modal-title {
+                    font-size: 1rem;
+                }
+
+                #modal-detalle-busqueda-global .modal-body {
+                    padding: 12px;
+                }
+
+                #modal-detalle-busqueda-global .modal-footer {
+                    padding: 10px 12px;
+                }
+
+                #modal-detalle-busqueda-global .modal-footer button {
+                    width: 100%;
+                }
+            }
+
+            @media (max-width: 400px) {
+                #modal-detalle-busqueda-global .modal-dialog {
+                    width: calc(100% - 8px);
+                    height: calc(100dvh - 8px);
+                    margin: 4px auto;
+                }
+            }
+        `;
+
+        modalDetalle.appendChild(estilos);
         document.body.appendChild(modalDetalle);
 
         modalDetalleInstancia = window.bootstrap.Modal.getOrCreateInstance(
@@ -453,6 +659,7 @@
 
         return modalDetalle;
     }
+
 
     function establecerTituloModal(titulo, subtitulo = '') {
         const tituloElemento = modalDetalle.querySelector(
@@ -975,9 +1182,19 @@
                         : 'Sin información'
         );
 
+        // =========================================
+        // RESUMEN VISUAL DEL EXPEDIENTE
+        // =========================================
+
         const resumen = crearElemento(
             'div',
-            'alert alert-primary d-flex flex-wrap align-items-center justify-content-between gap-2'
+            'expediente-resumen'
+        );
+
+        // Encabezado del resumen
+        const encabezadoResumen = crearElemento(
+            'div',
+            'expediente-resumen-encabezado'
         );
 
         const textoResumen = crearElemento('div');
@@ -985,12 +1202,12 @@
         textoResumen.append(
             crearElemento(
                 'div',
-                'fw-bold',
+                'expediente-resumen-titulo',
                 'Resumen del expediente'
             ),
             crearElemento(
                 'div',
-                'small',
+                'expediente-resumen-subtitulo',
                 etapas.length
                     ? `Información disponible en: ${etapas.join(' → ')}`
                     : 'No se encontraron registros relacionados.'
@@ -999,11 +1216,79 @@
 
         const etiquetaEtapa = crearElemento(
             'span',
-            'badge text-bg-primary',
+            'expediente-etapa-actual',
             `Etapa actual: ${etapaActual}`
         );
 
-        resumen.append(textoResumen, etiquetaEtapa);
+        encabezadoResumen.append(
+            textoResumen,
+            etiquetaEtapa
+        );
+
+        // Etapas del proceso
+        const progreso = crearElemento(
+            'div',
+            'expediente-progreso'
+        );
+
+        const etapasProceso = [
+            {
+                nombre: 'Cotización',
+                disponible: Boolean(cotizacion)
+            },
+            {
+                nombre: 'Adjudicación',
+                disponible: Boolean(adjudicado)
+            },
+            {
+                nombre: 'Servicio',
+                disponible: servicios.length > 0
+            }
+        ];
+
+        const indiceActual = etapasProceso.findIndex(
+            (etapa) => etapa.nombre === etapaActual
+        );
+
+        etapasProceso.forEach((etapa, indice) => {
+            const paso = crearElemento(
+                'div',
+                'expediente-paso'
+            );
+
+            if (indice === indiceActual) {
+                paso.classList.add('actual');
+            } else if (
+                indice < indiceActual &&
+                etapa.disponible
+            ) {
+                paso.classList.add('completado');
+            }
+
+            const circulo = crearElemento(
+                'div',
+                'expediente-paso-circulo',
+                indice < indiceActual && etapa.disponible
+                    ? '✓'
+                    : String(indice + 1)
+            );
+
+            const nombre = crearElemento(
+                'span',
+                'expediente-paso-nombre',
+                etapa.nombre
+            );
+
+            paso.append(circulo, nombre);
+
+            progreso.appendChild(paso);
+        });
+
+        resumen.append(
+            encabezadoResumen,
+            progreso
+        );
+
         contenido.appendChild(resumen);
 
         if (cotizacion) {
@@ -1083,7 +1368,7 @@
             controladorPeticion = null;
         }
 
-        if (termino.length < 2) {
+        if (termino.length < 1) {
             registrosActuales = [];
             resultados.replaceChildren();
             resultados.hidden = true;
@@ -1177,7 +1462,7 @@
 
         const termino = input.value.trim();
 
-        if (termino.length < 2) {
+        if (termino.length < 1) {
             ultimaBusqueda++;
 
             if (controladorPeticion) {

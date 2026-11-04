@@ -741,8 +741,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     tabla.on('rowClick', function (e, row) {
 
-        const servicio =
-            row.getData();
+        const servicio = row.getData();
+
+        // =====================================================
+        // PROGRESO DEL EXPEDIENTE
+        // =====================================================
+
+        cargarIndicadorProgreso({
+            contenedor: '#progreso-expediente',
+            url: `${BASE_URL}cotizaciones/progresoExpedienteAjax`,
+            id: servicio.id,
+            tipo: 'servicio'
+        });
 
         mostrarDetalle(servicio);
 

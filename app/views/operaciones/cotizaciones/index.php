@@ -285,6 +285,11 @@
                     flex:0 0 50%;
                 ">
 
+                <!-- ================= PROGRESO DEL EXPEDIENTE ================= -->
+                <div
+                    id="progreso-expediente"
+                    class="mb-3">
+                </div>
                 <!-- ================= GENERAL ================= -->
 
                 <div class="card border-0 shadow-sm mb-3">
@@ -923,3 +928,4 @@
 <script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/offcanvas.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/indicador_de_progreso.js"></script>

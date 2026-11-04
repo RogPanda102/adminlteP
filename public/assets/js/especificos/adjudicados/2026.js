@@ -443,6 +443,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const data = row.getData();
         window.currentAdjudicacion = data;
+        // =====================================================
+        // PROGRESO DEL EXPEDIENTE
+        // =====================================================
+        cargarIndicadorProgreso({
+            contenedor: '#progreso-expediente',
+            url: `${BASE_URL}cotizaciones/progresoExpedienteAjax`,
+            id: data.id,
+            tipo: 'adjudicado'
+        });
 
         document.getElementById('erp-folio-title').textContent = data.folio || '';
 

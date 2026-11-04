@@ -262,6 +262,12 @@
 
         <div class="p-3">
 
+                <!-- ================= PROGRESO DEL EXPEDIENTE ================= -->
+                <div
+                    id="progreso-expediente"
+                    class="mb-3">
+                </div>
+
             <!-- ================================================= -->
             <!-- PERIODO DEL SERVICIO                              -->
             <!-- ================================================= -->
@@ -1050,3 +1056,4 @@
     window.BASE_URL = '<?= BASE_URL ?>';
 </script>
 <script src="<?= BASE_URL ?>assets/js/especificos/servicios/index.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/indicador_de_progreso.js"></script>

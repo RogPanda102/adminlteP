@@ -456,7 +456,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = row.getData();
 
         window.currentCotizacion = data;
-
+        // =====================================================
+        // PROGRESO DEL EXPEDIENTE
+        // =====================================================
+        cargarIndicadorProgreso({
+            contenedor: '#progreso-expediente',
+            url: `${BASE_URL}cotizaciones/progresoExpedienteAjax`,
+            id: data.id,
+            tipo: 'cotizacion'
+        });
         // ============================
         // HEADER
         // ============================

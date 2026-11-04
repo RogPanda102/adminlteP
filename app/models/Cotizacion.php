@@ -538,4 +538,93 @@ class Cotizacion
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // =========================
+    // Obtener progreso del expediente
+    // =========================
+    public function obtenerProgresoExpediente($id, $tipo = 'cotizacion')
+    {
+        $sql = "
+            SELECT
+                c.id AS cotizacion_id,
+
+                CASE
+                    WHEN c.id IS NOT NULL THEN 1
+                    ELSE 0
+                END AS cotizacion,
+
+                CASE
+                    WHEN a.id IS NOT NULL THEN 1
+                    ELSE 0
+                END AS adjudicacion,
+
+                CASE
+                    WHEN s.id IS NOT NULL THEN 1
+                    ELSE 0
+                END AS servicio
+
+            FROM cotizaciones c
+
+            LEFT JOIN adjudicados a
+                ON a.cotizacion_id = c.id
+                AND a.eliminado = 0
+
+            LEFT JOIN servicios s
+                ON s.adjudicado_id = a.id
+        ";
+
+        switch ($tipo) {
+
+            case 'cotizacion':
+
+                $sql .= "
+                    WHERE c.id = :id
+                    AND c.eliminado = 0
+                ";
+
+                break;
+
+            case 'adjudicado':
+
+                $sql .= "
+                    WHERE a.id = :id
+                    AND c.eliminado = 0
+                ";
+
+                break;
+
+            case 'servicio':
+
+                $sql .= "
+                    WHERE s.id = :id
+                    AND c.eliminado = 0
+                ";
+
+                break;
+
+            default:
+                return false;
+        }
+
+        $sql .= " LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$resultado) {
+            return false;
+        }
+
+        return [
+            'cotizacion' => (bool) $resultado['cotizacion'],
+            'adjudicacion' => (bool) $resultado['adjudicacion'],
+            'servicio' => (bool) $resultado['servicio']
+        ];
+    }
+
 }
+

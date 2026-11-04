@@ -280,6 +280,98 @@ class CotizacionesController extends BaseController
     }
 
     // =========================
+    // Obtener progreso del expediente AJAX
+    // =========================
+    public function progresoExpedienteAjax()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        // Validar sesión
+        if (!$this->permitido) {
+
+            http_response_code(403);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'No autorizado'
+            ]);
+
+            exit;
+        }
+
+        // Validar ID
+        $id = filter_input(
+            INPUT_GET,
+            'id',
+            FILTER_VALIDATE_INT
+        );
+
+        if (!$id || $id <= 0) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'ID inválido'
+            ]);
+
+            exit;
+        }
+
+        // Validar tipo de registro
+        $tipo = filter_input(
+            INPUT_GET,
+            'tipo',
+            FILTER_SANITIZE_SPECIAL_CHARS
+        );
+
+        $tiposPermitidos = [
+            'cotizacion',
+            'adjudicado',
+            'servicio'
+        ];
+
+        if (!in_array($tipo, $tiposPermitidos, true)) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Tipo de registro inválido'
+            ]);
+
+            exit;
+        }
+
+        // Consultar progreso
+        $modelo = new Cotizacion();
+
+        $progreso = $modelo->obtenerProgresoExpediente(
+            $id,
+            $tipo
+        );
+
+        if ($progreso === false) {
+
+            http_response_code(404);
+
+            echo json_encode([
+                'ok' => false,
+                'mensaje' => 'Expediente no encontrado'
+            ]);
+
+            exit;
+        }
+
+        echo json_encode([
+            'ok' => true,
+            'progreso' => $progreso
+        ]);
+
+        exit;
+    }
+
+    // =========================
     // Buscar catálogo AJAX
     // =========================
     public function buscarCatalogoAjax()
