@@ -451,7 +451,12 @@
     }
 }
 
+
 @media (max-width: 575.98px) {
+    .navbar-search-wrapper {
+        position: static;
+    }
+
     .navbar-search-wrapper.is-open .navbar-search-panel {
         width: min(250px, calc(100vw - 110px));
     }
@@ -474,16 +479,23 @@
     .navbar-search-results {
         position: fixed;
         top: 66px;
-        right: 12px;
-        width: calc(100vw - 24px);
-        max-height: calc(100vh - 90px);
-        padding: 8px;
-        border-radius: 16px;
+        left: 8px;
+        right: 8px;
+        width: auto;
+        max-width: none;
+        max-height: calc(100dvh - 82px);
+        padding: 10px;
+        margin: 0;
+        border-radius: 14px;
+        box-sizing: border-box;
     }
 
     .busqueda-global-filtros {
-        gap: 5px;
-        padding-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 6px;
+        padding: 5px 2px 10px;
     }
 
     .busqueda-global-filtro {
@@ -494,9 +506,23 @@
     }
 
     .busqueda-global-resultado {
+        width: 100%;
+        box-sizing: border-box;
         padding: 11px 12px;
     }
+
+    .busqueda-global-lista {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .busqueda-global-resumen {
+        width: 100%;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+    }
 }
+
 
 /* =========================================
    ACCESIBILIDAD
@@ -519,5 +545,46 @@
 
     .busqueda-global-mensaje.text-secondary::before {
         animation: none !important;
+    }
+}
+
+
+/* =========================================
+   ALINEACIÓN DEL PANEL DE RESULTADOS
+========================================= */
+
+.navbar-search-wrapper {
+    --busqueda-panel-ancho: clamp(250px, 38vw, 450px);
+}
+
+.navbar-search-wrapper.is-open .navbar-search-panel {
+    width: var(--busqueda-panel-ancho);
+}
+
+.navbar-search-wrapper .navbar-search-results {
+    left: auto;
+    right: 40px;
+    width: var(--busqueda-panel-ancho);
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+}
+
+/* Teléfonos: panel de resultados compacto */
+@media (max-width: 575.98px) {
+    .navbar-search-wrapper {
+        --busqueda-panel-ancho: min(250px, calc(100vw - 110px));
+    }
+
+    .navbar-search-wrapper .navbar-search-results {
+        position: fixed;
+        top: 66px;
+        left: auto;
+        right: 38px;
+        width: var(--busqueda-panel-ancho);
+        max-width: var(--busqueda-panel-ancho);
+        max-height: calc(100dvh - 82px);
+        box-sizing: border-box;
+        padding: 10px;
+        margin: 0;
     }
 }

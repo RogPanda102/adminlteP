@@ -78,6 +78,12 @@ $router->get(
     '/cotizaciones/buscarCatalogoAjax',
     'operaciones\CotizacionesController@buscarCatalogoAjax'
 );
+
+$router->get(
+    '/cotizaciones/progresoExpedienteAjax',
+    'operaciones\CotizacionesController@progresoExpedienteAjax'
+);
+
 $router->post(
     '/cotizaciones/guardarProveedorAjax',
     'operaciones\CotizacionesController@guardarProveedorAjax'

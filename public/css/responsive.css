@@ -1427,3 +1427,349 @@
 
 }
 
+
+
+/* =========================================================
+   INDICADOR DE PROGRESO DEL EXPEDIENTE
+   Helper global - Cotizaciones, Adjudicados y Servicios
+   ========================================================= */
+
+.expediente-resumen {
+
+    background: #ffffff;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    padding: 1rem 1.15rem;
+
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+
+}
+
+
+/* =====================================================
+   ENCABEZADO
+   ===================================================== */
+
+.expediente-resumen-encabezado {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    margin-bottom: 1.25rem;
+
+}
+
+
+.expediente-resumen-titulo {
+
+    font-size: .95rem;
+
+    font-weight: 700;
+
+    color: #1e293b;
+
+}
+
+
+.expediente-resumen-subtitulo {
+
+    margin-top: .15rem;
+
+    font-size: .75rem;
+
+    color: #64748b;
+
+}
+
+
+/* =====================================================
+   ETAPA ACTUAL
+   ===================================================== */
+
+.expediente-etapa-actual {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: .35rem .75rem;
+
+    border-radius: 20px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: .72rem;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+
+}
+
+
+/* =====================================================
+   CONTENEDOR DE ETAPAS
+   ===================================================== */
+
+.expediente-progreso {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    position: relative;
+
+    width: 100%;
+
+}
+
+
+/* =====================================================
+   CADA ETAPA
+   ===================================================== */
+
+.expediente-paso {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex: 1;
+
+    min-width: 0;
+
+    position: relative;
+
+    text-align: center;
+
+    z-index: 1;
+
+}
+
+
+/* =====================================================
+   CÍRCULOS
+   ===================================================== */
+
+.expediente-paso-circulo {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    background: #e5e7eb;
+
+    border: 2px solid #d1d5db;
+
+    color: #6b7280;
+
+    font-size: .85rem;
+
+    font-weight: 700;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease;
+
+}
+
+
+/* =====================================================
+   ETAPAS COMPLETADAS - VERDE
+   ===================================================== */
+
+.expediente-paso.completado .expediente-paso-circulo {
+
+    background: #16a34a;
+
+    border-color: #16a34a;
+
+    color: #ffffff;
+
+}
+
+
+/* =====================================================
+   ETAPA ACTUAL - AZUL
+   ===================================================== */
+
+.expediente-paso.actual .expediente-paso-circulo {
+
+    background: #2563eb;
+
+    border-color: #2563eb;
+
+    color: #ffffff;
+
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, .12);
+
+}
+
+
+/* =====================================================
+   ETAPAS PENDIENTES - GRIS
+   ===================================================== */
+
+.expediente-paso.pendiente .expediente-paso-circulo {
+
+    background: #f3f4f6;
+
+    border-color: #d1d5db;
+
+    color: #9ca3af;
+
+}
+
+
+/* =====================================================
+   NOMBRES DE ETAPAS
+   ===================================================== */
+
+.expediente-paso-nombre {
+
+    margin-top: .55rem;
+
+    font-size: .76rem;
+
+    font-weight: 600;
+
+    color: #64748b;
+
+    line-height: 1.25;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+.expediente-paso.completado .expediente-paso-nombre {
+
+    color: #15803d;
+
+}
+
+
+.expediente-paso.actual .expediente-paso-nombre {
+
+    color: #2563eb;
+
+    font-weight: 700;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE - TABLETS Y CELULARES
+   ===================================================== */
+
+@media (max-width: 575.98px) {
+
+    .expediente-resumen {
+
+        padding: .85rem .75rem;
+
+    }
+
+    .expediente-resumen-encabezado {
+
+        margin-bottom: 1rem;
+
+        gap: .5rem;
+
+    }
+
+    .expediente-resumen-titulo {
+
+        font-size: .85rem;
+
+    }
+
+    .expediente-resumen-subtitulo {
+
+        font-size: .7rem;
+
+    }
+
+    .expediente-etapa-actual {
+
+        padding: .3rem .55rem;
+
+        font-size: .66rem;
+
+    }
+
+    .expediente-paso-circulo {
+
+        width: 30px;
+
+        height: 30px;
+
+        font-size: .78rem;
+
+    }
+
+    .expediente-paso-nombre {
+
+        font-size: .68rem;
+
+        margin-top: .45rem;
+
+    }
+
+}
+
+
+/* =====================================================
+   CELULARES MUY PEQUEÑOS
+   ===================================================== */
+
+@media (max-width: 380px) {
+
+    .expediente-resumen-encabezado {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+    .expediente-etapa-actual {
+
+        align-self: flex-start;
+
+    }
+
+    .expediente-paso-nombre {
+
+        font-size: .63rem;
+
+    }
+
+}

@@ -269,6 +269,11 @@
                         flex:0 0 50%;
                     "
                 >
+                    <!-- ================= PROGRESO DEL EXPEDIENTE ================= -->
+                    <div
+                        id="progreso-expediente"
+                        class="mb-3">
+                    </div>
 
                     <!-- ================= GENERAL ================= -->
 
@@ -968,3 +973,4 @@
     <script src="<?= BASE_URL ?>assets/js/especificos/adjudicados/2026.js"></script>
     <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
     <script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/helpers/indicador_de_progreso.js"></script>
