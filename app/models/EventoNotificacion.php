@@ -400,6 +400,7 @@ class EventoNotificacion
                 r.momento,
                 s.req,
                 s.folio,
+                s.partida,
                 s.finalizacion,
                 s.anio
             FROM eventos_notificacion e
