@@ -1,13 +1,13 @@
+
 <?php
 
 class Env
 {
     public static function cargar($ruta)
     {
+        // Si no existe el archivo, continuar sin variables de entorno.
         if (!file_exists($ruta)) {
-            throw new RuntimeException(
-                'No se encontró el archivo .env'
-            );
+            return false;
         }
 
         $lineas = file(
@@ -47,5 +47,7 @@ class Env
                 $_ENV[$nombre] = $valor;
             }
         }
+
+        return true;
     }
 }
