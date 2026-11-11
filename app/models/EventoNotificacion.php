@@ -10,7 +10,13 @@ class EventoNotificacion
 
     public function __construct()
     {
+        // Zona horaria de México
+        date_default_timezone_set('America/Mexico_City');
+
         $this->db = Database::connect();
+
+        // Sincronizar la zona horaria de la sesión de MariaDB
+        $this->db->exec("SET time_zone = '-06:00'");
     }
 
     // =========================================
