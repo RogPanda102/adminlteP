@@ -239,13 +239,6 @@ class ProcesadorNotificaciones
         // 3. PROCESAR CORREOS
         // =========================================
 
-        $destinatario = getenv('MAIL_TO');
-
-        if (!$destinatario) {
-            error_log(
-                'No se procesaron los correos: falta configurar MAIL_TO.'
-            );
-        } else {
             try {
                 $correos = $eventoModelo->obtenerCorreosPendientes();
 
@@ -258,6 +251,26 @@ class ProcesadorNotificaciones
                         if (
                             !$eventoModelo->iniciarEnvioCorreo($correo['id'])
                         ) {
+                            continue;
+                        }
+                        // Obtener el correo del usuario que registró el servicio.
+                        $destinatario = trim(
+                            (string) ($correo['correo_destinatario'] ?? '')
+                        );
+
+                        // Validar la dirección del destinatario.
+                        if (
+                            $destinatario === '' ||
+                            !filter_var($destinatario, FILTER_VALIDATE_EMAIL)
+                        ) {
+                            $eventoModelo->marcarCorreoFallido($correo['id']);
+
+                            $resultado['correos_fallidos']++;
+
+                            error_log(
+                                'Destinatario inválido para el evento ' . $correo['id']
+                            );
+
                             continue;
                         }
 
@@ -513,7 +526,7 @@ class ProcesadorNotificaciones
                     $e->getMessage()
                 );
             }
-        }
+        
 
         // =========================================
         // 4. LIMPIAR EVENTOS VENCIDOS
