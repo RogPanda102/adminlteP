@@ -390,6 +390,7 @@ class EventoNotificacion
     // =========================================
     // OBTENER CORREOS PENDIENTES O POR REINTENTAR
     // =========================================
+    
     public function obtenerCorreosPendientes()
     {
         $sql = "
@@ -408,7 +409,9 @@ class EventoNotificacion
                 s.folio,
                 s.partida,
                 s.finalizacion,
-                s.anio
+                s.anio,
+                u.correo AS correo_destinatario
+
             FROM eventos_notificacion e
 
             INNER JOIN recordatorios_servicio r
@@ -416,6 +419,10 @@ class EventoNotificacion
 
             INNER JOIN servicios s
                 ON s.id = e.servicio_id
+
+            LEFT JOIN usuarios u
+                ON u.id = s.creado_por
+                AND u.eliminado = 0
 
             WHERE TIME(e.fecha_hora_programada) = '09:00:00'
             AND e.fecha_hora_programada <= NOW()
@@ -443,7 +450,6 @@ class EventoNotificacion
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
     // =========================================
     // TOMAR UN CORREO PARA PROCESAR
