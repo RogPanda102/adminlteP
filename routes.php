@@ -303,6 +303,11 @@ $router->post(
     'operaciones\UsuarioController@actualizar'
 );
 
+$router->post(
+    '/perfil/actualizarFoto',
+    'operaciones\UsuarioController@actualizarFoto'
+);
+
 /*
 |--------------------------------------------------------------------------
 | NOTIFICACIONES

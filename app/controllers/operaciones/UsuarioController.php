@@ -419,5 +419,121 @@ class UsuarioController extends BaseController
         redirect('perfil');
     }
 
+    // =========================
+    // Actualizar foto de perfil
+    // =========================
+    public function actualizarFoto()
+    {
+        if (!$this->permitido) {
+            redirect('login');
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            redirect('perfil');
+        }
+
+        if (
+            !isset($_FILES['foto']) ||
+            $_FILES['foto']['error'] === UPLOAD_ERR_NO_FILE
+        ) {
+            mensaje('Selecciona una imagen.', ALERT_WARNING, 3000);
+            redirect('perfil');
+        }
+
+        $archivo = $_FILES['foto'];
+
+        if ($archivo['error'] !== UPLOAD_ERR_OK) {
+            mensaje('Ocurrió un error al subir la imagen.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        // Tamaño máximo: 5 MB
+        if ($archivo['size'] > 5 * 1024 * 1024) {
+            mensaje('La imagen no debe superar los 5 MB.', ALERT_WARNING, 3000);
+            redirect('perfil');
+        }
+
+        // Validar MIME real
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($archivo['tmp_name']);
+
+        $tiposPermitidos = [
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/webp' => 'webp'
+        ];
+
+        if (!isset($tiposPermitidos[$mime])) {
+            mensaje('Formato no permitido. Usa JPG, PNG o WEBP.', ALERT_WARNING, 3000);
+            redirect('perfil');
+        }
+
+        // Verificar que sea una imagen válida
+        if (getimagesize($archivo['tmp_name']) === false) {
+            mensaje('El archivo seleccionado no es una imagen válida.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        $directorio = dirname(__DIR__, 3) . '/public/assets/upload/usuarios';
+
+        if (!is_dir($directorio) || !is_writable($directorio)) {
+            mensaje('No se encuentra disponible el directorio de imágenes.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        try {
+            $nombreFoto = 'usuario_' .
+                $_SESSION['usuario_id'] . '_' .
+                bin2hex(random_bytes(8)) . '.' .
+                $tiposPermitidos[$mime];
+        } catch (Exception $e) {
+            mensaje('No fue posible generar el nombre de la imagen.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        $rutaNueva = $directorio . '/' . $nombreFoto;
+
+        if (!move_uploaded_file($archivo['tmp_name'], $rutaNueva)) {
+            mensaje('No fue posible guardar la imagen.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        $modeloUsuario = new Usuario();
+
+        $fotoAnterior = $_SESSION['foto_usuario'] ?? null;
+
+        $resultado = $modeloUsuario->actualizarFoto(
+            $_SESSION['usuario_id'],
+            $nombreFoto
+        );
+
+        if (!$resultado) {
+            unlink($rutaNueva);
+
+            mensaje('No fue posible actualizar la foto de perfil.', ALERT_DANGER, 3000);
+            redirect('perfil');
+        }
+
+        // Actualizar sesión
+        $_SESSION['foto_usuario'] = $nombreFoto;
+
+        // Eliminar foto anterior personalizada
+        if (
+            !empty($fotoAnterior) &&
+            $fotoAnterior !== 'default.webp' &&
+            basename($fotoAnterior) === $fotoAnterior
+        ) {
+            $rutaAnterior = $directorio . '/' . $fotoAnterior;
+
+            if (is_file($rutaAnterior)) {
+                unlink($rutaAnterior);
+            }
+        }
+
+        mensaje('Foto de perfil actualizada correctamente.', ALERT_SUCCESS, 3000);
+
+        redirect('perfil');
+    }
+
     
 }

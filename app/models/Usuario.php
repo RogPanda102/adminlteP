@@ -247,4 +247,25 @@ class Usuario
         return $query->fetch(PDO::FETCH_ASSOC);
 
     }
+
+    // =========================
+    // Actualizar foto de perfil
+    // =========================
+    public function actualizarFoto($usuarioId, $nombreFoto)
+    {
+        $sql = "
+            UPDATE usuarios
+            SET foto = :foto
+            WHERE id = :id
+            AND eliminado = 0
+        ";
+
+        $query = $this->conexion->prepare($sql);
+
+        return $query->execute([
+            ':foto' => $nombreFoto,
+            ':id' => $usuarioId
+        ]);
+    }
+
 }

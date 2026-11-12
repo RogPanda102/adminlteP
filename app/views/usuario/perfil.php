@@ -19,15 +19,61 @@ $tab_activo = $tab_activo ?? 'activity';
                     <!-- About card -->
                     <div class="card">
                         <div class="card-body text-center">
-                            <img
-                                src="<?= $foto_usuario ?>"
-                                class="img-fluid rounded-circle mb-3"
-                                width="100"
-                                height="100"
-                                alt="Foto de perfil" />
+
+                            <div
+                                id="zona-drag-foto"
+                                class="position-relative d-inline-block"
+                                style="cursor: pointer;"
+                                transition: outline .2s ease;
+                                title="Haz clic o arrastra una imagen aquí">
+
+                                <img
+                                    id="preview-foto-perfil"
+                                    src="<?= htmlspecialchars($foto_usuario, ENT_QUOTES, 'UTF-8') ?>"
+                                    class="img-fluid rounded-circle mb-3 border"
+                                    width="100"
+                                    height="100"
+                                    style="object-fit: cover; transition: opacity .2s;"
+                                    transition: transform .25s ease, filter .25s ease;
+
+                                    alt="Foto de perfil" />
+
+                                <div
+                                    id="mensaje-drag-foto"
+                                    class="position-absolute top-50 start-50 translate-middle text-white text-center rounded-circle d-none"
+                                    style="width: 100px; height: 100px; background: rgba(0,0,0,.65); font-size: 11px; display: flex; align-items: center; justify-content: center;">
+
+                                    Suelta la imagen
+                                </div>
+                            </div>
+                            <form
+                                action="<?= BASE_URL ?>perfil/actualizarFoto"
+                                method="POST"
+                                enctype="multipart/form-data"
+                                class="mt-2">
+
+                                <div class="mb-2">
+                                    <input
+                                        type="file"
+                                        name="foto"
+                                        id="input-foto-perfil"
+                                        class="form-control form-control-sm"
+                                        accept="image/jpeg,image/png,image/webp"
+                                        required>
+                                </div>
+
+                                <small class="text-muted d-block mb-2">
+                                    Arrastra una imagen sobre tu foto o selecciónala manualmente.
+                                </small>
+
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-camera me-1"></i>
+                                    Cambiar foto
+                                </button>
+                            </form>
+
                             <h3 class="h5 mb-0">
                                 <?= htmlspecialchars($nombre_usuario ?? '', ENT_QUOTES, 'UTF-8') ?>
-
                             </h3>
                             <p class="text-secondary mb-3">Estatus de cotizaciones</p>
                             <ul class="list-group list-group-flush text-start small">
