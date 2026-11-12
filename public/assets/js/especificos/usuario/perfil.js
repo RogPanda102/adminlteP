@@ -270,4 +270,153 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // Vista previa y Drag & Drop de foto de perfil
+    const inputFoto = document.getElementById('input-foto-perfil');
+    const previewFoto = document.getElementById('preview-foto-perfil');
+    const zonaDrag = document.getElementById('zona-drag-foto');
+    const mensajeDrag = document.getElementById('mensaje-drag-foto');
+
+    if (inputFoto && previewFoto && zonaDrag) {
+
+        const tiposPermitidos = [
+            'image/jpeg',
+            'image/png',
+            'image/webp'
+        ];
+
+        let contadorDrag = 0;
+        let animacionDrag = null;
+
+        function procesarFoto(archivo) {
+
+            if (!archivo) return;
+
+            if (!tiposPermitidos.includes(archivo.type)) {
+                alert('Formato no permitido. Usa JPG, PNG o WEBP.');
+                return;
+            }
+
+            if (archivo.size > 5 * 1024 * 1024) {
+                alert('La imagen no debe superar los 5 MB.');
+                return;
+            }
+
+            const lector = new FileReader();
+
+            lector.onload = function (evento) {
+                previewFoto.src = evento.target.result;
+            };
+
+            lector.readAsDataURL(archivo);
+        }
+
+        function activarEfectoDrag() {
+
+            zonaDrag.style.outline = '3px dashed #0d6efd';
+            zonaDrag.style.outlineOffset = '5px';
+            zonaDrag.style.borderRadius = '50%';
+
+            previewFoto.style.transform = 'scale(1.12)';
+            previewFoto.style.filter = 'brightness(0.55)';
+
+            if (mensajeDrag) {
+                mensajeDrag.classList.remove('d-none');
+                mensajeDrag.classList.add('d-flex');
+            }
+
+            if (previewFoto.animate) {
+                animacionDrag = previewFoto.animate([
+                    { transform: 'scale(1.12)' },
+                    { transform: 'scale(1.18)' },
+                    { transform: 'scale(1.12)' }
+                ], {
+                    duration: 900,
+                    iterations: Infinity
+                });
+            }
+        }
+
+        function desactivarEfectoDrag() {
+
+            zonaDrag.style.outline = '';
+            zonaDrag.style.outlineOffset = '';
+            zonaDrag.style.borderRadius = '';
+
+            previewFoto.style.transform = '';
+            previewFoto.style.filter = '';
+
+            if (mensajeDrag) {
+                mensajeDrag.classList.add('d-none');
+                mensajeDrag.classList.remove('d-flex');
+            }
+
+            if (animacionDrag) {
+                animacionDrag.cancel();
+                animacionDrag = null;
+            }
+        }
+
+        // Selección manual
+        inputFoto.addEventListener('change', function () {
+            procesarFoto(this.files[0]);
+        });
+
+        // Clic sobre la imagen
+        zonaDrag.addEventListener('click', function () {
+            inputFoto.click();
+        });
+
+        // Evitar comportamiento predeterminado
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evento => {
+            zonaDrag.addEventListener(evento, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+
+        // Entrada del archivo
+        zonaDrag.addEventListener('dragenter', function () {
+
+            contadorDrag++;
+
+            if (contadorDrag === 1) {
+                activarEfectoDrag();
+            }
+        });
+
+        // Mantener activo mientras se arrastra
+        zonaDrag.addEventListener('dragover', function (e) {
+            e.dataTransfer.dropEffect = 'copy';
+        });
+
+        // Salida del área
+        zonaDrag.addEventListener('dragleave', function () {
+
+            contadorDrag--;
+
+            if (contadorDrag <= 0) {
+                contadorDrag = 0;
+                desactivarEfectoDrag();
+            }
+        });
+
+        // Soltar imagen
+        zonaDrag.addEventListener('drop', function (e) {
+
+            contadorDrag = 0;
+            desactivarEfectoDrag();
+
+            const archivo = e.dataTransfer.files[0];
+
+            if (!archivo) return;
+
+            const transferencia = new DataTransfer();
+            transferencia.items.add(archivo);
+
+            inputFoto.files = transferencia.files;
+
+            procesarFoto(archivo);
+        });
+    }
+
 });
