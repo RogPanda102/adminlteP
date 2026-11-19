@@ -70,240 +70,235 @@
   </head>
   <!--end::Head-->
   <!--begin::Body-->
-  <body class="login-page bg-body-secondary">
-    <div class="login-box">
-      <div class="card card-outline card-primary">
-        <div class="card-body login-card-body">
+    <body class="login-page bg-body-secondary">
+        <div class="login-box">
+            <div class="card card-outline card-primary">
+                <div class="card-body login-card-body">
 
-    <div class="text-center mb-4">
+                    <div class="text-center mb-4">
 
-        <a
-            href="<?= BASE_URL ?>login"
-            class="fw-bold text-secondary text-decoration-none"
-        >
-            Iniciar sesión
-        </a>
+                        <a
+                            href="<?= BASE_URL ?>login"
+                            class="fw-bold text-secondary text-decoration-none"
+                        >
+                            Iniciar sesión
+                        </a>
 
-        <span class="mx-3 text-muted">|</span>
+                        <span class="mx-3 text-muted">|</span>
 
-        <a
-            href="<?= BASE_URL ?>registro"
-            class="fw-bold text-primary border-bottom border-primary pb-1 text-decoration-none"
-        >
-            Registrarse
-        </a>
+                        <a
+                            href="<?= BASE_URL ?>registro"
+                            class="fw-bold text-primary border-bottom border-primary pb-1 text-decoration-none"
+                        >
+                            Registrarse
+                        </a>
 
-    </div>
+                    </div>
+                    <p class="login-box-msg">
+                        Crear cuenta en Pandasoft
+                    </p>
+                    <form action="<?= BASE_URL ?>registro" method="POST">
 
-    <p class="login-box-msg">
-        Crear cuenta en Pandasoft
-    </p>
+                        <!-- NOMBRE -->
 
-    <form action="<?= BASE_URL ?>registro" method="POST">
+                        <div class="input-group mb-3">
 
-        <!-- NOMBRE -->
+                            <div class="form-floating">
 
-        <div class="input-group mb-3">
+                                <input
+                                    type="text"
+                                    name="nombre"
+                                    id="nombre"
+                                    class="form-control"
+                                    placeholder="Nombre"
+                                    required
+                                >
 
-            <div class="form-floating">
+                                <label for="nombre">
+                                    Nombre 
+                                </label>
 
-                <input
-                    type="text"
-                    name="nombre"
-                    id="nombre"
-                    class="form-control"
-                    placeholder="Nombre"
-                    required
-                >
+                            </div>
 
-                <label for="nombre">
-                    Nombre 
-                </label>
+                            <div class="input-group-text">
+                                <span class="bi bi-person-vcard"></span>
+                            </div>
 
-            </div>
+                        </div>
 
-            <div class="input-group-text">
-                <span class="bi bi-person-vcard"></span>
-            </div>
+                        <div class="input-group mb-3">
 
-        </div>
+                            <div class="form-floating">
 
-        <div class="input-group mb-3">
+                                    <input
+                                        type="text"
+                                        name="apellido_paterno"
+                                        id="apellido_paterno"
+                                        class="form-control"
+                                        placeholder="Apellido paterno"
+                                        required
+                                    >
 
-            <div class="form-floating">
+                                    <label for="apellido_paterno">
+                                        Apellido paterno
+                                    </label>
 
-                    <input
-                        type="text"
-                        name="apellido_paterno"
-                        id="apellido_paterno"
-                        class="form-control"
-                        placeholder="Apellido paterno"
-                        required
-                    >
+                                </div>
 
-                    <label for="apellido_paterno">
-                        Apellido paterno
-                    </label>
+                                <div class="input-group-text">
+                                    <span class="bi bi-person"></span>
+                                </div>
 
+                        </div>
+
+                        <div class="input-group mb-3">
+
+                            <div class="form-floating">
+
+                                <input
+                                    type="text"
+                                    name="apellido_materno"
+                                    id="apellido_materno"
+                                    class="form-control"
+                                    placeholder="Apellido materno"
+                                >
+
+                                <label for="apellido_materno">
+                                    Apellido materno
+                                </label>
+
+                            </div>
+
+                            <div class="input-group-text">
+                                <span class="bi bi-person"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- USUARIO -->
+
+                        <div class="input-group mb-3">
+
+                            <div class="form-floating">
+
+                                <input
+                                    type="text"
+                                    name="usuario"
+                                    id="usuario"
+                                    class="form-control"
+                                    placeholder="Usuario"
+                                    required
+                                >
+
+                                <label for="usuario">
+                                    Usuario
+                                </label>
+
+                            </div>
+
+                            <div class="input-group-text">
+                                <span class="bi bi-person"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- CORREO -->
+
+                        <div class="input-group mb-3">
+
+                            <div class="form-floating">
+
+                                <input
+                                    type="email"
+                                    name="correo"
+                                    id="correo"
+                                    class="form-control"
+                                    placeholder="Correo"
+                                    required
+                                >
+
+                                <label for="correo">
+                                    Correo electrónico
+                                </label>
+
+                            </div>
+
+                            <div class="input-group-text">
+                                <span class="bi bi-envelope"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- PASSWORD -->
+
+                        <div class="input-group mb-3">
+
+                            <div class="form-floating">
+
+                                <input
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    class="form-control"
+                                    placeholder="Contraseña"
+                                    required
+                                >
+
+                                <label for="password">
+                                    Contraseña
+                                </label>
+
+                            </div>
+
+                            <div class="input-group-text">
+                                <span class="bi bi-lock-fill"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- CONFIRMAR PASSWORD -->
+
+                        <div class="input-group mb-4">
+
+                            <div class="form-floating">
+
+                                <input
+                                    type="password"
+                                    name="confirmar_password"
+                                    id="password_confirm"
+                                    class="form-control"
+                                    placeholder="Confirmar contraseña"
+                                    required
+                                >
+
+                                <label for="password_confirm">
+                                    Confirmar contraseña
+                                </label>
+
+                            </div>
+
+                            <div class="input-group-text">
+                                <span class="bi bi-shield-lock"></span>
+                            </div>
+
+                        </div>
+
+                        <div class="d-grid">
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Crear cuenta
+                            </button>
+
+                        </div>
+
+                    </form>
                 </div>
-
-                <div class="input-group-text">
-                    <span class="bi bi-person"></span>
-                </div>
-
+            </div>
         </div>
-
-        <div class="input-group mb-3">
-
-            <div class="form-floating">
-
-                <input
-                    type="text"
-                    name="apellido_materno"
-                    id="apellido_materno"
-                    class="form-control"
-                    placeholder="Apellido materno"
-                >
-
-                <label for="apellido_materno">
-                    Apellido materno
-                </label>
-
-            </div>
-
-            <div class="input-group-text">
-                <span class="bi bi-person"></span>
-            </div>
-
-        </div>
-
-        <!-- USUARIO -->
-
-        <div class="input-group mb-3">
-
-            <div class="form-floating">
-
-                <input
-                    type="text"
-                    name="usuario"
-                    id="usuario"
-                    class="form-control"
-                    placeholder="Usuario"
-                    required
-                >
-
-                <label for="usuario">
-                    Usuario
-                </label>
-
-            </div>
-
-            <div class="input-group-text">
-                <span class="bi bi-person"></span>
-            </div>
-
-        </div>
-
-        <!-- CORREO -->
-
-        <div class="input-group mb-3">
-
-            <div class="form-floating">
-
-                <input
-                    type="email"
-                    name="correo"
-                    id="correo"
-                    class="form-control"
-                    placeholder="Correo"
-                    required
-                >
-
-                <label for="correo">
-                    Correo electrónico
-                </label>
-
-            </div>
-
-            <div class="input-group-text">
-                <span class="bi bi-envelope"></span>
-            </div>
-
-        </div>
-
-        <!-- PASSWORD -->
-
-        <div class="input-group mb-3">
-
-            <div class="form-floating">
-
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    class="form-control"
-                    placeholder="Contraseña"
-                    required
-                >
-
-                <label for="password">
-                    Contraseña
-                </label>
-
-            </div>
-
-            <div class="input-group-text">
-                <span class="bi bi-lock-fill"></span>
-            </div>
-
-        </div>
-
-        <!-- CONFIRMAR PASSWORD -->
-
-        <div class="input-group mb-4">
-
-            <div class="form-floating">
-
-                <input
-                    type="password"
-                    name="confirmar_password"
-                    id="password_confirm"
-                    class="form-control"
-                    placeholder="Confirmar contraseña"
-                    required
-                >
-
-                <label for="password_confirm">
-                    Confirmar contraseña
-                </label>
-
-            </div>
-
-            <div class="input-group-text">
-                <span class="bi bi-shield-lock"></span>
-            </div>
-
-        </div>
-
-        <div class="d-grid">
-
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Crear cuenta
-            </button>
-
-        </div>
-
-    </form>
-
-</div>
-
-      
-      </div>
-    </div>
-    <!-- /.login-box -->
+        <!-- /.login-box -->
 
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
     <script
