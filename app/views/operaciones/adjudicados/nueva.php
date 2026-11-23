@@ -16,7 +16,7 @@
             <!-- BUSCAR COTIZACIÓN -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <div class="d-flex align-items-center mb-3">
 
@@ -40,7 +40,7 @@
 
                     <div class="input-group">
 
-                        <span class="input-group-text">
+                        <span class="input-group-text formulario-input-icono">
                             <i class="bi bi-search"></i>
                         </span>
 
@@ -74,7 +74,7 @@
             <!-- INFORMACIÓN GENERAL -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-primary mb-3">
                     <i class="bi bi-info-circle me-2"></i>
@@ -92,7 +92,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar3"></i>
                             </span>
 
@@ -117,7 +117,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar-range"></i>
                             </span>
 
@@ -142,7 +142,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-hash"></i>
                             </span>
 
@@ -167,7 +167,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-file-earmark-text"></i>
                             </span>
 
@@ -190,7 +190,7 @@
             <!-- RESPONSABLES -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-success mb-3">
                     <i class="bi bi-people me-2"></i>
@@ -208,7 +208,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-person"></i>
                             </span>
 
@@ -233,7 +233,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-box-seam"></i>
                             </span>
 
@@ -257,7 +257,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-person-badge"></i>
                             </span>
 
@@ -297,7 +297,7 @@
             <!-- FECHAS E IMPORTE -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-warning mb-3">
                     <i class="bi bi-calendar-check me-2"></i>
@@ -315,7 +315,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar-event"></i>
                             </span>
 
@@ -338,7 +338,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar2-check"></i>
                             </span>
 
@@ -361,7 +361,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-currency-dollar"></i>
                             </span>
 
@@ -387,7 +387,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-credit-card-2-front"></i>
                             </span>
 
@@ -409,7 +409,7 @@
             <!-- PAGO Y DEPENDENCIA -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-danger mb-3">
                     <i class="bi bi-wallet2 me-2"></i>
@@ -427,7 +427,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-cash-stack"></i>
                             </span>
 
@@ -462,7 +462,7 @@
                         </label>
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-building"></i>
                             </span>
                             <input

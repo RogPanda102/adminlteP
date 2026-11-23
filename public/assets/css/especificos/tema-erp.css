@@ -1,0 +1,291 @@
+
+/* =====================================================
+   TEMA OSCURO - INDICADOR DE PROGRESO DEL EXPEDIENTE
+   ===================================================== */
+
+[data-bs-theme="dark"] .expediente-resumen {
+    background: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-body-color);
+}
+
+[data-bs-theme="dark"] .expediente-resumen-titulo {
+    color: var(--bs-emphasis-color);
+}
+
+[data-bs-theme="dark"] .expediente-resumen-subtitulo {
+    color: var(--bs-secondary-color);
+}
+
+/* Etapa actual */
+[data-bs-theme="dark"] .expediente-etapa-actual {
+    background: rgba(37, 99, 235, .18);
+    color: #60a5fa;
+}
+
+/* Círculos de etapas pendientes */
+[data-bs-theme="dark"] .expediente-paso-circulo {
+    background: var(--bs-secondary-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-secondary-color);
+}
+
+[data-bs-theme="dark"] .expediente-paso.pendiente .expediente-paso-circulo {
+    background: var(--bs-secondary-bg);
+    border-color: var(--bs-border-color);
+    color: var(--bs-secondary-color);
+}
+
+/* Nombres de las etapas */
+[data-bs-theme="dark"] .expediente-paso-nombre {
+    color: var(--bs-secondary-color);
+}
+
+[data-bs-theme="dark"] .expediente-paso.completado .expediente-paso-nombre {
+    color: #4ade80;
+}
+
+[data-bs-theme="dark"] .expediente-paso.actual .expediente-paso-nombre {
+    color: #60a5fa;
+}
+
+/* =====================================================
+   SUPERFICIES SECUNDARIAS - ERP
+   Encabezados y pies de paneles y formularios
+   ===================================================== */
+
+.erp-panel-header,
+.formulario-panel-header,
+.formulario-modal-footer {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) !important;
+}
+
+/* =====================================================
+   SECCIONES - PROPIEDADES COMPARTIDAS
+   ===================================================== */
+
+.formulario-seccion,
+.erp-seccion-header {
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) !important;
+}
+
+/* Contenedores de secciones de formularios */
+.formulario-seccion {
+    background-color: var(--bs-tertiary-bg);
+}
+
+/* Encabezados de secciones internas */
+.erp-seccion-header {
+    background-color: var(--bs-secondary-bg);
+}
+
+/* =====================================================
+   ICONOS DE INPUTS Y FILTROS
+   ===================================================== */
+
+.formulario-input-icono,
+.erp-filtro-icono {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    border-color: var(--bs-border-color);
+}
+
+/* =====================================================
+   ERP - SUPERFICIES COMPARTIDAS
+   MODALES, OFFCANVAS Y TARJETAS INTERNAS
+   ===================================================== */
+
+/* Superficie principal de paneles */
+.erp-panel-superficie {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+}
+
+/* Bordes compartidos */
+.erp-panel-borde {
+    border-color: var(--bs-border-color) !important;
+}
+
+/* Textos secundarios dentro de paneles */
+.erp-panel-texto-secundario {
+    color: var(--bs-secondary-color) !important;
+}
+
+/* =====================================================
+   ERP - COMPONENTES DE DOCUMENTOS
+   ===================================================== */
+
+/* Filas de archivos */
+.erp-documento-fila {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) !important;
+}
+
+/* Vista previa de documentos */
+.erp-documento-preview {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border: 1px solid var(--bs-border-color);
+}
+
+/* Zona de carga y arrastre */
+.erp-documento-dropzone {
+    background-color: var(--bs-tertiary-bg);
+    border: 1px dashed var(--bs-border-color) !important;
+    color: var(--bs-body-color);
+    cursor: pointer;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+
+/* =====================================================
+   TABULATOR - CONTENIDO DE CELDAS ERP
+   ===================================================== */
+
+.erp-main-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.erp-title {
+    font-weight: 600;
+    color: var(--bs-body-color);
+}
+
+.erp-sub {
+    font-size: 12px;
+    color: var(--bs-secondary-color);
+}
+
+.erp-date {
+    font-size: 13px;
+    color: var(--bs-body-color);
+}
+
+.erp-total {
+    font-weight: 700;
+    color: var(--bs-emphasis-color);
+}
+
+/* Folios */
+.folio-badge {
+    background: #1f4b99;
+    color: #fff;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   TABULATOR - ESTILOS COMPARTIDOS ERP
+===================================================== */
+
+/* CONTENEDOR PRINCIPAL */
+.erp-tabla .tabulator {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+/* ENCABEZADO */
+.erp-tabla .tabulator-header {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.erp-tabla .tabulator-header .tabulator-col {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.erp-tabla .tabulator-header .tabulator-col-title {
+    color: var(--bs-body-color);
+}
+
+/* HOVER DE COLUMNAS */
+.erp-tabla .tabulator-header .tabulator-col:hover,
+.erp-tabla .tabulator-header .tabulator-col.tabulator-sortable:hover {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-body-color) !important;
+}
+
+.erp-tabla .tabulator-header .tabulator-col:hover .tabulator-col-title {
+    color: var(--bs-body-color) !important;
+}
+
+/* TABLA Y FILAS */
+.erp-tabla .tabulator-tableholder {
+    background-color: var(--bs-body-bg);
+}
+
+.erp-tabla .tabulator-row {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+    cursor: pointer;
+    transition: background-color .2s ease;
+}
+
+.erp-tabla .tabulator-row:hover {
+    background-color: var(--bs-tertiary-bg) !important;
+}
+
+/* CELDAS */
+.erp-tabla .tabulator-cell {
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+/* PIE Y PAGINACIÓN */
+.erp-tabla .tabulator-footer {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.erp-tabla .tabulator-footer .tabulator-page {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+.erp-tabla .tabulator-footer .tabulator-page:hover {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-body-color);
+}
+
+.erp-tabla .tabulator-footer .tabulator-page.active {
+    background-color: var(--bs-primary);
+    color: #fff;
+    border-color: var(--bs-primary);
+}
+
+.erp-tabla .tabulator-footer .tabulator-page:disabled {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-secondary-color);
+    opacity: .65;
+}
+
+
+/* =====================================================
+   ESTADOS DE FILAS - TABLAS ERP
+   ===================================================== */
+
+.row-pagado {
+    border-left: 4px solid #16a34a;
+}
+
+.row-pendiente {
+    border-left: 4px solid #f59e0b;
+}
+
+.row-cancelado {
+    border-left: 4px solid #dc2626;
+}

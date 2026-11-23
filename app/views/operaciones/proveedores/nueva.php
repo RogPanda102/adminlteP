@@ -1,17 +1,17 @@
 <div class="card shadow-sm border-0">
 
     <!-- ================= HEADER ================= -->
-    <div class="card-header bg-white border-bottom py-3">
+    <div class="card-header erp-panel-header border-bottom py-3">
 
         <div class="d-flex justify-content-between align-items-center">
 
             <div class="d-flex align-items-center">
 
                 <div
-                    class="d-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-3 me-3"
+                    class="d-flex align-items-center justify-content-center bg-primary rounded-3 me-3"
                     style="width:48px;height:48px;">
 
-                    <i class="bi bi-building-add fs-4"></i>
+                    <i class="bi bi-building-add fs-4 text-white"></i>
 
                 </div>
 
@@ -47,7 +47,7 @@
             <!-- INFORMACIÓN GENERAL -->
             <!-- ================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-primary mb-3">
 
@@ -75,7 +75,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-building"></i>
 
@@ -112,7 +112,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-box-seam"></i>
 
@@ -140,7 +140,7 @@
             <!-- DATOS DE CONTACTO -->
             <!-- ================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-success mb-3">
 
@@ -166,7 +166,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-person"></i>
 
@@ -196,7 +196,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-telephone"></i>
 
@@ -226,7 +226,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-envelope"></i>
 
@@ -256,7 +256,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-geo-alt"></i>
 
@@ -284,7 +284,7 @@
             <!-- INFORMACIÓN DIGITAL -->
             <!-- ================================================= -->
 
-            <div class="border rounded-3 p-3">
+            <div class="formulario-seccion border rounded-3 p-3">
 
                 <h6 class="fw-bold text-warning mb-3">
 
@@ -310,7 +310,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-link-45deg"></i>
 
@@ -347,7 +347,7 @@
         <!-- FOOTER -->
         <!-- ================================================= -->
 
-        <div class="card-footer bg-white border-top p-3">
+        <div class="card-footer erp-panel-header border-top p-3">
 
             <div class="d-flex justify-content-between align-items-center">
 

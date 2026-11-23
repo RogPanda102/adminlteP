@@ -86,6 +86,26 @@ $nombre_usuario = $nombre_usuario ?? '';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
   <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/busqueda-global.css">
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css"
+      crossorigin="anonymous"/>
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/tema-erp.css">
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Adjudicados')): ?>
+      <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/adjudicados.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Cotizaciones')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/cotizaciones.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Servicios')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/servicios.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Contactos')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/contactos.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Proveedores')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/proveedores.css">
+  <?php endif; ?>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
