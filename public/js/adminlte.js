@@ -708,9 +708,6 @@
             if (this.config.announcements) {
                 this.createLiveRegion();
             }
-            if (this.config.skipLinks) {
-                this.addSkipLinks();
-            }
             if (this.config.focusManagement) {
                 this.initFocusManagement();
             }
@@ -734,38 +731,6 @@
             this.liveRegion.setAttribute('aria-atomic', 'true');
             this.liveRegion.setAttribute('role', 'status');
             document.body.append(this.liveRegion);
-        }
-        addSkipLinks() {
-            const skipLinksContainer = document.createElement('div');
-            skipLinksContainer.className = 'skip-links';
-            const skipToMain = document.createElement('a');
-            skipToMain.href = '#main';
-            skipToMain.className = 'skip-link';
-            skipToMain.textContent = 'Skip to main content';
-            const skipToNav = document.createElement('a');
-            skipToNav.href = '#navigation';
-            skipToNav.className = 'skip-link';
-            skipToNav.textContent = 'Skip to navigation';
-            skipLinksContainer.append(skipToMain);
-            skipLinksContainer.append(skipToNav);
-            document.body.insertBefore(skipLinksContainer, document.body.firstChild);
-            this.ensureSkipTargets();
-        }
-        ensureSkipTargets() {
-            const main = document.querySelector('#main, main, [role="main"]');
-            if (main && !main.id) {
-                main.id = 'main';
-            }
-            if (main && !main.hasAttribute('tabindex')) {
-                main.setAttribute('tabindex', '-1');
-            }
-            const nav = document.querySelector('#navigation, nav, [role="navigation"]');
-            if (nav && !nav.id) {
-                nav.id = 'navigation';
-            }
-            if (nav && !nav.hasAttribute('tabindex')) {
-                nav.setAttribute('tabindex', '-1');
-            }
         }
         initFocusManagement() {
             document.addEventListener('keydown', (event) => {
@@ -1061,7 +1026,6 @@
     onDOMContentLoaded(() => {
         const accessibilityManager = initAccessibility({
             announcements: true,
-            skipLinks: true,
             focusManagement: true,
             keyboardNavigation: true,
             reducedMotion: true

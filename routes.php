@@ -17,6 +17,27 @@ $router->post('/registro', 'auth\AuthController@guardarRegistro');
 
 /*
 |--------------------------------------------------------------------------
+| VERIFICACIÓN DE CORREO
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/verificar-correo',
+    'auth\AuthController@verificarCorreo'
+);
+
+$router->post(
+    '/confirmar-codigo',
+    'auth\AuthController@confirmarCodigo'
+);
+
+$router->post(
+    '/reenviar-codigo',
+    'auth\AuthController@reenviarCodigo'
+);
+
+/*
+|--------------------------------------------------------------------------
 | PANEL
 |--------------------------------------------------------------------------
 */

@@ -148,20 +148,7 @@ $tab_activo = $tab_activo ?? 'activity';
                                     <article class="d-flex gap-3 mb-4">
 
                                         <div class="flex-grow-1">
-
-                                            <div class="d-flex justify-content-between">
-                                                <h4 class="h6 mb-0">
-                                                    Rodrigo Díaz
-                                                </h4>
-
-                                                <small class="text-secondary">
-                                                    23/06/2026 10:35 AM
-                                                </small>
-                                            </div>
-
-                                            <p class="mb-0">
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            </p>
+                                            <i>aqui va info general del usuario, tarea pendiente </i>
 
                                         </div>
 
