@@ -3,17 +3,6 @@ $analistas = $analistas ?? [];
 $encargados = $encargados ?? [];
 ?>
 
-<!-- ========================================================= -->
-<!-- TABULATOR CSS -->
-<!-- ========================================================= -->
-
-<link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css"
-    crossorigin="anonymous"
-/>
-
-
 <main class="app-main">
 
     <div class="app-content">
@@ -30,7 +19,7 @@ $encargados = $encargados ?? [];
 
                 <!-- ================= HEADER ================= -->
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex justify-content-between align-items-center">
 
@@ -76,7 +65,7 @@ $encargados = $encargados ?? [];
 
                     <div
                         id="tabla-analistas"
-                        class="table-responsive">
+                        class="table-responsive erp-tabla">
                     </div>
 
                 </div>
@@ -95,7 +84,7 @@ $encargados = $encargados ?? [];
 
                 <!-- ================= HEADER ================= -->
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex justify-content-between align-items-center">
 
@@ -141,7 +130,7 @@ $encargados = $encargados ?? [];
 
                     <div
                         id="tabla-encargados"
-                        class="table-responsive">
+                        class="table-responsive erp-tabla">
                     </div>
 
                 </div>
@@ -180,8 +169,7 @@ $encargados = $encargados ?? [];
                 <div class="d-flex align-items-center">
 
                     <div
-                        class="d-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-3 me-3"
-                        style="width:42px;height:42px;">
+                        class="contactos-modal-icono d-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-3 me-3">
 
                         <i class="bi bi-person-plus fs-4"></i>
 
@@ -233,7 +221,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-person text-primary"></i>
 
@@ -263,7 +251,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-telephone text-primary"></i>
 
@@ -292,7 +280,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-envelope text-primary"></i>
 
@@ -314,11 +302,11 @@ $encargados = $encargados ?? [];
 
                 <!-- FOOTER -->
 
-                <div class="modal-footer bg-light border-top">
+                <div class="modal-footer formulario-modal-footer border-top">
 
                     <button
                         type="button"
-                        class="btn btn-light border"
+                        class="btn border contactos-btn-cancelar"
                         data-bs-dismiss="modal">
 
                         <i class="bi bi-x-circle me-1"></i>
@@ -373,8 +361,7 @@ $encargados = $encargados ?? [];
                 <div class="d-flex align-items-center">
 
                     <div
-                        class="d-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-3 me-3"
-                        style="width:42px;height:42px;">
+                        class="contactos-modal-icono d-flex align-items-center justify-content-center bg-white bg-opacity-25 rounded-3 me-3">
 
                         <i class="bi bi-person-plus fs-4"></i>
 
@@ -430,7 +417,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-person text-success"></i>
 
@@ -460,7 +447,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-telephone text-success"></i>
 
@@ -489,7 +476,7 @@ $encargados = $encargados ?? [];
 
                         <div class="input-group">
 
-                            <span class="input-group-text bg-light">
+                            <span class="input-group-text formulario-input-icono">
 
                                 <i class="bi bi-building text-success"></i>
 
@@ -512,11 +499,11 @@ $encargados = $encargados ?? [];
 
                 <!-- FOOTER -->
 
-                <div class="modal-footer bg-light border-top">
+                    <div class="modal-footer formulario-modal-footer border-top">
 
                     <button
                         type="button"
-                        class="btn btn-light border"
+                        class="btn border contactos-btn-cancelar"
                         data-bs-dismiss="modal">
 
                         <i class="bi bi-x-circle me-1"></i>

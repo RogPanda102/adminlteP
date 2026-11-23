@@ -1,93 +1,6 @@
 <?php
     $proveedores = $proveedores ?? [];
 ?>
-<!-- TABULATOR CSS -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css"
-  crossorigin="anonymous"
-/>
-<style>
-    #tabla-adjudicados .tabulator-row {
-        cursor: pointer;
-    }
-
-    #tabla-adjudicados .tabulator-row:hover {
-        background-color: rgba(13, 110, 253, 0.08);
-    }
-    /* ===============================
-    FILAS ERP STYLE
-    ================================*/
-    .tabulator-row {
-        border-left: 4px solid transparent;
-        transition: all .2s ease;
-    }
-
-    .tabulator-row:hover {
-        background: #f8fafc !important;
-    }
-
-    /* estados */
-    .row-pagado {
-        border-left: 4px solid #16a34a;
-    }
-
-    .row-pendiente {
-        border-left: 4px solid #f59e0b;
-    }
-
-    .row-cancelado {
-        border-left: 4px solid #dc2626;
-    }
-
-    /* ===============================
-    FOLIO BADGE (KEY ERP DATA)
-    ================================*/
-    .folio-badge {
-        background: #1f4b99;
-        color: #fff;
-        padding: 3px 10px;
-        border-radius: 6px;
-        font-weight: 600;
-        font-size: 12px;
-    }
-
-    /* ===============================
-    CELDA PRINCIPAL
-    ================================*/
-    .erp-main-cell {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .erp-title {
-        font-weight: 600;
-        color: #111827;
-    }
-
-    .erp-sub {
-        font-size: 12px;
-        color: #6b7280;
-    }
-
-    /* ===============================
-    FECHA
-    ================================*/
-    .erp-date {
-        font-size: 13px;
-        color: #374151;
-    }
-
-    /* ===============================
-    TOTAL (IMPORTANTE VISUAL)
-    ================================*/
-    .erp-total {
-        font-weight: 700;
-        color: #0f172a;
-    }
-
-
-</style>
 
 <main class="app-main">
 
@@ -101,7 +14,7 @@
                 <!-- HEADER -->
                 <!-- ========================================= -->
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
 
@@ -119,9 +32,9 @@
 
                         <div class="card-tools">
 
-                            <div class="input-group input-group-sm" style="width:260px;">
+                            <div class="input-group input-group-sm" proveedores-buscador>
 
-                                <span class="input-group-text bg-white">
+                                <span class="input-group-text erp-filtro-icono">
 
                                     <i class="bi bi-search"></i>
 
@@ -172,7 +85,7 @@
 
                     </div>
 
-                    <div id="tabla-proveedores"></div>
+                    <div id="tabla-proveedores" class="erp-tabla"></div>
 
                 </div>
 
