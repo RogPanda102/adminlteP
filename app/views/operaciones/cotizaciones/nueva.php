@@ -20,7 +20,7 @@
 
     </div>
 
-    <form action="<?= BASE_URL ?>cotizaciones/guardar" method="POST">
+    <form id="formCotizacion" action="<?= BASE_URL ?>cotizaciones/guardar"  method="POST">
 
         <div class="card-body">
 
@@ -402,37 +402,132 @@
                         <select
                             name="estatus"
                             class="form-select">
-
                             <option value="enviado">Enviado</option>
                             <option value="respaldo">Respaldo</option>
                             <option value="n/a">N/A</option>
                             <option value="no se cotiza">No se cotiza</option>
-
                         </select>
-
                     </div>
-
                     <!-- REENVIAR -->
-
                     <div class="col-md-6 d-flex align-items-end">
-
                         <div class="form-check form-switch fs-5">
-
                             <input
                                 class="form-check-input"
                                 type="checkbox"
                                 name="reenviar"
                                 value="1">
-
                             <label class="form-check-label ms-2">
-
                                 Reenviar cotización
-
                             </label>
-
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ================= FOOTER ================= -->
+        <div class="card-footer bg-white border-top">
+            <div class="d-flex justify-content-between">
+                <a
+                    href="<?= BASE_URL ?>cotizaciones/2026"
+                    class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i>
+                    Regresar
+                </a>
+                <button
+                    type="button"
+                    id="btnPrevisualizarCotizacion"
+                    class="btn btn-primary px-4">
+                    <i class="bi bi-eye me-1"></i>
+                    Previsualizar cotización
+                </button>
+            </div>
+        </div>
+    </form>
+    <!-- ========================================================= -->
+    <!-- MODAL PREVISUALIZACIÓN DE COTIZACIÓN -->
+    <!-- ========================================================= -->
+
+    <div
+        class="modal fade"
+        id="modalPrevisualizacion"
+        tabindex="-1"
+        aria-labelledby="tituloPrevisualizacion"
+        aria-hidden="true">
+
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+
+            <div class="modal-content border-0 shadow">
+
+                <!-- HEADER -->
+
+                <div class="modal-header bg-primary text-white">
+
+                    <div>
+
+                        <h5
+                            class="modal-title fw-bold"
+                            id="tituloPrevisualizacion">
+
+                            <i class="bi bi-file-earmark-check me-2"></i>
+
+                            Previsualización de cotización
+
+                        </h5>
+
+                        <small>
+                            Revisa la información antes de guardar el registro.
+                        </small>
 
                     </div>
+
+                    <button
+                        type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                    </button>
+
+                </div>
+
+                <!-- BODY -->
+
+                <div class="modal-body bg-light">
+
+                    <div
+                        id="contenidoPrevisualizacion"
+                        class="bg-white border rounded-3 p-4">
+
+                        <!-- El reporte se generará dinámicamente -->
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+
+                <div class="modal-footer bg-white">
+
+                    <button
+                        type="button"
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal">
+
+                        <i class="bi bi-pencil me-1"></i>
+
+                        Regresar a editar
+
+                    </button>
+
+                    <button
+                        type="button"
+                        id="btnConfirmarCotizacion"
+                        class="btn btn-success px-4">
+
+                        <i class="bi bi-check-circle me-1"></i>
+
+                        Confirmar y guardar
+
+                    </button>
 
                 </div>
 
@@ -440,37 +535,7 @@
 
         </div>
 
-        <!-- ================= FOOTER ================= -->
-
-        <div class="card-footer bg-white border-top">
-
-            <div class="d-flex justify-content-between">
-
-                <a
-                    href="<?= BASE_URL ?>cotizaciones/2026"
-                    class="btn btn-outline-secondary">
-
-                    <i class="bi bi-arrow-left"></i>
-
-                    Regresar
-
-                </a>
-
-                <button
-                    type="submit"
-                    class="btn btn-success px-4">
-
-                    <i class="bi bi-check-circle me-1"></i>
-
-                    Guardar Cotización
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </form>
+    </div>
 
 </div>
 
@@ -499,4 +564,5 @@
 
 <script src="<?= BASE_URL ?>assets/js/helpers/autocomplete.js"></script>
 <script src="<?= BASE_URL ?>assets/js/helpers/catalogo.js"></script>
+<script src="<?= BASE_URL ?>assets/js/helpers/previsualizacion.js"></script>
 <script src="<?= BASE_URL ?>assets/js/especificos/cotizaciones/nuevo.js"></script>

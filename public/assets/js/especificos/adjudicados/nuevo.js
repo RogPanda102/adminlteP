@@ -231,6 +231,116 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    // =====================================================
+    // PREVISUALIZACIÓN DE ADJUDICADO
+    // =====================================================
+
+    inicializarPrevisualizacion({
+
+        formulario: 'formAdjudicado',
+
+        boton: 'btnPrevisualizarAdjudicado',
+
+        modal: 'modalPrevisualizacion',
+
+        contenido: 'contenidoPrevisualizacion',
+
+        confirmar: 'btnConfirmarAdjudicado',
+
+        secciones: [
+
+            {
+                titulo: 'Información General',
+                icono: 'bi-info-circle',
+                clase: 'text-primary',
+
+                campos: [
+                    {
+                        nombre: 'fecha_elaboracion',
+                        etiqueta: 'Fecha de elaboración'
+                    },
+                    {
+                        nombre: 'anio',
+                        etiqueta: 'Año'
+                    },
+                    {
+                        nombre: 'req',
+                        etiqueta: 'REQ'
+                    },
+                    {
+                        nombre: 'folio',
+                        etiqueta: 'Folio'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Responsables',
+                icono: 'bi-people',
+                clase: 'text-success',
+
+                campos: [
+                    {
+                        nombre: 'elaboro',
+                        etiqueta: 'Elaboró'
+                    },
+                    {
+                        nombre: 'partida',
+                        etiqueta: 'Partida'
+                    },
+                    {
+                        nombre: 'analista',
+                        etiqueta: 'Analista'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Fechas e Importe',
+                icono: 'bi-calendar-check',
+                clase: 'text-warning',
+
+                campos: [
+                    {
+                        nombre: 'fecha_inicio_entrega',
+                        etiqueta: 'Fecha de inicio de entrega'
+                    },
+                    {
+                        nombre: 'fecha_fin_entrega',
+                        etiqueta: 'Fecha de fin de entrega'
+                    },
+                    {
+                        nombre: 'total',
+                        etiqueta: 'Total adjudicado'
+                    },
+                    {
+                        nombre: 'dia_pago',
+                        etiqueta: 'Día de pago'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Pago y Dependencia',
+                icono: 'bi-wallet2',
+                clase: 'text-danger',
+
+                campos: [
+                    {
+                        nombre: 'pago',
+                        etiqueta: 'Estatus de pago'
+                    },
+                    {
+                        nombre: 'dependencia',
+                        etiqueta: 'Dependencia'
+                    }
+                ]
+            }
+
+        ]
+
+    });
+
 
 });
 
