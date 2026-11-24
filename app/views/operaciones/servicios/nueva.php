@@ -11,7 +11,7 @@
             <!-- BUSCAR REQUISICIÓN -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <div class="d-flex align-items-center mb-3">
 
@@ -69,7 +69,7 @@
             <!-- INFORMACIÓN GENERAL -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-primary mb-3">
 
@@ -326,7 +326,7 @@
             <!-- DATOS DE CONTRATACIÓN -->
             <!-- ========================================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-warning mb-3">
 

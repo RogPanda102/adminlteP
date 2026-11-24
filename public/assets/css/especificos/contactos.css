@@ -1,0 +1,27 @@
+
+/* =====================================================
+   CONTACTOS - ELEMENTOS DE LOS MODALES
+   ===================================================== */
+
+.contactos-modal-icono {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+}
+
+
+/* =====================================================
+   CONTACTOS - BOTONES DE CANCELACIÓN
+   ===================================================== */
+
+.contactos-btn-cancelar {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color) !important;
+}
+
+.contactos-btn-cancelar:hover {
+    background-color: var(--bs-secondary-bg);
+    color: var(--bs-emphasis-color);
+    border-color: var(--bs-border-color) !important;
+}

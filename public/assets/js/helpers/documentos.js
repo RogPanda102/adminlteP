@@ -672,7 +672,7 @@ function inicializarDocumentos(config = {}) {
         archivosDocumentoSeleccionados.forEach((archivo, indice) => {
             const fila = document.createElement('div');
             fila.className =
-                'd-flex align-items-center gap-2 border rounded p-2 mb-2 bg-white';
+                'd-flex align-items-center gap-2 border rounded p-2 mb-2 erp-documento-fila';
 
             const estado = estadoCompresionDocumentos.get(archivo) || {
                 errorPeso: archivo.size > maximoBytes,
@@ -1006,7 +1006,7 @@ function inicializarDocumentos(config = {}) {
 
                 if (esImagen) {
                     vistaPrevia = `
-                        <div class="documento-preview"
+                        <div class="documento-preview erp-documento-preview"
                             style="
                                 display:none;
                                 position:absolute;
@@ -1017,8 +1017,6 @@ function inicializarDocumentos(config = {}) {
                                 margin-right:8px;
                                 width:220px;
                                 padding:6px;
-                                background:#fff;
-                                border:1px solid #dee2e6;
                                 border-radius:6px;
                                 box-shadow:0 4px 14px rgba(0,0,0,.15);
                             ">
@@ -1034,7 +1032,7 @@ function inicializarDocumentos(config = {}) {
                     `;
                 } else if (esPdf) {
                     vistaPrevia = `
-                        <div class="documento-preview"
+                        <div class="documento-preview erp-documento-preview"
                             style="
                                 display:none;
                                 position:absolute;
@@ -1046,8 +1044,6 @@ function inicializarDocumentos(config = {}) {
                                 width:260px;
                                 height:220px;
                                 padding:4px;
-                                background:#fff;
-                                border:1px solid #dee2e6;
                                 border-radius:6px;
                                 box-shadow:0 4px 14px rgba(0,0,0,.15);
                                 overflow:hidden;
@@ -1061,7 +1057,7 @@ function inicializarDocumentos(config = {}) {
                     `;
                 } else {
                     vistaPrevia = `
-                        <div class="documento-preview"
+                        <div class="documento-preview erp-documento-preview"
                             style="
                                 display:none;
                                 position:absolute;
@@ -1072,8 +1068,6 @@ function inicializarDocumentos(config = {}) {
                                 margin-right:8px;
                                 width:220px;
                                 padding:18px 10px;
-                                background:#fff;
-                                border:1px solid #dee2e6;
                                 border-radius:6px;
                                 box-shadow:0 4px 14px rgba(0,0,0,.15);
                                 text-align:center;
@@ -1090,7 +1084,7 @@ function inicializarDocumentos(config = {}) {
                 }
 
                 container.insertAdjacentHTML('beforeend', `
-                    <div class="border rounded p-2 mb-2 bg-white">
+                    <div class="border rounded p-2 mb-2 erp-documento-fila">
                         <div class="d-flex align-items-start gap-2">
                             <div class="fs-4 text-primary">📄</div>
 

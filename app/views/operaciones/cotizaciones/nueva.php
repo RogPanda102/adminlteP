@@ -1,7 +1,7 @@
 <div class="card shadow-sm border-0">
 
     <!-- ================= HEADER ================= -->
-    <div class="card-header bg-white border-bottom">
+    <div class="card-header erp-panel-header border-bottom ">
 
         <div class="d-flex justify-content-between align-items-center">
 
@@ -12,7 +12,7 @@
                 </h3>
 
                 <small class="text-muted">
-                    Captura la información general de la cotización.
+                     Captura la información general de la cotización.
                 </small>
             </div>
 
@@ -28,7 +28,7 @@
             <!-- INFORMACIÓN GENERAL -->
             <!-- ========================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-primary mb-3">
                     <i class="bi bi-info-circle me-2"></i>
@@ -46,7 +46,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar3"></i>
                             </span>
 
@@ -71,7 +71,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-calendar-range"></i>
                             </span>
 
@@ -95,7 +95,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-file-earmark"></i>
                             </span>
 
@@ -119,7 +119,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-hash"></i>
                             </span>
 
@@ -144,7 +144,7 @@
             <!-- RESPONSABLES -->
             <!-- ========================================= -->
 
-            <div class="border rounded-3 p-3 mb-4">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-success mb-3">
 
@@ -166,7 +166,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-person"></i>
                             </span>
 
@@ -191,7 +191,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-person-badge"></i>
                             </span>
 
@@ -251,7 +251,7 @@
             <!-- INFORMACIÓN DE LA COTIZACIÓN -->
             <!-- ========================================= -->
 
-            <div class="border rounded-3 p-3 mb-4 bg-light">
+            <div class="formulario-seccion border rounded-3 p-3 mb-4">
 
                 <h6 class="fw-bold text-warning mb-3">
 
@@ -273,7 +273,7 @@
 
                         <div class="input-group">
 
-                            <span class="input-group-text">
+                            <span class="input-group-text formulario-input-icono">
                                 <i class="bi bi-building"></i>
                             </span>
 
@@ -379,7 +379,7 @@
             <!-- SEGUIMIENTO -->
             <!-- ========================================= -->
 
-            <div class="border rounded-3 p-3">
+            <div class="formulario-seccion border rounded-3 p-3">
 
                 <h6 class="fw-bold text-danger mb-3">
 

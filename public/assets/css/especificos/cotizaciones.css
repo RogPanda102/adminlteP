@@ -1,0 +1,13 @@
+
+/* =====================================================
+   COTIZACIONES - TABLA
+   ===================================================== */
+
+#tabla-cotizaciones .tabulator-row {
+    border-left: 4px solid transparent;
+    transition: all .2s ease;
+}
+
+#tabla-cotizaciones .tabulator-row:hover {
+    background-color: rgba(13, 110, 253, 0.08) !important;
+}

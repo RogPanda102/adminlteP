@@ -1,0 +1,56 @@
+/* =====================================================
+   ADJUDICADOS - MODAL
+   ===================================================== */
+
+/* Modal de edición */
+#modalEditarAdjudicacion .modal-content {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+/* Encabezados desplegables */
+#modalEditarAdjudicacion .section-toggle {
+    cursor: pointer;
+}
+
+/* Hover de encabezados desplegables */
+#modalEditarAdjudicacion .section-toggle:hover {
+    filter: brightness(.96);
+}
+
+[data-bs-theme="dark"] #modalEditarAdjudicacion .section-toggle:hover {
+    filter: brightness(1.15);
+}
+
+/* Pie del modal */
+#modalEditarAdjudicacion .modal-footer {
+    background-color: var(--bs-tertiary-bg);
+    border-color: var(--bs-border-color);
+}
+
+/* Campos numéricos y de fecha */
+#modalEditarAdjudicacion #edit-total,
+#modalEditarAdjudicacion #edit-dia_pago {
+    background-color: var(--bs-form-control-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-border-color);
+}
+
+#modalEditarAdjudicacion #edit-total:focus,
+#modalEditarAdjudicacion #edit-dia_pago:focus {
+    background-color: var(--bs-form-control-bg);
+    color: var(--bs-body-color);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 .25rem rgba(var(--bs-primary-rgb), .25);
+}
+
+[data-bs-theme="dark"] #modalEditarAdjudicacion #edit-total,
+[data-bs-theme="dark"] #modalEditarAdjudicacion #edit-dia_pago {
+    color-scheme: dark;
+}
+
+[data-bs-theme="light"] #modalEditarAdjudicacion #edit-total,
+[data-bs-theme="light"] #modalEditarAdjudicacion #edit-dia_pago {
+    color-scheme: light;
+}

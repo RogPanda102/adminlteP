@@ -89,7 +89,7 @@
 
                                         <div class="input-group">
 
-                                            <span class="input-group-text bg-light border-end-0">
+                                            <span class="input-group-text formulario-input-icono border-end-0">
                                                 <i class="bi bi-person text-primary"></i>
                                             </span>
 
@@ -114,7 +114,7 @@
 
                                         <div class="input-group">
 
-                                            <span class="input-group-text bg-light border-end-0">
+                                            <span class="input-group-text formulario-input-icono border-end-0">
                                                 <i class="bi bi-person text-primary"></i>
                                             </span>
 
@@ -138,7 +138,7 @@
 
                                         <div class="input-group">
 
-                                            <span class="input-group-text bg-light border-end-0">
+                                            <span class="input-group-text formulario-input-icono border-end-0">
                                                 <i class="bi bi-person text-primary"></i>
                                             </span>
 
@@ -192,7 +192,7 @@
 
                                         <div class="input-group">
 
-                                            <span class="input-group-text bg-light border-end-0">
+                                            <span class="input-group-text formulario-input-icono border-end-0">
                                                 <i class="bi bi-telephone text-primary"></i>
                                             </span>
 
@@ -216,7 +216,7 @@
 
                                         <div class="input-group">
 
-                                            <span class="input-group-text bg-light border-end-0">
+                                            <span class="input-group-text formulario-input-icono border-end-0">
                                                 <i class="bi bi-envelope text-primary"></i>
                                             </span>
 
@@ -238,7 +238,7 @@
 
                         <!-- ================= FOOTER ================= -->
 
-                        <div class="modal-footer bg-light border-top px-4 py-3">
+                        <div class="modal-footer formulario-modal-footer border-top px-4 py-3">
 
                             <button
                                 type="button"
@@ -291,15 +291,15 @@
 
                         <!-- ================= HEADER ================= -->
 
-                        <div class="modal-header bg-light border-0 px-4 py-3">
+                        <div class="modal-header bg-primary text-white border-0 px-4 py-3">
 
                             <div class="d-flex align-items-center">
 
-                                <div class="rounded-3 bg-primary bg-opacity-10 text-primary
-                                            d-flex align-items-center justify-content-center me-3"
+                                <div class="rounded-3 bg-white bg-opacity-25
+                                        d-flex align-items-center justify-content-center me-3"
                                     style="width:48px;height:48px;">
 
-                                    <i class="bi bi-building-add fs-4"></i>
+                                    <i class="bi bi-building-add fs-4 text-white"></i>
 
                                 </div>
 
@@ -309,7 +309,7 @@
                                         Nuevo Proveedor
                                     </h5>
 
-                                    <small class="text-muted">
+                                    <small class="text-white-50">
                                         Registra la información del proveedor.
                                     </small>
 
@@ -358,8 +358,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-building text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-building text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -384,8 +384,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-box-seam text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-box-seam text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -429,8 +429,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-geo-alt text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-geo-alt text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -454,8 +454,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-person text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-person text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -479,8 +479,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-telephone text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-telephone text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -504,8 +504,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-envelope text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-envelope text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -529,8 +529,8 @@
 
                                             <div class="input-group">
 
-                                                <span class="input-group-text bg-light border-end-0">
-                                                    <i class="bi bi-link-45deg text-muted"></i>
+                                                <span class="input-group-text formulario-input-icono border-end-0">
+                                                    <i class="bi bi-link-45deg text-primary"></i>
                                                 </span>
 
                                                 <input
@@ -552,11 +552,11 @@
 
                             <!-- ================= FOOTER ================= -->
 
-                            <div class="modal-footer bg-light border-0 px-4 py-3">
+                            <div class="modal-footer formulario-modal-footer border-0 px-4 py-3">
 
                                 <button
                                     type="button"
-                                    class="btn btn-light border px-4"
+                                    class="btn btn-outline-secondary border px-4"
                                     data-bs-dismiss="modal">
 
                                     <i class="bi bi-x-lg me-1"></i>
@@ -655,7 +655,7 @@
 
                                 <div class="input-group">
 
-                                    <span class="input-group-text bg-light">
+                                    <span class="input-group-text formulario-input-icono">
                                         <i class="bi bi-building text-primary"></i>
                                     </span>
 
@@ -705,7 +705,7 @@
 
                                 <div class="input-group">
 
-                                    <span class="input-group-text bg-light">
+                                    <span class="input-group-text formulario-input-icono">
                                         <i class="bi bi-geo-alt text-primary"></i>
                                     </span>
 
@@ -723,11 +723,11 @@
                         </div>
 
                         <!-- FOOTER -->
-                        <div class="modal-footer bg-light border-top">
+                        <div class="modal-footer formulario-modal-footer border-top">
 
                             <button
                                 type="button"
-                                class="btn btn-light border"
+                                class="btn btn-outline-secondary border"
                                 data-bs-dismiss="modal">
 
                                 <i class="bi bi-x-circle me-1"></i>
@@ -842,7 +842,7 @@
                 id="panel-carga-documento"
                 class="card border-0 shadow-sm mb-3 d-none">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="fw-semibold">
 
@@ -936,13 +936,7 @@
                         <!-- ZONA DRAG & DROP -->
                         <div
                             id="zona-arrastre-documentos"
-                            class="border border-2 border-dashed rounded-3 p-4 text-center"
-                            style="
-                                border-color: #b6c2d2 !important;
-                                background: #f8fafc;
-                                cursor: pointer;
-                                transition: background .2s, border-color .2s;
-                            "
+                            class="border border-2 border-dashed rounded-3 p-4 text-center erp-documento-dropzone"
                         >
 
                             <div class="mb-2">
@@ -1027,7 +1021,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 
@@ -1082,7 +1076,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 
@@ -1137,7 +1131,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 
@@ -1192,7 +1186,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 
@@ -1247,7 +1241,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 
@@ -1302,7 +1296,7 @@
 
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white border-bottom">
+                <div class="card-header erp-panel-header border-bottom">
 
                     <div class="d-flex align-items-center gap-2">
 

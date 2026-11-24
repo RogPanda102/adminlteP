@@ -86,6 +86,30 @@ $nombre_usuario = $nombre_usuario ?? '';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
   <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/busqueda-global.css">
+  <!-- Tabulator CSS -->
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/tabulator-tables@6.4.0/dist/css/tabulator_bootstrap5.min.css"
+      crossorigin="anonymous"/>
+  <!-- ERP CSS -->
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/tema-erp.css">
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Adjudicados')): ?>
+      <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/adjudicados.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Cotizaciones')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/cotizaciones.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Servicios')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/servicios.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Contactos')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/contactos.css">
+  <?php endif; ?>
+  <?php if (isset($nombre_pagina) && str_starts_with($nombre_pagina, 'Proveedores')): ?>
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/proveedores.css">
+  <?php endif; ?>
+  <!-- Notas rápidas -->
+  <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/especificos/notas-rapidas.css">
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -363,6 +387,11 @@ $nombre_usuario = $nombre_usuario ?? '';
     <!--end::Footer-->
   </div>
   <!--end::App Wrapper-->
+
+  <!-- NOTAS RÁPIDAS -->
+  <?php require APP_PATH . '/views/partials/notas-rapidas.php'; ?>
+  <!-- FIN NOTAS RÁPIDAS -->
+
   <!--begin::Script-->
 
   <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
@@ -633,6 +662,10 @@ $nombre_usuario = $nombre_usuario ?? '';
 
   <script
       src="<?= BASE_URL ?>assets/js/especificos/busqueda-global/busqueda-global.js">
+  </script>
+
+  <script
+    src="<?= BASE_URL ?>assets/js/especificos/notas-rapidas/notas-rapidas.js">
   </script>
 
 </body>

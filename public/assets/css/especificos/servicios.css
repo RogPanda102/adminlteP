@@ -1,0 +1,7 @@
+/* =====================================================
+   OFFCANVAS DE SERVICIOS
+   ===================================================== */
+.servicios-offcanvas-icono {
+    background-color: var(--bs-tertiary-bg);
+    color: var(--bs-primary);
+}
