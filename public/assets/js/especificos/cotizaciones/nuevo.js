@@ -291,6 +291,107 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
+    // =====================================================
+    // PREVISUALIZACIÓN DE COTIZACIÓN
+    // =====================================================
+
+    inicializarPrevisualizacion({
+
+        formulario: 'formCotizacion',
+
+        boton: 'btnPrevisualizarCotizacion',
+
+        modal: 'modalPrevisualizacion',
+
+        contenido: 'contenidoPrevisualizacion',
+
+        confirmar: 'btnConfirmarCotizacion',
+
+        secciones: [
+
+            {
+                titulo: 'Información General',
+                icono: 'bi-info-circle',
+                clase: 'text-primary',
+
+                campos: [
+                    {
+                        nombre: 'fecha',
+                        etiqueta: 'Fecha'
+                    },
+                    {
+                        nombre: 'anio',
+                        etiqueta: 'Año'
+                    },
+                    {
+                        nombre: 'folio',
+                        etiqueta: 'Folio'
+                    },
+                    {
+                        nombre: 'req',
+                        etiqueta: 'REQ'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Responsables',
+                icono: 'bi-people',
+                clase: 'text-success',
+
+                campos: [
+                    {
+                        nombre: 'elaboro',
+                        etiqueta: 'Elaboró'
+                    },
+                    {
+                        nombre: 'analista',
+                        etiqueta: 'Analista'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Información de la Cotización',
+                icono: 'bi-box-seam',
+                clase: 'text-warning',
+
+                campos: [
+                    {
+                        nombre: 'proveedor',
+                        etiqueta: 'Proveedor'
+                    },
+                    {
+                        nombre: 'partida',
+                        etiqueta: 'Partida'
+                    },
+                    {
+                        nombre: 'dependencia',
+                        etiqueta: 'Dependencia'
+                    }
+                ]
+            },
+
+            {
+                titulo: 'Seguimiento',
+                icono: 'bi-clipboard-check',
+                clase: 'text-danger',
+
+                campos: [
+                    {
+                        nombre: 'estatus',
+                        etiqueta: 'Estatus'
+                    },
+                    {
+                        nombre: 'reenviar',
+                        etiqueta: 'Reenviar cotización'
+                    }
+                ]
+            }
+
+        ]
+
+    });
 
     
 
