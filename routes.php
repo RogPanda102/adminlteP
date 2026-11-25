@@ -329,6 +329,24 @@ $router->post(
     'operaciones\UsuarioController@actualizarFoto'
 );
 
+
+/*
+|--------------------------------------------------------------------------
+| ADMINISTRACION - USUARIOS
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/administracion/usuarios',
+    'operaciones\AdministracionUsuariosController@index'
+);
+
+$router->get(
+    '/administracion/usuarios/registro',
+    'operaciones\AdministracionUsuariosController@registro'
+);
+
+
 /*
 |--------------------------------------------------------------------------
 | NOTIFICACIONES

@@ -289,3 +289,71 @@
 .row-cancelado {
     border-left: 4px solid #dc2626;
 }
+
+/* =====================================================
+   TABULATOR - PAGINADOR EN MODO OSCURO
+===================================================== */
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer .tabulator-page {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer .tabulator-page:hover:not(:disabled) {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-emphasis-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer .tabulator-page.active {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+    border-color: var(--bs-primary) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer .tabulator-page:disabled {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-secondary-color) !important;
+    opacity: .65;
+}
+
+/* =====================================================
+   TABULATOR - PAGINADOR MODO OSCURO
+===================================================== */
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer,
+[data-bs-theme="dark"] .erp-tabla .tabulator-footer-contents {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-page,
+[data-bs-theme="dark"] .erp-tabla .tabulator-page-size {
+    background-color: var(--bs-body-bg) !important;
+    color: var(--bs-body-color) !important;
+    border-color: var(--bs-border-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-page:hover:not(:disabled) {
+    background-color: var(--bs-secondary-bg) !important;
+    color: var(--bs-emphasis-color) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-page.active {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
+    border-color: var(--bs-primary) !important;
+}
+
+[data-bs-theme="dark"] .erp-tabla .tabulator-page:disabled {
+    background-color: var(--bs-tertiary-bg) !important;
+    color: var(--bs-secondary-color) !important;
+    opacity: .65;
+}
