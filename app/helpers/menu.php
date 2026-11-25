@@ -146,7 +146,7 @@
         if ($rol_actual == 1) {
 
             $menu_item['is_active'] = FALSE;
-            $menu_item['href'] = BASE_URL . 'usuarios';
+            $menu_item['href'] = BASE_URL . 'administracion/usuarios';
             $menu_item['icon'] = 'bi bi-people';
             $menu_item['text'] = 'Usuarios';
             $menu_item['submenu'] = array();

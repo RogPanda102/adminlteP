@@ -1773,3 +1773,132 @@
     }
 
 }
+
+/* =====================================================
+   ADMINISTRACIÓN DE USUARIOS - TARJETAS MÓVILES
+===================================================== */
+
+@media (max-width: 767.98px) {
+
+    #tabla-usuarios .tabulator-header {
+        display: none;
+    }
+
+    #tabla-usuarios .tabulator-tableholder {
+        overflow: visible !important;
+    }
+
+    #tabla-usuarios .tabulator-table {
+        display: block;
+        width: 100% !important;
+    }
+
+    #tabla-usuarios .tabulator-row.usuarios-mobile-card {
+        display: block;
+        width: 100%;
+        margin-bottom: 12px;
+        padding: 0;
+        border: 1px solid var(--bs-border-color);
+        border-radius: 12px;
+        background: var(--bs-body-bg);
+        color: var(--bs-body-color);
+        white-space: normal;
+        overflow: hidden;
+    }
+
+    #tabla-usuarios .usuarios-mobile-card .tabulator-cell {
+        display: none;
+    }
+
+    .usuarios-mobile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 14px;
+        border-bottom: 1px solid var(--bs-border-color);
+        background: var(--bs-tertiary-bg);
+    }
+
+    .usuarios-mobile-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .usuarios-mobile-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: var(--bs-primary-bg-subtle);
+        color: var(--bs-primary);
+        font-size: 20px;
+    }
+
+    .usuarios-mobile-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--bs-secondary-color);
+        letter-spacing: .5px;
+    }
+
+    .usuarios-mobile-nick {
+        font-weight: 700;
+        overflow-wrap: anywhere;
+    }
+
+    .usuarios-mobile-body {
+        padding: 12px 14px;
+    }
+
+    .usuarios-mobile-row {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 9px 0;
+        border-bottom: 1px solid var(--bs-border-color);
+    }
+
+    .usuarios-mobile-row:last-child {
+        border-bottom: 0;
+    }
+
+    .usuarios-mobile-label-data {
+        font-size: 12px;
+        color: var(--bs-secondary-color);
+        font-weight: 600;
+    }
+
+    .usuarios-mobile-label-data i {
+        margin-right: 5px;
+    }
+
+    .usuarios-mobile-value {
+        color: var(--bs-body-color);
+        font-size: 13px;
+        overflow-wrap: anywhere;
+    }
+
+    .usuarios-mobile-footer {
+        padding: 10px 14px;
+        background: var(--bs-tertiary-bg);
+        color: var(--bs-secondary-color);
+        font-size: 12px;
+    }
+
+    /* =============================================
+    CORREGIR FONDOS DEL CONTENEDOR TABULATOR
+    ============================================= */
+
+    #tabla-usuarios,
+    #tabla-usuarios .tabulator,
+    #tabla-usuarios .tabulator-tableholder,
+    #tabla-usuarios .tabulator-table {
+        background-color: var(--bs-body-bg) !important;
+    }
+}
