@@ -112,4 +112,43 @@ class AdministracionUsuariosController extends BaseController
         );
     }
 
+    // =========================
+    // Historial general y por usuario
+    // =========================
+    public function historial($id = null)
+    {
+        $this->validar_acceso();
+
+        $modelo = new AdministracionUsuarios();
+
+        // Identificar si se consulta un usuario específico
+        if ($id !== null) {
+
+            $id = (int) $id;
+
+            if ($id <= 0) {
+                http_response_code(400);
+                exit('Identificador de usuario no válido.');
+            }
+
+        }
+
+        $datos = $this->cargar_datos(
+            'Historial de actividad'
+        );
+
+        // Usuario seleccionado (o null para historial general)
+        $datos['usuario_id'] = $id;
+
+        // Obtener movimientos
+        $datos['historial'] = $modelo->obtenerHistorial($id);
+
+        // Obtener usuarios para filtros posteriores
+        $datos['usuarios'] = $modelo->obtenerUsuarios();
+
+        $this->render(
+            'operaciones/administracion_usuarios/historial',
+            $datos
+        );
+    }
 }

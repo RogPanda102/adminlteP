@@ -42,14 +42,28 @@ function actualizarContadorNavbar(total) {
         'navbar-notificaciones-total'
     );
 
-    if (!badge) {
-        return;
-    }
+    const campana = document.querySelector(
+        '.navbar-notificaciones-toggle'
+    );
 
     total = Math.max(0, parseInt(total, 10) || 0);
 
-    badge.textContent = total > 0 ? total : '';
-    badge.style.display = total > 0 ? '' : 'none';
+    if (badge) {
+
+        badge.textContent = total > 0 ? total : '';
+
+        badge.style.display = total > 0 ? '' : 'none';
+
+    }
+
+    if (campana) {
+
+        campana.classList.toggle(
+            'tiene-pendientes',
+            total > 0
+        );
+
+    }
 }
 
 
@@ -346,3 +360,15 @@ eventosActividad.forEach(evento => {
 // =========================
 
 reiniciarTemporizadorSesion();
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const badge = document.getElementById(
+        'navbar-notificaciones-total'
+    );
+
+    actualizarContadorNavbar(
+        badge ? badge.textContent : 0
+    );
+
+});

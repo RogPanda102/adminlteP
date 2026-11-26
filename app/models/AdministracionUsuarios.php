@@ -51,4 +51,88 @@ class AdministracionUsuarios
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
+        // =========================
+        // Obtener historial por usuario
+        // =========================
+        public function obtenerHistorialPorUsuario($usuarioId)
+        {
+            $sql = "SELECT
+                        id,
+                        modulo,
+                        registro_id,
+                        accion,
+                        descripcion,
+                        datos_anteriores,
+                        datos_nuevos,
+                        fecha
+
+                    FROM historial
+
+                    WHERE usuario_id = :usuario_id
+
+                    ORDER BY fecha DESC, id DESC";
+
+            $query = $this->conexion->prepare($sql);
+
+            $query->bindValue(
+                ':usuario_id',
+                (int) $usuarioId,
+                PDO::PARAM_INT
+            );
+
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        // =========================
+        // Obtener historial general o por usuario
+        // =========================
+        public function obtenerHistorial($usuarioId = null)
+        {
+            $sql = "SELECT
+                        h.id,
+                        h.usuario_id,
+                        h.modulo,
+                        h.registro_id,
+                        h.accion,
+                        h.descripcion,
+                        h.datos_anteriores,
+                        h.datos_nuevos,
+                        h.fecha,
+
+                        u.usuario AS usuario_nick,
+
+                        CONCAT_WS(
+                            ' ',
+                            u.nombre,
+                            u.apellido_paterno,
+                            u.apellido_materno
+                        ) AS usuario_nombre
+
+                    FROM historial h
+
+                    LEFT JOIN usuarios u
+                        ON u.id = h.usuario_id";
+
+            if ($usuarioId !== null) {
+                $sql .= " WHERE h.usuario_id = :usuario_id";
+            }
+
+            $sql .= " ORDER BY h.fecha DESC, h.id DESC";
+
+            $query = $this->conexion->prepare($sql);
+
+            if ($usuarioId !== null) {
+                $query->bindValue(
+                    ':usuario_id',
+                    (int) $usuarioId,
+                    PDO::PARAM_INT
+                );
+            }
+
+            $query->execute();
+
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        }
 }

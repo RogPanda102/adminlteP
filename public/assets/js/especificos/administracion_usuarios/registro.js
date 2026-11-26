@@ -200,9 +200,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 botonHistorial?.addEventListener('click', function (e) {
 
-                    e.stopPropagation();
+                    e.preventDefault();
 
-                    console.log('Consultar historial del usuario:', data.id);
+                    window.location.href =
+                        `${window.BASE_URL}administracion/historial/usuario/${usuario.id}`;
 
                 });
 
@@ -342,8 +343,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
                         const usuario = cell.getRow().getData();
 
-                        // Preparar navegación al historial
-                        console.log('Consultar historial del usuario:', usuario.id);
+                        window.location.href =
+                            `${window.BASE_URL}administracion/historial/usuario/${usuario.id}`;
 
                     });
 

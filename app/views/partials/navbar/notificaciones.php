@@ -6,6 +6,11 @@ $navbarNotificaciones =
 $notificaciones =
     $navbarNotificaciones['notificaciones'] ?? [];
 
+$idsNotificacionesNavbar = array_map(
+    'intval',
+    array_column($notificaciones, 'id')
+);
+
 ?>
 
 <style>
@@ -577,3 +582,15 @@ $notificaciones =
     </a>
 
 </div>
+
+<script>
+    window.idsNotificacionesNavbar = <?php
+        echo json_encode(
+            $idsNotificacionesNavbar,
+            JSON_HEX_TAG |
+            JSON_HEX_APOS |
+            JSON_HEX_QUOT |
+            JSON_HEX_AMP
+        );
+    ?>;
+</script>
