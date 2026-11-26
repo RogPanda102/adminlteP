@@ -60,6 +60,7 @@ define("TAREA_SERVICIOS", 'tarea_servicios');
 
 define("TAREA_PROVEEDORES", 'tarea_proveedores');
 define("TAREA_CONTACTOS", 'tarea_contactos');
+define("TAREA_HISTORIAL", 'tarea_historial');
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,7 @@ define("TAREA_CONTACTOS", 'tarea_contactos');
 define("ACCESO_ADMINISTRADOR", [
     TAREA_DASHBOARD,
     TAREA_PERFIL,
+    TAREA_HISTORIAL,
     TAREA_USUARIOS,
     TAREA_USUARIO_NUEVO,
     TAREA_USUARIO_DETALLES,

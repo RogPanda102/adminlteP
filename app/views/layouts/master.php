@@ -203,20 +203,30 @@ $nombre_usuario = $nombre_usuario ?? '';
             ?>
           <!--begin::Notifications Dropdown Menu-->
           <li class="nav-item dropdown">
-            <a class="nav-link" data-bs-toggle="dropdown" data-bs-auto-close="outside" href="#">
-              <i class="bi bi-bell-fill"></i>
-              <span
-                id="navbar-notificaciones-total"
-                class="navbar-badge badge text-bg-warning"
-                <?php if ($navbarNotificaciones['total'] <= 0) : ?>
-                    style="display:none;"
-                <?php endif; ?>>
 
-                <?php echo $navbarNotificaciones['total']; ?>
+              <a
+                  class="nav-link navbar-notificaciones-toggle"
+                  data-bs-toggle="dropdown"
+                  data-bs-auto-close="outside"
+                  href="#"
+              >
 
-            </span>
-            </a>
-            <?php require APP_PATH . '/views/partials/navbar/notificaciones.php'; ?>
+                  <i class="bi bi-bell-fill navbar-notificaciones-icono"></i>
+
+                  <span
+                      id="navbar-notificaciones-total"
+                      class="navbar-badge badge text-bg-warning"
+                      <?php if ($total <= 0) : ?>
+                          style="display:none;"
+                      <?php endif; ?>
+                  >
+                      <?php echo $total; ?>
+                  </span>
+
+              </a>
+
+              <?php require APP_PATH . '/views/partials/navbar/notificaciones.php'; ?>
+
           </li>
           <!--end::Notifications Dropdown Menu-->
 

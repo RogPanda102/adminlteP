@@ -17257,3 +17257,29 @@ fieldset legend {
 }
 
 /*# sourceMappingURL=adminlte.css.map */
+
+/* =========================================
+   ICONO DE NOTIFICACIONES
+========================================= */
+
+.navbar-notificaciones-icono {
+    transition: color 0.2s ease;
+}
+
+/* Con notificaciones pendientes */
+
+.navbar-notificaciones-toggle.tiene-pendientes
+.navbar-notificaciones-icono {
+
+    color: #f0ad00;
+
+}
+
+/* Hover */
+
+.navbar-notificaciones-toggle:hover
+.navbar-notificaciones-icono {
+
+    color: #d99a00;
+
+}

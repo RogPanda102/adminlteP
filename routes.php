@@ -346,6 +346,15 @@ $router->get(
     'operaciones\AdministracionUsuariosController@registro'
 );
 
+$router->get(
+    '/administracion/historial',
+    'operaciones\AdministracionUsuariosController@historial'
+);
+
+$router->get(
+    '/administracion/historial/usuario/{id}',
+    'operaciones\AdministracionUsuariosController@historial'
+);
 
 /*
 |--------------------------------------------------------------------------
