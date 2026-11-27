@@ -1,4 +1,3 @@
-
 /* =====================================================
    NOTAS RÁPIDAS - COMPONENTE GLOBAL
 ===================================================== */
@@ -49,12 +48,52 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* =====================================================
-       DATOS TEMPORALES
+       DATOS Y CONFIGURACIÓN
     ===================================================== */
 
     let notas = [];
     let notaActual = null;
-    let siguienteId = 1;
+
+    // Cargar notas desde la base de datos.
+    async function cargarNotas() {
+
+        try {
+
+            const respuesta = await fetch(
+                BASE_URL + 'notas/listar'
+            );
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.success) {
+                throw new Error(
+                    datos.mensaje || 'No se pudieron cargar las notas.'
+                );
+            }
+
+            notas = datos.notas.map(nota => ({
+                ...nota,
+                id: Number(nota.id),
+                fijada: Number(nota.fijada) === 1
+            }));
+
+            renderizarNotas();
+
+        } catch (error) {
+
+            console.error('Error al cargar notas:', error);
+
+            listado.innerHTML = `
+                <div class="notas-rapidas-vacio">
+                    <i class="bi bi-exclamation-circle"></i>
+                    <p>No se pudieron cargar las notas.</p>
+                    <small>Intenta nuevamente.</small>
+                </div>
+            `;
+
+        }
+
+    }
 
     /* =====================================================
        APERTURA Y CIERRE DEL PANEL
@@ -119,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function nuevaNota() {
 
         notaActual = {
-            id: siguienteId++,
+            id: null,
             titulo: '',
             contenido: '',
             color: 'amarillo',
@@ -160,51 +199,117 @@ document.addEventListener('DOMContentLoaded', () => {
         seleccionarColor(nota.color);
         actualizarBotonFijar();
 
-        estado.textContent = 'Nota temporal';
+        estado.textContent = 'Nota guardada';
 
         mostrarEditor();
 
     }
 
-    
-function guardarNota() {
+    /* =====================================================
+       GUARDAR NOTA
+    ===================================================== */
 
-    if (!notaActual) return;
+    async function guardarNota() {
 
-    notaActual.titulo = inputTitulo.value.trim();
-    notaActual.contenido = inputTexto.value;
+        if (!notaActual) return false;
 
-    // Evitar guardar notas completamente vacías.
-    if (!notaActual.titulo && !notaActual.contenido.trim()) {
+        notaActual.titulo = inputTitulo.value.trim();
+        notaActual.contenido = inputTexto.value;
 
-        notas = notas.filter(n => n.id !== notaActual.id);
+        // Evitar guardar notas completamente vacías.
+        if (
+            !notaActual.titulo &&
+            !notaActual.contenido.trim()
+        ) {
 
-        estado.textContent = 'Nueva nota';
+            estado.textContent = 'Nueva nota';
 
-        return;
+            return true;
+
+        }
+
+        const formData = new FormData();
+
+        formData.append('titulo', notaActual.titulo);
+        formData.append('contenido', notaActual.contenido);
+        formData.append('color', notaActual.color);
+        formData.append('fijada', notaActual.fijada ? 1 : 0);
+
+        const esNueva = !notaActual.id;
+
+        if (!esNueva) {
+            formData.append('id', notaActual.id);
+        }
+
+        estado.textContent = 'Guardando...';
+
+        try {
+
+            const respuesta = await fetch(
+                BASE_URL + (
+                    esNueva
+                        ? 'notas/guardar'
+                        : 'notas/actualizar'
+                ),
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.success) {
+                throw new Error(
+                    datos.mensaje || 'No se pudo guardar la nota.'
+                );
+            }
+
+            if (esNueva) {
+                notaActual.id = Number(datos.id);
+                notas.push(notaActual);
+            } else {
+
+                const indice = notas.findIndex(
+                    nota => nota.id === notaActual.id
+                );
+
+                if (indice !== -1) {
+                    notas[indice] = notaActual;
+                }
+
+            }
+
+            estado.textContent = 'Cambios guardados';
+
+            renderizarNotas();
+
+            return true;
+
+        } catch (error) {
+
+            console.error('Error al guardar nota:', error);
+
+            estado.textContent = 'Error al guardar';
+
+            alert(error.message);
+
+            return false;
+
+        }
 
     }
-
-    const indice = notas.findIndex(n => n.id === notaActual.id);
-
-    if (indice === -1) {
-        notas.push(notaActual);
-    } else {
-        notas[indice] = notaActual;
-    }
-
-    estado.textContent = 'Cambios guardados temporalmente';
-
-}
-
 
     /* =====================================================
        VOLVER AL LISTADO
     ===================================================== */
 
-    botonVolver.addEventListener('click', () => {
+    botonVolver.addEventListener('click', async () => {
 
-        guardarNota();
+        const guardado = await guardarNota();
+
+        if (!guardado) return;
+
         mostrarListado();
 
     });
@@ -213,8 +318,23 @@ function guardarNota() {
        CAMBIOS EN EL EDITOR
     ===================================================== */
 
-    inputTitulo.addEventListener('input', guardarNota);
-    inputTexto.addEventListener('input', guardarNota);
+    inputTitulo.addEventListener('input', () => {
+
+        if (notaActual) {
+            notaActual.titulo = inputTitulo.value;
+            estado.textContent = 'Cambios pendientes';
+        }
+
+    });
+
+    inputTexto.addEventListener('input', () => {
+
+        if (notaActual) {
+            notaActual.contenido = inputTexto.value;
+            estado.textContent = 'Cambios pendientes';
+        }
+
+    });
 
     /* =====================================================
        SELECCIÓN DE COLOR
@@ -231,19 +351,34 @@ function guardarNota() {
             const activo = boton.dataset.color === color;
 
             boton.classList.toggle('activo', activo);
-            boton.setAttribute('aria-pressed', activo ? 'true' : 'false');
+            boton.setAttribute(
+                'aria-pressed',
+                activo ? 'true' : 'false'
+            );
 
         });
-
-        guardarNota();
 
     }
 
     botonesColor.forEach(boton => {
 
-        boton.addEventListener('click', () => {
+        boton.addEventListener('click', async () => {
+
+            if (!notaActual) return;
+
+            const colorAnterior = notaActual.color;
 
             seleccionarColor(boton.dataset.color);
+
+            if (notaActual.id) {
+
+                const guardado = await guardarNota();
+
+                if (!guardado) {
+                    seleccionarColor(colorAnterior);
+                }
+
+            }
 
         });
 
@@ -257,8 +392,15 @@ function guardarNota() {
 
         if (!notaActual) return;
 
-        botonFijar.classList.toggle('btn-primary', notaActual.fijada);
-        botonFijar.classList.toggle('btn-outline-secondary', !notaActual.fijada);
+        botonFijar.classList.toggle(
+            'btn-primary',
+            notaActual.fijada
+        );
+
+        botonFijar.classList.toggle(
+            'btn-outline-secondary',
+            !notaActual.fijada
+        );
 
         botonFijar.innerHTML = notaActual.fijada
             ? '<i class="bi bi-pin-fill"></i>'
@@ -270,14 +412,29 @@ function guardarNota() {
 
     }
 
-    botonFijar.addEventListener('click', () => {
+    botonFijar.addEventListener('click', async () => {
 
         if (!notaActual) return;
+
+        const fijadaAnterior = notaActual.fijada;
 
         notaActual.fijada = !notaActual.fijada;
 
         actualizarBotonFijar();
-        guardarNota();
+
+        if (notaActual.id) {
+
+            const guardado = await guardarNota();
+
+            if (!guardado) {
+
+                notaActual.fijada = fijadaAnterior;
+
+                actualizarBotonFijar();
+
+            }
+
+        }
 
     });
 
@@ -285,17 +442,61 @@ function guardarNota() {
        ELIMINAR NOTA
     ===================================================== */
 
-    botonEliminar.addEventListener('click', () => {
+    botonEliminar.addEventListener('click', async () => {
 
         if (!notaActual) return;
 
-        const confirmar = confirm('¿Deseas eliminar esta nota?');
+        const confirmar = confirm(
+            '¿Deseas eliminar esta nota?'
+        );
 
         if (!confirmar) return;
 
-        notas = notas.filter(n => n.id !== notaActual.id);
+        // Si todavía no existe en la base de datos,
+        // simplemente se descarta.
+        if (!notaActual.id) {
 
-        mostrarListado();
+            mostrarListado();
+
+            return;
+
+        }
+
+        const formData = new FormData();
+
+        formData.append('id', notaActual.id);
+
+        try {
+
+            const respuesta = await fetch(
+                BASE_URL + 'notas/eliminar',
+                {
+                    method: 'POST',
+                    body: formData
+                }
+            );
+
+            const datos = await respuesta.json();
+
+            if (!respuesta.ok || !datos.success) {
+                throw new Error(
+                    datos.mensaje || 'No se pudo eliminar la nota.'
+                );
+            }
+
+            notas = notas.filter(
+                nota => nota.id !== notaActual.id
+            );
+
+            mostrarListado();
+
+        } catch (error) {
+
+            console.error('Error al eliminar nota:', error);
+
+            alert(error.message);
+
+        }
 
     });
 
@@ -309,15 +510,20 @@ function guardarNota() {
 
         const filtradas = notas.filter(nota => {
 
-            const titulo = nota.titulo.toLowerCase();
-            const contenido = nota.contenido.toLowerCase();
+            const titulo = (nota.titulo || '').toLowerCase();
+            const contenido = (nota.contenido || '').toLowerCase();
 
-            return titulo.includes(termino) || contenido.includes(termino);
+            return (
+                titulo.includes(termino) ||
+                contenido.includes(termino)
+            );
 
         });
 
         // Las notas fijadas aparecen primero.
-        filtradas.sort((a, b) => Number(b.fijada) - Number(a.fijada));
+        filtradas.sort(
+            (a, b) => Number(b.fijada) - Number(a.fijada)
+        );
 
         listado.innerHTML = '';
 
@@ -360,7 +566,9 @@ function guardarNota() {
 
             }
 
-            tarjeta.addEventListener('click', () => abrirNota(nota.id));
+            tarjeta.addEventListener('click', () => {
+                abrirNota(nota.id);
+            });
 
             listado.appendChild(tarjeta);
 
@@ -378,6 +586,6 @@ function guardarNota() {
        INICIALIZACIÓN
     ===================================================== */
 
-    renderizarNotas();
+    cargarNotas();
 
 });

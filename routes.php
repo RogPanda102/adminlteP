@@ -420,6 +420,48 @@ $router->get(
 
 /*
 |--------------------------------------------------------------------------
+| NOTAS RÁPIDAS
+|--------------------------------------------------------------------------
+*/
+
+$router->get(
+    '/notas/listar',
+    'operaciones\NotaController@listar'
+);
+
+$router->post(
+    '/notas/guardar',
+    'operaciones\NotaController@guardar'
+);
+
+$router->post(
+    '/notas/actualizar',
+    'operaciones\NotaController@actualizar'
+);
+
+$router->post(
+    '/notas/eliminar',
+    'operaciones\NotaController@eliminar'
+);
+
+$router->post(
+    '/notas/cambiar-estado',
+    'operaciones\NotaController@cambiarEstado'
+);
+
+$router->post(
+    '/notas/cambiar-fijada',
+    'operaciones\NotaController@cambiarFijada'
+);
+
+/*
+|--------------------------------------------------------------------------
+| NOTAS RÁPIDAS FIN
+|--------------------------------------------------------------------------
+*/
+
+/*
+|--------------------------------------------------------------------------
 | EJECUTAR ROUTER
 |--------------------------------------------------------------------------
 */
