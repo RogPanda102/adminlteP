@@ -27,6 +27,29 @@ class BaseController
         }
     }
 
+    // Verificar permisos de acceso
+    protected function verificarPermiso($tarea, $modulo = 'este módulo')
+    {
+        // Verificar sesión
+        if (!isset($_SESSION['logueado'])) {
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+
+        // Verificar permiso
+        if (!comprobar_acceso($tarea)) {
+
+            mensaje(
+                'No tienes permisos para acceder a ' . $modulo . '.',
+                ALERT_WARNING,
+                4000
+            );
+
+            header('Location: ' . BASE_URL . 'dashboard');
+            exit;
+        }
+    }
+
     // Renderizar vistas
     protected function render($vista, $datos = [])
     {

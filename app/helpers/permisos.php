@@ -2,7 +2,7 @@
 
 function comprobar_acceso($tarea_actual = '')
 {
-    if(session_status() == PHP_SESSION_NONE){
+    if (session_status() == PHP_SESSION_NONE) {
         session_start();
     }
 
@@ -12,14 +12,18 @@ function comprobar_acceso($tarea_actual = '')
 
         case ROL_ADMINISTRADOR['clave']:
             return in_array($tarea_actual, ACCESO_ADMINISTRADOR);
-        break;
+            break;
 
         case ROL_USUARIO['clave']:
             return in_array($tarea_actual, ACCESO_USUARIO);
-        break;
+            break;
+
+        case ROL_LOGISTICA['clave']:
+            return in_array($tarea_actual, ACCESO_LOGISTICA);
+            break;
 
         default:
             return false;
-        break;
+            break;
     }
 }
