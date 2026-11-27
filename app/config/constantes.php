@@ -27,9 +27,15 @@ define("ROL_USUARIO", [
     'rol'   => 'Usuario'
 ]);
 
+define("ROL_LOGISTICA", [
+    'clave' => 3,
+    'rol'   => 'Logistica'
+]);
+
 define("ROLES", [
     ROL_ADMINISTRADOR['clave'] => ROL_ADMINISTRADOR['rol'],
-    ROL_USUARIO['clave']       => ROL_USUARIO['rol']
+    ROL_USUARIO['clave']       => ROL_USUARIO['rol'],
+    ROL_LOGISTICA['clave']     => ROL_LOGISTICA['rol']
 ]);
 
 /*
@@ -62,6 +68,8 @@ define("TAREA_PROVEEDORES", 'tarea_proveedores');
 define("TAREA_CONTACTOS", 'tarea_contactos');
 define("TAREA_HISTORIAL", 'tarea_historial');
 
+define("TAREA_LOGISTICA", 'tarea_logistica');
+
 /*
 |--------------------------------------------------------------------------
 | ACCESOS POR ROL
@@ -73,17 +81,21 @@ define("ACCESO_ADMINISTRADOR", [
     TAREA_PERFIL,
     TAREA_HISTORIAL,
     TAREA_USUARIOS,
-    TAREA_USUARIO_NUEVO,
-    TAREA_USUARIO_DETALLES,
     TAREA_COTIZACIONES,
     TAREA_ADJUDICADOS,
     TAREA_SERVICIOS,
     TAREA_PROVEEDORES,
-    TAREA_CONTACTOS
+    TAREA_CONTACTOS,
+    TAREA_LOGISTICA
 ]);
 
 define("ACCESO_USUARIO", [
-    TAREA_DASHBOARD
+    TAREA_DASHBOARD,
+]);
+
+define("ACCESO_LOGISTICA", [
+    TAREA_DASHBOARD,
+    TAREA_LOGISTICA
 ]);
 
 /*

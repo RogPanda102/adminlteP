@@ -130,20 +130,42 @@
         | Dashboard
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = BASE_URL;
-        $menu_item['icon'] = 'bi bi-speedometer2';
-        $menu_item['text'] = 'Dashboard';
-        $menu_item['submenu'] = array();
 
-        $menu['dashboard'] = $menu_item;
+        if (comprobar_acceso(TAREA_DASHBOARD)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = BASE_URL . 'dashboard';
+            $menu_item['icon'] = 'bi bi-speedometer2';
+            $menu_item['text'] = 'Dashboard';
+            $menu_item['submenu'] = array();
+
+            $menu['dashboard'] = $menu_item;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Logística
+        |--------------------------------------------------------------------------
+        */
+
+        if (comprobar_acceso(TAREA_LOGISTICA)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = BASE_URL . 'logistica';
+            $menu_item['icon'] = 'bi bi-box-seam';
+            $menu_item['text'] = 'Logística';
+            $menu_item['submenu'] = array();
+
+            $menu['logistica'] = $menu_item;
+        }
 
         /*
         |--------------------------------------------------------------------------
         | Usuarios
         |--------------------------------------------------------------------------
         */
-        if ($rol_actual == 1) {
+
+        if (comprobar_acceso(TAREA_USUARIOS)) {
 
             $menu_item['is_active'] = FALSE;
             $menu_item['href'] = BASE_URL . 'administracion/usuarios';
@@ -159,65 +181,84 @@
         | Cotizaciones
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = '#';
-        $menu_item['icon'] = 'bi bi-file-earmark-text';
-        $menu_item['text'] = 'Cotizaciones';
-        $menu_item['submenu'] = $submenuCotizaciones;
 
-        $menu['cotizaciones'] = $menu_item;
+        if (comprobar_acceso(TAREA_COTIZACIONES)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = '#';
+            $menu_item['icon'] = 'bi bi-file-earmark-text';
+            $menu_item['text'] = 'Cotizaciones';
+            $menu_item['submenu'] = $submenuCotizaciones;
+
+            $menu['cotizaciones'] = $menu_item;
+        }
 
         /*
         |--------------------------------------------------------------------------
         | Adjudicados
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = '#';
-        $menu_item['icon'] = 'bi bi-patch-check';
-        $menu_item['text'] = 'Adjudicados';
-        $menu_item['submenu'] = $submenuAdjudicados;
 
-        $menu['adjudicados'] = $menu_item;
+        if (comprobar_acceso(TAREA_ADJUDICADOS)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = '#';
+            $menu_item['icon'] = 'bi bi-patch-check';
+            $menu_item['text'] = 'Adjudicados';
+            $menu_item['submenu'] = $submenuAdjudicados;
+
+            $menu['adjudicados'] = $menu_item;
+        }
 
         /*
         |--------------------------------------------------------------------------
         | Servicios
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = '#';
-        $menu_item['icon'] = 'bi bi-tools';
-        $menu_item['text'] = 'Servicios';
-        $menu_item['submenu'] = $submenuServicios;
 
-        $menu['servicios'] = $menu_item;
+        if (comprobar_acceso(TAREA_SERVICIOS)) {
 
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = '#';
+            $menu_item['icon'] = 'bi bi-tools';
+            $menu_item['text'] = 'Servicios';
+            $menu_item['submenu'] = $submenuServicios;
+
+            $menu['servicios'] = $menu_item;
+        }
         /*
         |--------------------------------------------------------------------------
         | Proveedores
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = BASE_URL . 'proveedores';
-        $menu_item['icon'] = 'bi bi-truck';
-        $menu_item['text'] = 'Proveedores';
-        $menu_item['submenu'] = array();
 
-        $menu['proveedores'] = $menu_item;
+        if (comprobar_acceso(TAREA_PROVEEDORES)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = BASE_URL . 'proveedores';
+            $menu_item['icon'] = 'bi bi-truck';
+            $menu_item['text'] = 'Proveedores';
+            $menu_item['submenu'] = array();
+
+            $menu['proveedores'] = $menu_item;
+        }
 
         /*
         |--------------------------------------------------------------------------
         | Contactos
         |--------------------------------------------------------------------------
         */
-        $menu_item['is_active'] = FALSE;
-        $menu_item['href'] = BASE_URL . 'contactos';
-        $menu_item['icon'] = 'bi bi-people';
-        $menu_item['text'] = 'Contactos';
-        $menu_item['submenu'] = array();
 
-        $menu['contactos'] = $menu_item;
+        if (comprobar_acceso(TAREA_CONTACTOS)) {
+
+            $menu_item['is_active'] = FALSE;
+            $menu_item['href'] = BASE_URL . 'contactos';
+            $menu_item['icon'] = 'bi bi-people';
+            $menu_item['text'] = 'Contactos';
+            $menu_item['submenu'] = array();
+
+            $menu['contactos'] = $menu_item;
+        }
 
         /*
         |--------------------------------------------------------------------------
@@ -283,6 +324,11 @@
             case TAREA_USUARIO_NUEVO:
             case TAREA_USUARIO_DETALLES:
                 $menu['usuarios']['is_active'] = TRUE;
+            break;
+
+            // SECCIÓN LOGÍSTICA
+            case TAREA_LOGISTICA:
+                $menu['logistica']['is_active'] = TRUE;
             break;
 
 
